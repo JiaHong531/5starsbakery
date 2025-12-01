@@ -31,7 +31,7 @@ pom.xml.versionsBackup
 release.properties
 
 # React & Node
-# Dependencies (NEVER UPLOAD THIS)
+# Dependencies
 node_modules/
 .pnp
 .pnp.js
