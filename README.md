@@ -61,8 +61,8 @@ npm run dev
 3. ⚠️ Crucial: Click the tiny "M" (Maven) icon in the top-right to download dependencies.
 4. Navigate to: src/main/java/com/fivestarsbakery/util/DBConnection.java
 5. Run the main method (Green Play Button ▶️).
+
 Success Criteria:
-If the console prints:
-✅ Database Connected Successfully!
-...then you are ready to code!
+
+>If the console prints: ✅ Database Connected Successfully! ...then you are ready to code!
 
