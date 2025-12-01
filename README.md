@@ -1,10 +1,7 @@
-# 5starsbakery
-5 Stars Bakery is a Java-based e-commerce website offering a variety of baked goods such as cakes, muffins, cupcakes, and cookies. Key features include product browsing, shopping cart, order management, and customer feedback. The system aims to provide smooth user experience through an interactive and responsive design.
-
 # 🎂 5 Stars Bakery
 > *Freshly Baked Java Code. Served with React.*
 
-Welcome to the **5 Stars Bakery** project repository! This is a niche e-commerce web application allowing users to browse, order, and pick up fresh baked goods. 
+Welcome to the **5 Stars Bakery** project repository! This  is a Java-based e-commerce website offering a variety of baked goods such as cakes 🍰, muffins 🧁, cupcakes 🧁, and cookies 🍪. Key features include product browsing 🔎, shopping cart 🛍️, order management 🗂️, and customer feedback 📝. The system aims to provide smooth user experience through an interactive and responsive design.
 
 Built for the **CAT201** assignment.
 
