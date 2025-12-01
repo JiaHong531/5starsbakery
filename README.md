@@ -32,3 +32,37 @@ Clone the repository to your local kitchen.
 ```bash
 git clone <PASTE_YOUR_REPO_URL_HERE>
 cd 5-stars-bakery
+```
+
+### Step 2: Fire up the Oven (Database) 🔥
+We use Docker, so you don't need to install MySQL manually.
+1. Open Docker Desktop.
+2. Run this command in the root folder:
+```bash
+docker-compose up -d
+```
+> This automatically creates the database, tables, and inserts dummy cakes! 🍰
+
+### Step 3: Prep the Frontend 🎨
+1. Open a new terminal.
+2. Go to the frontend folder:
+```bash
+cd frontend
+```
+Next, install dependencies and start the server:
+```bash
+npm install
+npm run dev
+```
+
+### Step 4: Prep the Backend (Java) ☕
+1. Open IntelliJ IDEA.
+2. File > Open > Select the backend folder.
+3. ⚠️ Crucial: Click the tiny "M" (Maven) icon in the top-right to download dependencies.
+4. Navigate to: src/main/java/com/fivestarsbakery/util/DBConnection.java
+5. Run the main method (Green Play Button ▶️).
+Success Criteria:
+If the console prints:
+✅ Database Connected Successfully!
+...then you are ready to code!
+
