@@ -1,0 +1,23 @@
+services:
+  bakery-db:
+    image: mysql:8.0
+    container_name: bakery_mysql
+    # This prevents "Public Key Retrieval is not allowed" errors in Java
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bakerydb
+      MYSQL_USER: bakeryuser
+      MYSQL_PASSWORD: bakerypass
+    ports:
+      - "3306:3306"
+    volumes:
+      # 1. Save data so it doesn't disappear when you restart
+      - db_data:/var/lib/mysql
+
+      # 2. THE MAGIC LINK: This loads your init.sql into the database automatically
+      # MAKE SURE THIS PATH IS CORRECT on your laptop:
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
