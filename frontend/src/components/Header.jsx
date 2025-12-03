@@ -20,7 +20,7 @@ const Header = () => {
             <div className="w-full px-8 flex justify-between items-center">
                 <div className="text-2xl font-bold">
                     <Link to="/" className="hover:text-accent-1 transition-colors">
-                        <h1>5 Stars Bakery</h1>
+                        <h1 style={{ fontFamily: 'Pacifico, cursive', fontWeight: '400', fontStyle: 'normal' }}>5StarsBakery</h1>
                     </Link>
                 </div>
                 <div className="relative cursor-pointer">
@@ -34,13 +34,13 @@ const Header = () => {
                         <div className="absolute top-full right-0 bg-white text-text-main shadow-lg rounded overflow-hidden z-50 min-w-[150px] mt-2">
                             <button
                                 onClick={() => handleNavigation('/login')}
-                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors"
+                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: 'bold', fontStyle: 'normal' }}
                             >
                                 Login
                             </button>
                             <button
                                 onClick={() => handleNavigation('/register')}
-                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors"
+                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: 'bold', fontStyle: 'normal' }}
                             >
                                 Register
                             </button>

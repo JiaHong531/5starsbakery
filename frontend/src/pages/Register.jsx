@@ -36,11 +36,11 @@ const Register = () => {
     return (
         <div className="flex justify-center items-center min-h-[80vh] py-8 px-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[600px]">
-                <h2 className="mb-6 text-header-bg text-center text-2xl font-bold">Register</h2>
+                <h2 className="mb-6 text-header-bg text-center text-2xl font-bold" style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', fontOpticalSizing: 'auto', fontWeight: 'bold', fontStyle: 'normal' }}>Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-4 mb-4">
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold">First Name *</label>
+                            <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>First Name *</label>
                             <input
                                 type="text"
                                 name="firstName"
@@ -51,7 +51,7 @@ const Register = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold">Last Name *</label>
+                            <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Last Name *</label>
                             <input
                                 type="text"
                                 name="lastName"
@@ -64,7 +64,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Username *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Username *</label>
                         <input
                             type="text"
                             name="username"
@@ -76,7 +76,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Email Address *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Email Address *</label>
                         <input
                             type="email"
                             name="email"
@@ -88,7 +88,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Password *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Password *</label>
                         <input
                             type="password"
                             name="password"
@@ -100,7 +100,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Confirm Password *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Confirm Password *</label>
                         <input
                             type="password"
                             name="confirmPassword"
@@ -112,7 +112,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Gender *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Gender *</label>
                         <select
                             name="gender"
                             className="form-input"
@@ -127,7 +127,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Phone Number *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Phone Number *</label>
                         <input
                             type="tel"
                             name="phone"
@@ -139,7 +139,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold">Birthday *</label>
+                        <label className="block mb-1.5 font-bold" style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: '600', fontStyle: 'normal' }}>Birthday *</label>
                         <input
                             type="date"
                             name="birthday"
@@ -160,18 +160,18 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
-                            <span>I agree with the <Link to="/terms" className="text-header-bg font-bold underline">Terms and Conditions</Link></span>
+                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontOpticalSizing: 'auto', fontWeight: 'normal', fontStyle: 'normal' }}>I agree with the <Link to="/terms" className="text-header-bg font-bold underline">Terms and Conditions</Link></span>
                         </label>
                     </div>
 
                     <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full">
+                        <button type="submit" className="btn btn-primary w-full" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1rem', fontOpticalSizing: 'auto', fontWeight: 'bold', fontStyle: 'normal' }}>
                             REGISTER
                         </button>
                     </div>
                 </form>
                 <div className="mt-6 text-center">
-                    <Link to="/login" className="text-text-main text-sm hover:underline">Already have an account? Click to Login</Link>
+                    <Link to="/login" className="text-text-main text-sm hover:underline" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontOpticalSizing: 'auto', fontWeight: 'normal', fontStyle: 'normal' }}>Already have an account? Click to Login</Link>
                 </div>
             </div>
         </div>
