@@ -8,6 +8,7 @@ const Register = () => {
         username: '',
         email: '',
         password: '',
+        confirmPassword: '',
         gender: '',
         phone: '',
         birthday: '',
@@ -24,6 +25,10 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
         console.log('Register submitted:', formData);
         // Add register logic here
     };
@@ -95,6 +100,18 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
+                        <label className="block mb-1.5 font-bold">Confirm Password *</label>
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            className="form-input"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-4">
                         <label className="block mb-1.5 font-bold">Gender *</label>
                         <select
                             name="gender"
@@ -106,7 +123,6 @@ const Register = () => {
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="other">Other</option>
                         </select>
                     </div>
 

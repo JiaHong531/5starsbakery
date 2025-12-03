@@ -17,7 +17,7 @@ const Header = () => {
 
     return (
         <header className="bg-header-bg text-text-light py-4 relative">
-            <div className="container-custom flex justify-between items-center">
+            <div className="w-full px-8 flex justify-between items-center">
                 <div className="text-2xl font-bold">
                     <Link to="/" className="hover:text-accent-1 transition-colors">
                         <h1>5 Stars Bakery</h1>

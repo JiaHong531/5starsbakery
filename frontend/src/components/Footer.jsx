@@ -13,15 +13,18 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col items-start">
                     <h3 className="mb-2.5 text-lg font-semibold">Contact Us</h3>
-                    <div className="flex gap-4">
-                        <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors">
+                    <div className="flex flex-col gap-2.5">
+                        <a href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors flex items-center gap-2">
                             <FaWhatsapp size={24} />
+                            <span>+60 12-345 6789</span>
                         </a>
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors flex items-center gap-2">
                             <FaFacebook size={24} />
+                            <span>Facebook</span>
                         </a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent-1 transition-colors flex items-center gap-2">
                             <FaInstagram size={24} />
+                            <span>Instagram</span>
                         </a>
                     </div>
                 </div>

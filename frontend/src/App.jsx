@@ -4,7 +4,6 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Recovery from './pages/Recovery';
 import AdminLogin from './pages/AdminLogin';
 import Terms from './pages/Terms';
 import './App.css';
@@ -17,7 +16,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/recovery" element={<Recovery />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/terms" element={<Terms />} />
           {/* Add other routes here */}

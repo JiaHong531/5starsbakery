@@ -55,7 +55,7 @@ const Login = () => {
                     </div>
                 </form>
                 <div className="mt-6 flex flex-col items-center gap-2">
-                    <Link to="/recovery" className="text-text-main text-sm hover:underline">Forgot password?</Link>
+
                     <Link to="/register" className="text-text-main text-sm hover:underline">Don't have an account yet? Register Now</Link>
                     <Link to="/admin-login" className="text-text-main text-sm hover:underline">Login as Administrator</Link>
                 </div>
