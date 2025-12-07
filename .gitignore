@@ -54,3 +54,13 @@ build/
 # OS FILES (Junk)
 .DS_Store
 Thumbs.db
+.smarttomcat/backend/conf/catalina.policy
+.smarttomcat/backend/conf/catalina.properties
+.smarttomcat/backend/conf/context.xml
+.smarttomcat/backend/conf/jaspic-providers.xml
+.smarttomcat/backend/conf/jaspic-providers.xsd
+.smarttomcat/backend/conf/server.xml
+.smarttomcat/backend/conf/logging.properties
+.smarttomcat/backend/conf/tomcat-users.xml
+.smarttomcat/backend/conf/tomcat-users.xsd
+.smarttomcat/backend/conf/web.xml
