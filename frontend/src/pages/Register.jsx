@@ -36,11 +36,11 @@ const Register = () => {
     return (
         <div className="flex justify-center items-center min-h-[80vh] py-8 px-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[600px]">
-                <h2 className="mb-6 text-header-bg text-center text-2xl font-bold font-serif">Register</h2>
+                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-4 mb-4">
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold font-sans">First Name *</label>
+                            <label className="block mb-1.5 font-bold font-sans">First Name</label>
                             <input
                                 type="text"
                                 name="firstName"
@@ -51,7 +51,7 @@ const Register = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold font-sans">Last Name *</label>
+                            <label className="block mb-1.5 font-bold font-sans">Last Name</label>
                             <input
                                 type="text"
                                 name="lastName"
@@ -64,7 +64,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username</label>
                         <input
                             type="text"
                             name="username"
@@ -76,7 +76,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Email Address *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Email Address</label>
                         <input
                             type="email"
                             name="email"
@@ -88,7 +88,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Password *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Password</label>
                         <input
                             type="password"
                             name="password"
@@ -100,7 +100,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Confirm Password *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Confirm Password</label>
                         <input
                             type="password"
                             name="confirmPassword"
@@ -112,7 +112,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Gender *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Gender</label>
                         <select
                             name="gender"
                             className="form-input"
@@ -127,7 +127,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Phone Number *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Phone Number</label>
                         <input
                             type="tel"
                             name="phone"
@@ -139,7 +139,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Birthday *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Birthday</label>
                         <input
                             type="date"
                             name="birthday"
@@ -171,7 +171,11 @@ const Register = () => {
                     </div>
                 </form>
                 <div className="mt-6 text-center">
-                    <Link to="/login" className="text-text-main text-sm hover:underline font-sans">Already have an account? Click to Login</Link>
+                    <p className="text-text-main text-sm font-sans">
+                      Already have an account?&nbsp;<Link to="/login" className="hover:underline">
+                        Click to Login
+                      </Link>
+                    </p>
                 </div>
             </div>
         </div>

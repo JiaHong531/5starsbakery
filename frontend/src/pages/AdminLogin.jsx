@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -15,20 +17,48 @@ const AdminLogin = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Admin Login submitted:', formData);
-        // Add admin login logic here
-        // Check if user is admin
+        setError('');
+
+        try {
+            const response = await fetch('http://localhost:8080/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+
+                // 🛑 SECURITY CHECK: Is this user actually an ADMIN?
+                if (user.role === 'ADMIN') {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    navigate('/admin/dashboard'); // Go to Admin Panel
+                } else {
+                    // It is a valid user, but NOT an admin
+                    setError('Access Denied. You are not an Administrator.');
+                }
+            } else {
+                setError('Invalid credentials.');
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Server connection failed.');
+        }
     };
 
     return (
         <div className="flex justify-center items-center min-h-[60vh] px-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[500px]">
-                <h2 className="mb-6 text-header-bg text-center text-2xl font-bold font-serif">Login as Administrator</h2>
+                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Login as Administrator</h2>
+
+                {/* Error Display */}
+                {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded text-center text-sm">{error}</div>}
+
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username</label>
                         <input
                             type="text"
                             name="username"
@@ -39,7 +69,7 @@ const AdminLogin = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Password *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Password</label>
                         <input
                             type="password"
                             name="password"

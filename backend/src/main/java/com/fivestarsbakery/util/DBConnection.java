@@ -20,7 +20,6 @@ public class DBConnection {
 
             // Attempt Connection
             con = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("✅ Database Connected Successfully!");
 
         } catch (ClassNotFoundException e) {
             System.out.println("❌ Driver Not Found! (Check pom.xml)");
