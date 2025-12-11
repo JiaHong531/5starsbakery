@@ -4,11 +4,15 @@ USE bakerydb;
 -- 1. Users Table (No address, added Phone Number)
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE, -- Added (Must be unique)
+    first_name VARCHAR(50) NOT NULL,      -- Replaces full_name
+    last_name VARCHAR(50) NOT NULL,       -- Replaces full_name
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('CUSTOMER', 'ADMIN') DEFAULT 'CUSTOMER',
-    phone_number VARCHAR(15)
+    phone_number VARCHAR(20) NOT NULL,
+    gender VARCHAR(10),                   -- e.g., 'Male', 'Female'
+    birthdate DATE,                       -- SQL Date format (YYYY-MM-DD)
+    role ENUM('CUSTOMER', 'ADMIN') DEFAULT 'CUSTOMER'
 );
 
 -- 2. Products Table (Added Ingredients & Stock)
@@ -61,13 +65,10 @@ CREATE TABLE feedback (
 -- DUMMY DATA (So your website isn't empty)
 -- =============================================
 
--- 1. Admin User (Password: 12345)
-INSERT INTO users (full_name, email, password, role, phone_number)
-VALUES ('Bakery Owner', 'admin@bakery.com', '12345', 'ADMIN', '012-3456789');
-
--- 2. Customer User (Password: 12345)
-INSERT INTO users (full_name, email, password, role, phone_number)
-VALUES ('John Doe', 'john@gmail.com', '12345', 'CUSTOMER', '019-8765432');
+INSERT INTO users (username, first_name, last_name, email, password, role, phone_number, gender, birthdate)
+VALUES
+('admin_boss', 'Bakery', 'Owner', 'admin@bakery.com', '12345', 'ADMIN', '012-3456789', 'Male', '1990-01-01'),
+('john_doe', 'John', 'Doe', 'john@gmail.com', '12345', 'CUSTOMER', '019-8765432', 'Male', '2000-05-15');
 
 -- 3. Products
 INSERT INTO products (name, description, ingredients, price, stock_quantity, category, image_url) VALUES

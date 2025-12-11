@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
+    const navigate = useNavigate(); // Hook for redirection
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -23,24 +24,60 @@ const Register = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 1. Validation
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
-        console.log('Register submitted:', formData);
-        // Add register logic here
+
+        try {
+            // 2. Map Frontend fields to Backend expected fields
+            // Frontend: "phone", "birthday"
+            // Backend: "phoneNumber", "birthdate"
+            const payload = {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                gender: formData.gender,
+                phoneNumber: formData.phone,    // Mapping here
+                birthdate: formData.birthday    // Mapping here
+            };
+
+            // 3. Send to Java
+            const response = await fetch('http://localhost:8080/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Registration Successful! Please Login.");
+                navigate('/login'); // Redirect to login page
+            } else {
+                alert(data.message || "Registration failed.");
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Server connection failed.");
+        }
     };
 
     return (
         <div className="flex justify-center items-center min-h-[80vh] py-8 px-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[600px]">
-                <h2 className="mb-6 text-header-bg text-center text-2xl font-bold font-serif">Register</h2>
+                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-4 mb-4">
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold font-sans">First Name *</label>
+                            <label className="block mb-1.5 font-bold font-sans">First Name</label>
                             <input
                                 type="text"
                                 name="firstName"
@@ -51,7 +88,7 @@ const Register = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <label className="block mb-1.5 font-bold font-sans">Last Name *</label>
+                            <label className="block mb-1.5 font-bold font-sans">Last Name</label>
                             <input
                                 type="text"
                                 name="lastName"
@@ -64,7 +101,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username</label>
                         <input
                             type="text"
                             name="username"
@@ -76,7 +113,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Email Address *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Email Address</label>
                         <input
                             type="email"
                             name="email"
@@ -88,7 +125,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Password *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Password</label>
                         <input
                             type="password"
                             name="password"
@@ -100,7 +137,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Confirm Password *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Confirm Password</label>
                         <input
                             type="password"
                             name="confirmPassword"
@@ -112,7 +149,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Gender *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Gender</label>
                         <select
                             name="gender"
                             className="form-input"
@@ -121,13 +158,13 @@ const Register = () => {
                             required
                         >
                             <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Phone Number *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Phone Number</label>
                         <input
                             type="tel"
                             name="phone"
@@ -139,7 +176,7 @@ const Register = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Birthday *</label>
+                        <label className="block mb-1.5 font-bold font-sans">Birthday</label>
                         <input
                             type="date"
                             name="birthday"
@@ -171,7 +208,11 @@ const Register = () => {
                     </div>
                 </form>
                 <div className="mt-6 text-center">
-                    <Link to="/login" className="text-text-main text-sm hover:underline font-sans">Already have an account? Click to Login</Link>
+                    <p className="text-text-main text-sm font-sans">
+                      Already have an account?&nbsp;<Link to="/login" className="hover:underline">
+                        Click to Login
+                      </Link>
+                    </p>
                 </div>
             </div>
         </div>

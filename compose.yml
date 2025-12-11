@@ -1,4 +1,14 @@
 services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - bakery-db
+    environment:
+      DB_URL: jdbc:mysql://bakery-db:3306/bakerydb?allowPublicKeyRetrieval=true&useSSL=false
+      DB_USER: bakeryuser
+      DB_PASSWORD: bakerypass
   bakery-db:
     image: mysql:8.0
     container_name: bakery_mysql
