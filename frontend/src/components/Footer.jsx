@@ -5,7 +5,7 @@ import { FaWhatsapp, FaFacebook, FaInstagram } from 'react-icons/fa';
 const Footer = () => {
     return (
         <footer className="bg-header-bg text-text-light py-8 mt-auto">
-            <div className="container-custom flex flex-wrap justify-between items-start gap-8">
+            <div className="max-w-[1200px] mx-auto px-5 flex flex-wrap justify-between items-start gap-8">
                 <div className="flex flex-col gap-2.5">
                     <h3 className="mb-2.5 text-lg font-semibold font-serif text-2xl">About Us</h3>
                     <Link to="/about" className="hover:text-accent-1 transition-colors font-sans text-base">About 5 Stars Bakery</Link>
