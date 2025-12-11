@@ -71,7 +71,7 @@ const CartSidebar = () => {
                                             <FaTrash size={14} />
                                         </button>
                                     </div>
-                                    <p className="text-accent-1 font-bold">${item.price}</p>
+                                    <p className="text-accent-1 font-bold">RM{item.price.toFixed(2)}</p>
 
                                     <div className="flex items-center gap-3 mt-2">
                                         <button
@@ -99,7 +99,7 @@ const CartSidebar = () => {
                     <div className="p-5 border-t border-gray-100 bg-gray-50">
                         <div className="flex justify-between items-center mb-4">
                             <span className="text-text-muted">Subtotal</span>
-                            <span className="text-2xl font-bold text-text-main">${getCartTotal().toFixed(2)}</span>
+                            <span className="text-2xl font-bold text-text-main">RM{getCartTotal().toFixed(2)}</span>
                         </div>
                         <button className="w-full py-3.5 bg-accent-1 hover:bg-accent-2 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all active:scale-[0.98]">
                             Checkout
