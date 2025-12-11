@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // Removed useEffect!
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 import { useSearch } from '../context/SearchContext';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext'; // Import Context
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const { searchQuery, setSearchQuery } = useSearch();
     const { getCartCount, toggleCart } = useCart();
     const navigate = useNavigate();
+
+    // ------------------------------------------------
+    // CRITICAL CHANGE: Use Context Source of Truth
+    // ------------------------------------------------
+    // We removed "const [user, setUser] = useState..." because it conflicts.
+    const { user, logout } = useAuth();
 
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
@@ -20,9 +27,21 @@ const Header = () => {
         setShowDropdown(false);
     };
 
+    const handleLogout = () => {
+        const confirm = window.confirm("Are you sure you want to logout?");
+        if (confirm) {
+            logout(); // Call the Context logout
+            setShowDropdown(false);
+            navigate("/login");
+            // No need to reload page!
+        }
+    };
+
     return (
         <header className="bg-header-bg text-text-light py-4 relative">
             <div className="w-full px-8 flex justify-between items-center">
+
+                {/* Logo Section */}
                 <div className="text-2xl font-bold">
                     <Link to="/" className="hover:text-accent-1 transition-colors flex items-center gap-4">
                         <img src={logo} alt="5 Stars Bakery Logo" className="h-24 w-auto object-contain" />
@@ -46,6 +65,7 @@ const Header = () => {
                     </div>
                 </div>
 
+                {/* Right Icons Section */}
                 <div className="flex items-center gap-4">
                     {/* Cart Icon */}
                     <div
@@ -58,28 +78,72 @@ const Header = () => {
                         </span>
                     </div>
 
-                    {/* User Profile */}
+                    {/* User Profile & Dropdown */}
                     <div className="relative cursor-pointer">
                         <div
-                            className="p-2.5 rounded-full hover:bg-white/10 transition-colors"
+                            className="p-2.5 rounded-full hover:bg-white/10 transition-colors flex items-center gap-2"
                             onClick={toggleDropdown}
                         >
                             <FaUser size={24} className="text-text-light" />
+                            {/* Show Name if Logged In */}
+                            {user && <span className="text-sm font-bold hidden md:block">{user.username}</span>}
                         </div>
+
                         {showDropdown && (
-                            <div className="absolute top-full right-0 bg-white text-text-main shadow-lg rounded overflow-hidden z-50 min-w-[150px] mt-2">
-                                <button
-                                    onClick={() => handleNavigation('/login')}
-                                    className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
-                                >
-                                    Login
-                                </button>
-                                <button
-                                    onClick={() => handleNavigation('/register')}
-                                    className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
-                                >
-                                    Register
-                                </button>
+                            <div className="absolute top-full right-0 bg-white text-text-main shadow-lg rounded overflow-hidden z-50 min-w-[200px] mt-2 border border-gray-100">
+
+                                {user ? (
+                                    // --- LOGGED IN MENU ---
+                                    <>
+                                        <div className="px-5 py-3 border-b bg-gray-50">
+                                            <p className="text-xs text-gray-500">Signed in as</p>
+                                            <p className="font-bold text-header-bg truncate">{user.username}</p>
+                                        </div>
+
+                                        {user.role === 'ADMIN' && (
+                                            <button
+                                                onClick={() => handleNavigation('/admin/dashboard')}
+                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base text-red-600"
+                                            >
+                                                Dashboard
+                                            </button>
+                                        )}
+
+                                        {user.role === 'CUSTOMER' && (
+                                            <button
+                                                onClick={() => handleNavigation('/my-orders')}
+                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                            >
+                                                My Orders
+                                            </button>
+                                        )}
+
+                                        <div className="border-t my-1"></div>
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                        >
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    // --- GUEST MENU ---
+                                    <>
+                                        <button
+                                            onClick={() => handleNavigation('/login')}
+                                            className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                        >
+                                            Login
+                                        </button>
+                                        <button
+                                            onClick={() => handleNavigation('/register')}
+                                            className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                        >
+                                            Register
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>

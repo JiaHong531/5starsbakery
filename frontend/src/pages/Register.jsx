@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
+    const navigate = useNavigate(); // Hook for redirection
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -23,14 +24,50 @@ const Register = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 1. Validation
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
-        console.log('Register submitted:', formData);
-        // Add register logic here
+
+        try {
+            // 2. Map Frontend fields to Backend expected fields
+            // Frontend: "phone", "birthday"
+            // Backend: "phoneNumber", "birthdate"
+            const payload = {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                gender: formData.gender,
+                phoneNumber: formData.phone,    // Mapping here
+                birthdate: formData.birthday    // Mapping here
+            };
+
+            // 3. Send to Java
+            const response = await fetch('http://localhost:8080/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Registration Successful! Please Login.");
+                navigate('/login'); // Redirect to login page
+            } else {
+                alert(data.message || "Registration failed.");
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Server connection failed.");
+        }
     };
 
     return (
@@ -121,8 +158,8 @@ const Register = () => {
                             required
                         >
                             <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
 

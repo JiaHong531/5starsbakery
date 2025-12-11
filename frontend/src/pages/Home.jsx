@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import { useSearch } from '../context/SearchContext';
 import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
     // 1. State for Data
@@ -9,8 +11,12 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
+
+    // Hooks
     const { searchQuery } = useSearch();
     const { addToCart } = useCart();
+    const navigate = useNavigate();
+    const { user } = useAuth(); // Use the context instead of localStorage
 
     // 2. Fetch from Java Backend
     useEffect(() => {
@@ -31,6 +37,22 @@ const Home = () => {
                 setLoading(false);
             });
     }, []);
+
+    // --- NEW LOGIC: SECURITY CHECK ---
+    const handleAddToCart = (product) => {
+
+        if (!user) {
+            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
+            if (confirmLogin) {
+                navigate("/login");
+            }
+            return;
+        }
+
+        // If logged in, proceed normally
+        addToCart(product);
+    };
+    // ---------------------------------
 
     // 3. Loading & Error States
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
@@ -97,7 +119,7 @@ const Home = () => {
                                     {/* Logic: Check Stock */}
                                     {cake.stock > 0 ? (
                                         <button
-                                            onClick={() => addToCart(cake)}
+                                            onClick={() => handleAddToCart(cake)}
                                             className="btn btn-primary shadow-md active:scale-95 transition-transform"
                                         >
                                             Add to Cart

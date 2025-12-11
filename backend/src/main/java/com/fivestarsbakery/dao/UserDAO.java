@@ -22,9 +22,11 @@ public class UserDAO {
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            ps.setString(6, user.getPhoneNumber());
+            ps.setString(6, user.getPhoneNumber()); // Matches User.java
             ps.setString(7, user.getGender());
-            ps.setDate(8, user.getBirthdate());
+
+            // Convert String date to SQL Date
+            ps.setDate(8, java.sql.Date.valueOf(user.getBirthdate()));
 
             int rows = ps.executeUpdate();
             return rows > 0;

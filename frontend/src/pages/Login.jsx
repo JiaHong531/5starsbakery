@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import Context
 
 const Login = () => {
-    const navigate = useNavigate(); // For redirection
+    const navigate = useNavigate();
+    const { login } = useAuth(); // <--- Get the login function from Context
+
     const [formData, setFormData] = useState({
         usernameOrEmail: '',
         password: '',
@@ -22,8 +25,6 @@ const Login = () => {
         setError('');
 
         try {
-            // We map "usernameOrEmail" to "username" because the Java Object expects a field name
-            // that matches the User.java class. The DAO will check both columns anyway.
             const payload = {
                 username: formData.usernameOrEmail,
                 password: formData.password
@@ -38,14 +39,16 @@ const Login = () => {
             if (response.ok) {
                 const user = await response.json();
 
-                // Save user info
-                localStorage.setItem('user', JSON.stringify(user));
+                // ------------------------------------------------
+                // CRITICAL CHANGE: Use Context instead of localStorage
+                // ------------------------------------------------
+                login(user);
+                // This triggers the Header to update INSTANTLY!
 
-                // Redirect based on role
                 if (user.role === 'ADMIN') {
                     navigate('/admin/dashboard');
                 } else {
-                    navigate('/'); // Go to Home
+                    navigate('/');
                 }
             } else {
                 setError('Invalid username, email, or password.');
@@ -61,7 +64,6 @@ const Login = () => {
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[500px]">
                 <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Login</h2>
 
-                {/* Error Message Display */}
                 {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded text-center text-sm">{error}</div>}
 
                 <form onSubmit={handleSubmit}>
@@ -94,7 +96,6 @@ const Login = () => {
                     </div>
                 </form>
                 <div className="mt-6 flex flex-col items-center gap-2">
-
                     <p className="text-text-main text-sm font-sans">
                       Don't have an account yet?&nbsp;
                       <Link to="/register" className="hover:underline">

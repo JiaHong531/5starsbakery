@@ -11,14 +11,14 @@ public class User {
     private String password;
     private String phoneNumber;
     private String gender;
-    private Date birthdate; // Use java.sql.Date
+    private String birthdate;
     private String role;
 
     public User() {
     }
 
     public User(int id, String username, String firstName, String lastName, String email,
-                String password, String phoneNumber, String gender, Date birthdate, String role) {
+                String password, String phoneNumber, String gender, String birthdate, String role) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -32,7 +32,7 @@ public class User {
     }
 
     public User(String username, String firstName, String lastName, String email,
-                String phoneNumber, String gender, Date birthdate, String password) {
+                String phoneNumber, String gender, String birthdate, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -75,7 +75,7 @@ public class User {
         return gender;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
@@ -103,6 +103,10 @@ public class User {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -111,7 +115,7 @@ public class User {
         this.gender = gender;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
