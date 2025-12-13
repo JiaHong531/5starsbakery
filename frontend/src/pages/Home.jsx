@@ -78,7 +78,7 @@ const Home = () => {
             <div className="flex-1">
                 {/* Header Section */}
                 <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold mb-3 text-text-main">Our Fresh Menu</h2>
+                    <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Our Fresh Menu</h2>
                     <p className="text-gray-500">Baked with love, served with code.</p>
                 </div>
 
@@ -89,8 +89,11 @@ const Home = () => {
                         /* Card Container */
                         <div key={cake.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
 
-                            {/* Image Area */}
-                            <div className="h-64 overflow-hidden relative group">
+                            {/* Image Area - Clickable to go to Details */}
+                            <div
+                                onClick={() => navigate(`/product/${cake.id}`)}
+                                className="h-64 overflow-hidden relative group cursor-pointer"
+                            >
                                 <img
                                     src={cake.imageUrl}
                                     alt={cake.name}
@@ -105,7 +108,12 @@ const Home = () => {
                             {/* Content Area */}
                             <div className="p-5 flex flex-col flex-grow">
                                 <div className="flex-grow">
-                                    <h3 className="text-xl font-bold mb-2 text-gray-800">{cake.name}</h3>
+                                    <h3
+                                        onClick={() => navigate(`/product/${cake.id}`)}
+                                        className="text-xl font-bold mb-2 text-gray-800 cursor-pointer hover:text-accent-1 transition-colors"
+                                    >
+                                        {cake.name}
+                                    </h3>
                                     <p className="text-gray-600 text-sm line-clamp-2">{cake.description}</p>
                                     <p className="text-xs text-gray-400 italic mt-2">Contains: {cake.ingredients}</p>
                                 </div>

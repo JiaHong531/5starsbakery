@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import viewIcon from '../assets/view.png';
+import hiddenIcon from '../assets/hidden.png';
 
 const Register = () => {
     const navigate = useNavigate(); // Hook for redirection
@@ -15,6 +17,9 @@ const Register = () => {
         birthday: '',
         agreeTerms: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -126,26 +131,54 @@ const Register = () => {
 
                     <div className="mb-4">
                         <label className="block mb-1.5 font-bold font-sans">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            className="form-input"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                className="form-input pr-10"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-3 flex items-center"
+                            >
+                                <img
+                                    src={showPassword ? viewIcon : hiddenIcon}
+                                    alt="Toggle Password"
+                                    className="w-5 h-5"
+                                    style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)" }}
+                                />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="mb-4">
                         <label className="block mb-1.5 font-bold font-sans">Confirm Password</label>
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            className="form-input"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirmPassword"
+                                className="form-input pr-10"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute inset-y-0 right-3 flex items-center"
+                            >
+                                <img
+                                    src={showConfirmPassword ? viewIcon : hiddenIcon}
+                                    alt="Toggle Confirm Password"
+                                    className="w-5 h-5"
+                                    style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)" }}
+                                />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="mb-4">
@@ -209,9 +242,9 @@ const Register = () => {
                 </form>
                 <div className="mt-6 text-center">
                     <p className="text-text-main text-sm font-sans">
-                      Already have an account?&nbsp;<Link to="/login" className="hover:underline">
-                        Click to Login
-                      </Link>
+                        Already have an account?&nbsp;<Link to="/login" className="hover:underline">
+                            Click to Login
+                        </Link>
                     </p>
                 </div>
             </div>

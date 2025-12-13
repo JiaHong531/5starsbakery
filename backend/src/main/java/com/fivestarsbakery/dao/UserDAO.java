@@ -15,7 +15,7 @@ public class UserDAO {
         String sql = "INSERT INTO users (username, first_name, last_name, email, password, phone_number, gender, birthdate, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstName());
@@ -43,7 +43,7 @@ public class UserDAO {
         String sql = "SELECT * FROM users WHERE (email = ? OR username = ?) AND password = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, loginInput);
             ps.setString(2, loginInput);
@@ -57,6 +57,10 @@ public class UserDAO {
                     user.setFirstName(rs.getString("first_name"));
                     user.setLastName(rs.getString("last_name"));
                     user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password")); // Added
+                    user.setPhoneNumber(rs.getString("phone_number")); // Added
+                    user.setGender(rs.getString("gender")); // Added
+                    user.setBirthdate(rs.getString("birthdate")); // Added
                     user.setRole(rs.getString("role"));
                 }
             }
@@ -64,5 +68,26 @@ public class UserDAO {
             e.printStackTrace();
         }
         return user;
+    }
+
+    // UPDATE USER METHOD
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET email = ?, password = ?, phone_number = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getPhoneNumber());
+            ps.setInt(4, user.getId());
+
+            int rows = ps.executeUpdate();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

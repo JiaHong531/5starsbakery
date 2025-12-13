@@ -43,10 +43,13 @@ const Header = () => {
 
                 {/* Logo Section */}
                 <div className="text-2xl font-bold">
-                    <Link to="/" className="hover:text-accent-1 transition-colors flex items-center gap-4">
+                    <div
+                        onClick={() => handleNavigation(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                        className="hover:text-accent-1 transition-colors flex items-center gap-4 cursor-pointer"
+                    >
                         <img src={logo} alt="5 Stars Bakery Logo" className="h-24 w-auto object-contain" />
                         <h1 className="font-cursive font-normal">5StarsBakery</h1>
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Search Bar */}
@@ -67,16 +70,18 @@ const Header = () => {
 
                 {/* Right Icons Section */}
                 <div className="flex items-center gap-4">
-                    {/* Cart Icon */}
-                    <div
-                        className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-colors"
-                        onClick={toggleCart}
-                    >
-                        <FaShoppingCart size={24} className="text-text-light" />
-                        <span className="absolute top-1 right-1 bg-accent-2 text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full shadow-md">
-                            {getCartCount()}
-                        </span>
-                    </div>
+                    {/* Cart Icon - HIDE FOR ADMIN */}
+                    {(!user || user.role !== 'ADMIN') && (
+                        <div
+                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-colors"
+                            onClick={toggleCart}
+                        >
+                            <FaShoppingCart size={24} className="text-text-light" />
+                            <span className="absolute top-1 right-1 bg-accent-2 text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full shadow-md">
+                                {getCartCount()}
+                            </span>
+                        </div>
+                    )}
 
                     {/* User Profile & Dropdown */}
                     <div className="relative cursor-pointer">
@@ -95,30 +100,30 @@ const Header = () => {
                                 {user ? (
                                     // --- LOGGED IN MENU ---
                                     <>
-                                        <div className="px-5 py-3 border-b bg-gray-50">
+                                        <div
+                                            className="px-5 py-3 border-b bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+                                            onClick={() => handleNavigation('/profile')}
+                                        >
                                             <p className="text-xs text-gray-500">Signed in as</p>
                                             <p className="font-bold text-header-bg truncate">{user.username}</p>
                                         </div>
 
                                         {user.role === 'ADMIN' && (
-                                            <button
-                                                onClick={() => handleNavigation('/admin/dashboard')}
-                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base text-red-600"
-                                            >
-                                                Dashboard
-                                            </button>
+                                            <>
+                                            </>
                                         )}
 
                                         {user.role === 'CUSTOMER' && (
-                                            <button
-                                                onClick={() => handleNavigation('/my-orders')}
-                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
-                                            >
-                                                My Orders
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => handleNavigation('/my-orders')}
+                                                    className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                                >
+                                                    My Orders
+                                                </button>
+                                                <div className="border-t my-1"></div>
+                                            </>
                                         )}
-
-                                        <div className="border-t my-1"></div>
 
                                         <button
                                             onClick={handleLogout}
@@ -143,7 +148,8 @@ const Header = () => {
                                             Register
                                         </button>
                                     </>
-                                )}
+                                )
+                                }
                             </div>
                         )}
                     </div>
