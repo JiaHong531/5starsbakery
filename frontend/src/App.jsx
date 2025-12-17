@@ -12,6 +12,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import UserProfile from './pages/UserProfile';
 import ProductDetails from './pages/ProductDetails';
 import ProductForm from './pages/ProductForm';
+import Checkout from './pages/Checkout';
+import OrderHistory from './pages/OrderHistory';
+import AdminOrders from './pages/AdminOrders';
 import './App.css';
 
 function App() {
@@ -31,6 +34,9 @@ function App() {
         <Route path="admin/edit-product/:id" element={<ProductForm />} />
         <Route path="profile" element={<UserProfile />} />
         <Route path="product/:id" element={<ProductDetails />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="my-orders" element={<OrderHistory />} />
+        <Route path="admin/orders" element={<AdminOrders />} />
       </Route>
     </Routes>
   );

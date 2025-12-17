@@ -1,10 +1,10 @@
-import React, { useState } from 'react'; // Removed useEffect!
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { FaUser, FaSearch, FaShoppingCart, FaClipboardList } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 import { useSearch } from '../context/SearchContext';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext'; // Import Context
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -12,10 +12,6 @@ const Header = () => {
     const { getCartCount, toggleCart } = useCart();
     const navigate = useNavigate();
 
-    // ------------------------------------------------
-    // CRITICAL CHANGE: Use Context Source of Truth
-    // ------------------------------------------------
-    // We removed "const [user, setUser] = useState..." because it conflicts.
     const { user, logout } = useAuth();
 
     const toggleDropdown = () => {
@@ -30,10 +26,9 @@ const Header = () => {
     const handleLogout = () => {
         const confirm = window.confirm("Are you sure you want to logout?");
         if (confirm) {
-            logout(); // Call the Context logout
+            logout();
             setShowDropdown(false);
             navigate("/login");
-            // No need to reload page!
         }
     };
 
@@ -70,6 +65,17 @@ const Header = () => {
 
                 {/* Right Icons Section */}
                 <div className="flex items-center gap-4">
+                    {/* Admin Orders Icon */}
+                    {user && user.role === 'ADMIN' && (
+                        <div
+                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-colors"
+                            onClick={() => navigate('/admin/orders')}
+                            title="View Customer Orders"
+                        >
+                            <FaClipboardList size={22} className="text-text-light" />
+                        </div>
+                    )}
+
                     {/* Cart Icon - HIDE FOR ADMIN */}
                     {(!user || user.role !== 'ADMIN') && (
                         <div
@@ -107,11 +113,6 @@ const Header = () => {
                                             <p className="text-xs text-gray-500">Signed in as</p>
                                             <p className="font-bold text-header-bg truncate">{user.username}</p>
                                         </div>
-
-                                        {user.role === 'ADMIN' && (
-                                            <>
-                                            </>
-                                        )}
 
                                         {user.role === 'CUSTOMER' && (
                                             <>

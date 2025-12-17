@@ -118,7 +118,13 @@ const AdminDashboard = () => {
                 {/* Header Section */}
                 <div className="text-center mb-8">
                     <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Admin Dashboard</h2>
-                    <p className="text-gray-500">Manage your bakery inventory.</p>
+                    <p className="text-gray-500 mb-6">Manage your bakery inventory.</p>
+                    <button
+                        onClick={() => navigate('/admin/orders')}
+                        className="px-6 py-2 bg-accent-1 text-white font-bold rounded-full shadow-lg hover:bg-accent-2 transition-colors"
+                    >
+                        View Customer Orders
+                    </button>
                 </div>
 
                 {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
