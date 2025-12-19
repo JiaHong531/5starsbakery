@@ -60,7 +60,7 @@ const AdminLogin = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username or Email Address</label>
                         <input
                             type="text"
                             name="username"
@@ -82,7 +82,7 @@ const AdminLogin = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-serif font-bold text-base">
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-base">
                             LOGIN
                         </button>
                     </div>

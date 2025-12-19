@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaBoxOpen, FaCalendarAlt, FaMoneyBillWave } from 'react-icons/fa';
+import backIcon from '../assets/back.png';
+import { FaBoxOpen, FaCalendarAlt, FaMoneyBillWave} from 'react-icons/fa';
 
 const OrderHistory = () => {
     const { user } = useAuth();
@@ -15,6 +16,7 @@ const OrderHistory = () => {
             return;
         }
 
+        // Handle different ID field names just in case
         const userId = user.id || user.user_id || user.userId;
 
         fetch(`http://localhost:8080/api/orders?userId=${userId}`)
@@ -23,7 +25,6 @@ const OrderHistory = () => {
                 return res.json();
             })
             .then(data => {
-                // Determine if data is array or wrapped
                 const orderList = Array.isArray(data) ? data : [];
                 setOrders(orderList);
                 setLoading(false);
@@ -47,8 +48,24 @@ const OrderHistory = () => {
     return (
         <div className="container-custom py-10 min-h-screen">
             <div className="max-w-4xl mx-auto">
-                <h2 className="text-4xl font-serif font-bold text-header-bg mb-2">Order History</h2>
-                <p className="text-gray-500 mb-8">Track your past indulgences.</p>
+                <div className="flex items-center mb-8 gap-4 -ml-9">
+                    <button
+                        onClick={() => navigate('/')}
+                        className="hover:opacity-80 transition-opacity"
+                    >
+                        <img
+                            src={backIcon}
+                            alt="Back"
+                            className="w-8 h-8 object-contain"
+                            // Exact filter from UserProfile
+                            style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
+                        />
+                    </button>
+                    <div>
+                        <h2 className="text-3xl font-serif font-bold text-header-bg">Order History</h2>
+                        <p className="text-gray-500 text-sm mt-1">Track your past indulgences.</p>
+                    </div>
+                </div>
 
                 {orders.length === 0 ? (
                     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center">
@@ -101,7 +118,8 @@ const OrderHistory = () => {
                                 {/* Order Items */}
                                 <div className="p-6">
                                     <div className="space-y-4">
-                                        {order.items.map((item) => (
+                                        {/* Added Safety Check: Ensure items exists */}
+                                        {order.items && order.items.map((item) => (
                                             <div key={item.itemId} className="flex gap-4 items-center">
                                                 <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0 border border-gray-200">
                                                     <img

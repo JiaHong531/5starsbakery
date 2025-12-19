@@ -141,7 +141,7 @@ const UserProfile = () => {
         <div className="min-h-screen bg-bg-light p-8">
             <div className="max-w-4xl mx-auto">
                 {/* Header Section with Back Button */}
-                <div className="flex items-center mb-8 gap-4">
+                <div className="flex items-center mb-8 gap-4 ml-20">
                     <button
                         onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
                         className="hover:opacity-80 transition-opacity"
@@ -156,7 +156,7 @@ const UserProfile = () => {
                     <h1 className="text-3xl font-serif font-bold text-header-bg">My Profile</h1>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl">
+                <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
                     <div className="space-y-6">
 
                         {/* Username Field (Read-only usually, but editable here if desired, let's keep editable for now based on prev code) */}

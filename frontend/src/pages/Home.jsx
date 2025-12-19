@@ -11,6 +11,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     // Hooks
     const { searchQuery } = useSearch();
@@ -42,10 +43,7 @@ const Home = () => {
     const handleAddToCart = (product) => {
 
         if (!user) {
-            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
-            if (confirmLogin) {
-                navigate("/login");
-            }
+            setShowLoginModal(true);
             return;
         }
 
@@ -128,7 +126,7 @@ const Home = () => {
                                     {cake.stock > 0 ? (
                                         <button
                                             onClick={() => handleAddToCart(cake)}
-                                            className="btn btn-primary shadow-md active:scale-95 transition-transform"
+                                            className="btn btn-primary shadow-md"
                                         >
                                             Add to Cart
                                         </button>
@@ -143,6 +141,32 @@ const Home = () => {
                     ))}
                 </div>
             </div>
+            {showLoginModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                    {/* Simple toast message */}
+                    <div className="bg-white p-6 rounded-lg w-80 text-center">
+                        <h3 className="text-xl font-bold mb-2">Login Required</h3>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Please login to add items to cart.
+                        </p>
+
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={() => setShowLoginModal(false)}
+                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded"
+                            >
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
