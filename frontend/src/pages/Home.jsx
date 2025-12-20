@@ -113,7 +113,7 @@ const Home = () => {
                                         {cake.name}
                                     </h3>
                                     <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
-                                    <p className="text-xs text-text-main/60 italic mt-2">Contains: {cake.ingredients}</p>
+                                    <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
                                 </div>
 
                                 {/* Footer Area: Price & Button */}
