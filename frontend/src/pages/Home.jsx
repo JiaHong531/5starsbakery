@@ -145,7 +145,7 @@ const Home = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     {/* Simple toast message */}
                     <div className="bg-white p-6 rounded-lg w-80 text-center">
-                        <h3 className="text-xl font-bold mb-2">Login Required</h3>
+                        <h3 className="text-xl font-bold font-serif mb-2">Login Required</h3>
                         <p className="text-gray-600 mb-6 text-sm">
                             Please login to add items to cart.
                         </p>

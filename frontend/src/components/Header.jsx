@@ -55,7 +55,7 @@ const Header = () => {
                 </div>
 
                 {/* Search Bar */}
-                {user && location.pathname === '/' ? (
+                {location.pathname === '/' ? (
                     <div className="flex-1 max-w-xl mx-8 hidden md:block">
                         <div className="relative">
                             <input
