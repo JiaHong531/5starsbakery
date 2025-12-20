@@ -1,10 +1,30 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import backIcon from '../assets/back.png';
 
 const PrivacyPolicy = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="container-custom py-10">
-            <h1 className="text-4xl font-serif text-header-bg mb-8 text-center">Privacy Policy</h1>
+            <div className="relative flex items-center justify-center mb-12">
 
+                <button
+                    onClick={() => navigate('/')}
+                    className="absolute left-0 hover:opacity-80 transition-opacity"
+                >
+                    <img
+                        src={backIcon}
+                        alt="Back"
+                        className="w-8 h-8 object-contain"
+                        style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
+                    />
+                </button>
+
+                <h1 className="text-4xl md:text-5xl font-serif font-bold text-header-bg text-center">
+                    Privacy Policy
+                </h1>
+            </div>
             <div className="space-y-6 text-text-main font-sans text-justify">
                 <section>
                     <p className="mb-4">
