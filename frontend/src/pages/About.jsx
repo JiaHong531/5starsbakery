@@ -1,11 +1,31 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import backIcon from '../assets/back.png';
 
 const About = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="container-custom py-16">
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-5xl font-serif text-header-bg mb-12 text-center">About 5 Stars Bakery</h1>
+                <div className="relative flex items-center justify-center mb-12">
 
+                    <button
+                        onClick={() => navigate('/')}
+                        className="absolute left-0 hover:opacity-80 transition-opacity"
+                    >
+                        <img
+                            src={backIcon}
+                            alt="Back"
+                            className="w-8 h-8 object-contain"
+                            style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
+                        />
+                    </button>
+
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-header-bg text-center">
+                        About 5 Stars Bakery
+                    </h1>
+                </div>
                 <div className="space-y-12 text-text-main font-sans text-lg leading-relaxed text-justify">
                     <section className="text-center">
                         <p className="text-xl text-text-secondary mb-6 font-medium italic">
