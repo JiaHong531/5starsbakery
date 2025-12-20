@@ -9,7 +9,7 @@ import { useAuth } from '../context/AuthContext';
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const { searchQuery, setSearchQuery } = useSearch();
-    const { getCartCount, toggleCart } = useCart();
+    const { getCartCount, toggleCart, clearCart } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout } = useAuth();
@@ -34,6 +34,7 @@ const Header = () => {
     };
 
     const handleLogout = () => {
+        clearCart();
         logout();
         setShowDropdown(false);
         navigate("/login");
