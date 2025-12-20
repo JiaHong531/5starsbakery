@@ -11,6 +11,7 @@ export const CartProvider = ({ children }) => {
     const toggleCart = () => setIsCartOpen(!isCartOpen);
 
     const addToCart = (product) => {
+        setIsCartOpen(true);
         setCartItems((prevItems) => {
             const existingItem = prevItems.find((item) => item.id === product.id);
             if (existingItem) {
@@ -18,7 +19,6 @@ export const CartProvider = ({ children }) => {
                     item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
             } else {
-                setIsCartOpen(true); // Open sidebar when adding item
                 return [...prevItems, { ...product, quantity: 1 }];
             }
         });

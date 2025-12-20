@@ -134,7 +134,7 @@ const Checkout = () => {
 
                         <button
                             type="submit"
-                            className="w-full py-3 bg-accent-1 text-white font-bold rounded-lg hover:bg-accent-2 transition-colors text-lg shadow-md"
+                            className="btn w-full py-3 bg-accent-1 text-text-main font-bold rounded-lg   transition-colors text-lg shadow-md"
                         >
                             Place Order (RM{getCartTotal().toFixed(2)})
                         </button>
@@ -166,7 +166,7 @@ const Checkout = () => {
                     </div>
 
                     <div className="border-t pt-4 space-y-2">
-                        <div className="flex justify-between text-gray-600">
+                        <div className="flex justify-between text-text-main">
                             <span>Subtotal</span>
                             <span>RM{getCartTotal().toFixed(2)}</span>
                         </div>

@@ -52,7 +52,7 @@ const CartSidebar = () => {
                         <button
                             onClick={handleCheckout}
                             disabled={cartItems.length === 0}
-                            className="flex items-center gap-2 px-3 py-1.5 bg-accent-1 hover:bg-accent-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-full text-white text-sm font-bold transition-colors mr-2"
+                            className="btn flex items-center gap-2 px-3 py-1.5 bg-accent-1 disabled:opacity-50 disabled:cursor-not-allowed rounded-full text-text-main text-sm font-bold transition-colors mr-2"
                         >
                             Checkout <FaArrowRight size={12} />
                         </button>
@@ -140,7 +140,7 @@ const CartSidebar = () => {
                     <button
                         onClick={handleCheckout}
                         disabled={cartItems.length === 0}
-                        className="w-full py-3.5 bg-accent-1 hover:bg-accent-2 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+                        className="btn w-full py-3.5 bg-accent-1 disabled:bg-gray-300 disabled:cursor-not-allowed text-text-main font-bold font-sans shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
                     >
                         Checkout
                     </button>
