@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
         <div className="container-custom py-10">
             <h1 className="text-4xl font-serif text-header-bg mb-8 text-center">Privacy Policy</h1>
 
-            <div className="space-y-6 text-text-main font-sans">
+            <div className="space-y-6 text-text-main font-sans text-justify">
                 <section>
                     <p className="mb-4">
                         This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from 5 Stars Bakery.

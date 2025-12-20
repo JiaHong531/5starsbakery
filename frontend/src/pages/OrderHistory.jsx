@@ -63,7 +63,7 @@ const OrderHistory = () => {
                     </button>
                     <div>
                         <h2 className="text-3xl font-serif font-bold text-header-bg">Order History</h2>
-                        <p className="text-gray-500 text-sm mt-1">Track your past indulgences.</p>
+                        <p className="text-text-secondary text-sm mt-1">Track your past indulgences.</p>
                     </div>
                 </div>
 

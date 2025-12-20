@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import backIcon from '../assets/back.png';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 
 const UserProfile = () => {
     const { user, login } = useAuth();
@@ -10,6 +10,8 @@ const UserProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // New state for confirm password toggle
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'success' }); // type: 'success' or 'error'
 
     // Initialize with default values to avoid uncontrolled input warnings
     const [formData, setFormData] = useState({
@@ -48,27 +50,27 @@ const UserProfile = () => {
         }));
     };
 
+    const showNotification = (title, message, type) => {
+        setModalContent({ title, message, type });
+        setShowModal(true);
+    };
+
     const handleSave = async () => {
-        let finalPassword = user.password; // Default to old password
+        let finalPassword = user.password;
 
-        // If user typed a new password, validate it
+        // Validation
         if (formData.password) {
-            // Check if matches old password
             if (formData.password === user.password) {
-                alert("New password cannot be the same as the old password!");
+                showNotification("Error", "New password cannot be the same as the old password!", "error");
                 return;
             }
-
-            // Check if matches confirm password
             if (formData.password !== formData.confirm_password) {
-                alert("New password and Confirm Password do not match!");
+                showNotification("Error", "New password and Confirm Password do not match!", "error");
                 return;
             }
-
             finalPassword = formData.password;
         }
 
-        // Map form data (snake_case) to user object (camelCase)
         const updatedUser = {
             ...user,
             username: formData.username,
@@ -84,19 +86,16 @@ const UserProfile = () => {
         try {
             const response = await fetch('http://localhost:8080/api/update-profile', {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedUser),
             });
 
             if (response.ok) {
-                // Update local context only if backend update succeeded
                 login(updatedUser);
                 setIsEditing(false);
-                alert("Profile and Database updated successfully!");
 
-                // Clear password fields on success
+                showNotification("Success!", "Profile updated successfully.", "success");
+
                 setFormData(prev => ({
                     ...prev,
                     password: '',
@@ -104,17 +103,16 @@ const UserProfile = () => {
                 }));
             } else {
                 const errorData = await response.json();
-                alert(`Failed to update profile: ${errorData.message || 'Unknown Error'}`);
+                showNotification("Update Failed", errorData.message || 'Unknown Error', "error");
             }
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("Error updating profile. Please try again.");
+            showNotification("Network Error", "Could not connect to server. Please try again.", "error");
         }
     };
 
     const toggleEdit = () => {
         if (isEditing) {
-            // Cancel edits - reset form to current user data
             setFormData({
                 username: user.username || '',
                 email: user.email || '',
@@ -127,12 +125,7 @@ const UserProfile = () => {
                 confirm_password: ''
             });
         } else {
-            // Entering Edit Mode - Clear password for "New Password" entry
-            setFormData(prev => ({
-                ...prev,
-                password: '',
-                confirm_password: ''
-            }));
+            setFormData(prev => ({ ...prev, password: '', confirm_password: '' }));
         }
         setIsEditing(!isEditing);
     };
@@ -161,7 +154,7 @@ const UserProfile = () => {
 
                         {/* Username Field (Read-only usually, but editable here if desired, let's keep editable for now based on prev code) */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                            <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Username
                             </label>
                             <input
@@ -178,7 +171,7 @@ const UserProfile = () => {
                         {/* First Name & Last Name */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                                <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                     First Name
                                 </label>
                                 <input
@@ -190,7 +183,7 @@ const UserProfile = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                                <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                     Last Name
                                 </label>
                                 <input
@@ -205,7 +198,7 @@ const UserProfile = () => {
 
                         {/* Email Field */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                            <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Email
                             </label>
                             <input
@@ -221,7 +214,7 @@ const UserProfile = () => {
 
                         {/* Phone Number */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                            <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Phone Number
                             </label>
                             <input
@@ -238,7 +231,7 @@ const UserProfile = () => {
                         {/* Gender & Birthdate */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                                <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                     Gender
                                 </label>
                                 <input
@@ -250,7 +243,7 @@ const UserProfile = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                                <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                     Birthdate
                                 </label>
                                 <input
@@ -265,7 +258,7 @@ const UserProfile = () => {
 
                         {/* Password Field */}
                         <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                            <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 {isEditing ? "New Password" : "Password"}
                             </label>
                             <div className="relative">
@@ -291,7 +284,7 @@ const UserProfile = () => {
                         {/* Confirm Password Field - Only when editing */}
                         {isEditing && (
                             <div>
-                                <label className="block text-gray-700 text-sm font-bold mb-2 font-serif">
+                                <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                     Confirm Password
                                 </label>
                                 <div className="relative">
@@ -318,7 +311,7 @@ const UserProfile = () => {
                             {!isEditing ? (
                                 <button
                                     onClick={toggleEdit}
-                                    className="px-6 py-2 bg-header-bg text-white rounded-lg hover:bg-opacity-90 transition-colors font-bold"
+                                    className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-opacity-90 hover:bg-accent-2 transition-colors font-bold"
                                 >
                                     Edit Info
                                 </button>
@@ -326,13 +319,13 @@ const UserProfile = () => {
                                 <>
                                     <button
                                         onClick={handleSave}
-                                        className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-bold"
+                                        className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-accent-2 transition-colors font-bold"
                                     >
                                         Save Changes
                                     </button>
                                     <button
                                         onClick={toggleEdit}
-                                        className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-bold"
+                                        className="btn px-6 py-2 bg-header-bg text-text-light rounded-lg hover:bg-accent-2 transition-colors font-bold"
                                     >
                                         Cancel
                                     </button>
@@ -342,6 +335,29 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full transform transition-all scale-100 text-center">
+
+                        {/* Icon based on Type */}
+                        <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${modalContent.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                            {modalContent.type === 'success' ? <FaCheckCircle size={28} /> : <FaExclamationCircle size={28} />}
+                        </div>
+
+                        <h3 className="text-xl font-bold text-text-main mb-2 font-serif">{modalContent.title}</h3>
+                        <p className="text-text-main mb-6 text-sm">
+                            {modalContent.message}
+                        </p>
+
+                        <button
+                            onClick={() => setShowModal(false)}
+                            className={`w-full py-2.5 rounded-lg font-bold text-text-main transition-colors ${modalContent.type === 'success' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

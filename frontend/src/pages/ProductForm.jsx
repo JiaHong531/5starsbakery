@@ -203,14 +203,14 @@ const ProductForm = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex-1 bg-header-bg text-white py-3 rounded-lg font-bold hover:bg-opacity-90 disabled:opacity-50"
+                                className="btn flex-1 btn-primary text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-colors"
                             >
                                 {loading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Product')}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => navigate('/admin/dashboard')}
-                                className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-bold hover:bg-gray-300"
+                                className="btn flex-1 bg-header-bg text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-colors"
                             >
                                 Cancel
                             </button>

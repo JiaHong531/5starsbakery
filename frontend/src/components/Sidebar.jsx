@@ -20,7 +20,7 @@ const Sidebar = ({ selectedCategory, onSelectCategory }) => {
                         <button
                             onClick={() => onSelectCategory('All')}
                             className={`w-full flex items-center p-3 rounded-md transition-colors ${selectedCategory === 'All'
-                                ? 'bg-accent-1 text-white font-bold shadow-md'
+                                ? 'bg-accent-1 text-text-light font-bold shadow-md'
                                 : 'text-gray-600 hover:bg-accent-1/10 hover:text-accent-1'
                                 }`}
                         >
@@ -33,7 +33,7 @@ const Sidebar = ({ selectedCategory, onSelectCategory }) => {
                             <button
                                 onClick={() => onSelectCategory(category.value)}
                                 className={`w-full flex items-center p-3 rounded-md transition-colors ${selectedCategory === category.value
-                                    ? 'bg-accent-1 text-white font-bold shadow-md'
+                                    ? 'bg-accent-1 text-text-light font-bold shadow-md'
                                     : 'text-gray-600 hover:bg-accent-1/10 hover:text-accent-1'
                                     }`}
                             >

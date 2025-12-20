@@ -134,7 +134,7 @@ const Checkout = () => {
 
                         <button
                             type="submit"
-                            className="btn w-full py-3 bg-accent-1 text-text-main font-bold rounded-lg   transition-colors text-lg shadow-md"
+                            className="btn w-full py-3 bg-accent-1 text-text-light font-bold rounded-lg hover:bg-accent-2 transition-colors text-lg shadow-md"
                         >
                             Place Order (RM{getCartTotal().toFixed(2)})
                         </button>

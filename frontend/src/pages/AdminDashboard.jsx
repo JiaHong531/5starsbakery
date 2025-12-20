@@ -118,10 +118,10 @@ const AdminDashboard = () => {
                 {/* Header Section */}
                 <div className="text-center mb-8">
                     <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Admin Dashboard</h2>
-                    <p className="text-gray-500 mb-6">Manage your bakery inventory.</p>
+                    <p className="text-text-secondary mb-6">Manage your bakery inventory.</p>
                     <button
                         onClick={() => navigate('/admin/orders')}
-                        className="px-6 py-2 bg-accent-1 text-white font-bold rounded-full shadow-lg hover:bg-accent-2 transition-colors"
+                        className="btn px-6 py-2 bg-accent-1 text-text-light font-bold rounded-full shadow-lg hover:bg-accent-2 transition-colors"
                     >
                         View Customer Orders
                     </button>
@@ -155,12 +155,12 @@ const AdminDashboard = () => {
                             <div className="p-5 flex flex-col flex-grow relative">
 
                                 <div className="flex-grow">
-                                    <h3 className="text-xl font-bold mb-2 text-gray-800">{cake.name}</h3>
-                                    <p className="text-gray-600 text-sm line-clamp-2">{cake.description}</p>
-                                    <p className="text-xs text-gray-400 italic mt-2">Contains: {cake.ingredients}</p>
+                                    <h3 className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-colors">{cake.name}</h3>
+                                    <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
+                                    <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
 
                                     {/* Stock below Ingredients */}
-                                    <div className="mt-2 text-gray-600 text-xs">
+                                    <div className="mt-2 text-text-main/50 text-xs">
                                         Stock: {cake.stock}
                                     </div>
                                 </div>

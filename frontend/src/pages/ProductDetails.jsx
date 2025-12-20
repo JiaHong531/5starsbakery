@@ -94,11 +94,11 @@ const ProductDetails = () => {
                         <p className="text-3xl font-bold text-accent-1 mb-6">RM{product.price.toFixed(2)}</p>
 
                         <div className="prose prose-stone mb-8">
-                            <h3 className="text-lg font-bold text-gray-800 mb-2">Description</h3>
-                            <p className="text-gray-600 leading-relaxed mb-4">{product.description}</p>
+                            <h3 className="text-lg font-bold text-text-main mb-2">Description</h3>
+                            <p className="text-text-secondary leading-relaxed mb-4">{product.description}</p>
 
-                            <h3 className="text-lg font-bold text-gray-800 mb-2">Ingredients / Allergens</h3>
-                            <p className="text-gray-600 italic">{product.ingredients}</p>
+                            <h3 className="text-lg font-bold text-text-main mb-2">Ingredients / Allergens</h3>
+                            <p className="text-text-secondary italic">{product.ingredients}</p>
                         </div>
 
                         {/* Admin Controls VS User Cart Controls */}
@@ -106,7 +106,7 @@ const ProductDetails = () => {
                             <div className="flex gap-4 border-t pt-8 mt-6">
                                 <button
                                     onClick={() => navigate(`/admin/edit-product/${id}`)}
-                                    className="flex-1 bg-header-bg text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                    className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
                                 >
                                     Edit Product
                                 </button>
@@ -127,7 +127,7 @@ const ProductDetails = () => {
                                             }
                                         }
                                     }}
-                                    className="flex-1 bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                    className="btn flex-1 bg-header-bg text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
                                 >
                                     Delete Product
                                 </button>
@@ -150,7 +150,7 @@ const ProductDetails = () => {
                                 {product.stock > 0 ? (
                                     <button
                                         onClick={handleAddToCart}
-                                        className="flex-1 bg-header-bg text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                        className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
                                     >
                                         Add to Cart
                                     </button>

@@ -77,7 +77,7 @@ const Home = () => {
                 {/* Header Section */}
                 <div className="text-center mb-8">
                     <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Our Fresh Menu</h2>
-                    <p className="text-gray-500">Baked with love, served with code.</p>
+                    <p className="text-text-secondary">Baked with love, served with code.</p>
                 </div>
 
                 {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
@@ -108,12 +108,12 @@ const Home = () => {
                                 <div className="flex-grow">
                                     <h3
                                         onClick={() => navigate(`/product/${cake.id}`)}
-                                        className="text-xl font-bold mb-2 text-gray-800 cursor-pointer hover:text-accent-1 transition-colors"
+                                        className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-colors"
                                     >
                                         {cake.name}
                                     </h3>
-                                    <p className="text-gray-600 text-sm line-clamp-2">{cake.description}</p>
-                                    <p className="text-xs text-gray-400 italic mt-2">Contains: {cake.ingredients}</p>
+                                    <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
+                                    <p className="text-xs text-text-main/60 italic mt-2">Contains: {cake.ingredients}</p>
                                 </div>
 
                                 {/* Footer Area: Price & Button */}
@@ -126,7 +126,7 @@ const Home = () => {
                                     {cake.stock > 0 ? (
                                         <button
                                             onClick={() => handleAddToCart(cake)}
-                                            className="btn btn-primary shadow-md"
+                                            className="btn btn-primary shadow-md text-text-light hover:bg-accent-2 transition-colors"
                                         >
                                             Add to Cart
                                         </button>

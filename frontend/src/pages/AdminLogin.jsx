@@ -82,7 +82,7 @@ const AdminLogin = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-base">
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-text-light hover:bg-accent-2 transition-colors">
                             LOGIN
                         </button>
                     </div>

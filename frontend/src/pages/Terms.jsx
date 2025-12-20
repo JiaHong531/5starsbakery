@@ -5,7 +5,7 @@ const Terms = () => {
         <div className="container-custom py-10">
             <h1 className="text-4xl font-serif text-header-bg mb-8 text-center">Terms and Conditions</h1>
 
-            <div className="space-y-6 text-text-main font-sans">
+            <div className="space-y-6 text-text-main font-sans text-justify">
                 <section>
                     <h2 className="text-2xl font-serif mb-4">Overview</h2>
                     <p className="mb-4">

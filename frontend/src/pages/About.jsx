@@ -6,12 +6,12 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-5xl font-serif text-header-bg mb-12 text-center">About 5 Stars Bakery</h1>
 
-                <div className="space-y-12 text-text-main font-sans text-lg leading-relaxed">
+                <div className="space-y-12 text-text-main font-sans text-lg leading-relaxed text-justify">
                     <section className="text-center">
-                        <p className="text-xl mb-6 font-medium italic">
+                        <p className="text-xl text-text-secondary mb-6 font-medium italic">
                             "Baking with Passion, Serving with Love."
                         </p>
-                        <p>
+                        <p className="text-justify">
                             Welcome to 5 Stars Bakery, where every creation is a masterpiece of flavor and texture.
                             Founded on a simple yet powerful belief: that the best moments in life are shared over delicious food.
                             What started as a small kitchen experiment has grown into a beloved destination for pastry lovers and bread enthusiasts alike.
@@ -34,19 +34,19 @@ const About = () => {
                         <div className="bg-bg-secondary p-8 rounded-lg shadow-sm">
                             <h3 className="text-2xl font-serif mb-4 text-header-bg">Why Choose Us?</h3>
                             <ul className="space-y-3">
-                                <li className="flex items-center">
+                                <li className="flex items-center text-text-secondary">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     Baked Fresh Daily
                                 </li>
-                                <li className="flex items-center">
+                                <li className="flex items-center text-text-secondary">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     Premium Natural Ingredients
                                 </li>
-                                <li className="flex items-center">
+                                <li className="flex items-center text-text-secondary">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     No Artificial Preservatives
                                 </li>
-                                <li className="flex items-center">
+                                <li className="flex items-center text-text-secondary">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     Muslim Friendly
                                 </li>
