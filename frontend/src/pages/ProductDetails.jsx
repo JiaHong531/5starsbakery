@@ -1,0 +1,175 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import backIcon from '../assets/back.png';
+
+const ProductDetails = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { addToCart } = useCart();
+    const { user } = useAuth();
+
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/products/${id}`)
+            .then(res => {
+                if (!res.ok) throw new Error("Product not found");
+                return res.json();
+            })
+            .then(data => {
+                setProduct(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setError("Failed to load product details.");
+                setLoading(false);
+            });
+    }, [id]);
+
+    const handleAddToCart = () => {
+        if (!user) {
+            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
+            if (confirmLogin) navigate("/login");
+            return;
+        }
+
+        // Add item multiple times based on quantity or pass quantity to addToCart if supported
+        // Assuming addToCart takes (product) and adds 1. 
+        // We will call it 'quantity' times or update context to support quantity.
+        // For now, simpler to specificy: the current addToCart logic in CartContext probably just adds 1.
+        // Let's loop for now or just add 1 and let user adjust in cart.
+        // Better UX: Just add 1 for now or update CartContext later. 
+        // Let's stick to adding 1 'bundle' or simply repeated calls.
+        for (let i = 0; i < quantity; i++) {
+            addToCart(product);
+        }
+        alert(`${quantity} x ${product.name} added to cart!`);
+    };
+
+    if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading details...</div>;
+    if (error || !product) return <div className="text-center py-20 text-red-500 font-bold">{error || "Product not found"}</div>;
+
+    return (
+        <div className="min-h-screen bg-bg-light p-8">
+            <div className="max-w-6xl mx-auto">
+                {/* Back Button */}
+                <button
+                    onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                    className="flex items-center mb-8 hover:opacity-80 transition-opacity"
+                >
+                    <img
+                        src={backIcon}
+                        alt="Back"
+                        className="w-8 h-8 object-contain mr-2"
+                        // Using same filter as UserProfile for consistency
+                        style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
+                    />
+                    <span className="font-serif font-bold text-header-bg text-3xl">
+                        {user && user.role === 'ADMIN' ? "Back to Dashboard" : "Back to Menu"}
+                    </span>
+                </button>
+
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+                    {/* Image Section */}
+                    <div className="md:w-1/2 relative bg-gray-100">
+                        <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            className="w-full h-full object-cover min-h-[400px]"
+                        />
+                        <span className="absolute top-4 right-4 bg-white/90 backdrop-blur text-sm font-bold px-4 py-1 rounded-full shadow-sm text-gray-700">
+                            {product.category}
+                        </span>
+                    </div>
+
+                    {/* Details Section */}
+                    <div className="md:w-1/2 p-10 flex flex-col justify-center">
+                        <h1 className="text-4xl font-serif font-bold text-text-main mb-4">{product.name}</h1>
+                        <p className="text-3xl font-bold text-accent-1 mb-6">RM{product.price.toFixed(2)}</p>
+
+                        <div className="prose prose-stone mb-8">
+                            <h3 className="text-lg font-bold text-gray-800 mb-2">Description</h3>
+                            <p className="text-gray-600 leading-relaxed mb-4">{product.description}</p>
+
+                            <h3 className="text-lg font-bold text-gray-800 mb-2">Ingredients / Allergens</h3>
+                            <p className="text-gray-600 italic">{product.ingredients}</p>
+                        </div>
+
+                        {/* Admin Controls VS User Cart Controls */}
+                        {user && user.role === 'ADMIN' ? (
+                            <div className="flex gap-4 border-t pt-8 mt-6">
+                                <button
+                                    onClick={() => navigate(`/admin/edit-product/${id}`)}
+                                    className="flex-1 bg-header-bg text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                >
+                                    Edit Product
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        if (window.confirm("Are you sure you want to delete this product?")) {
+                                            try {
+                                                const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
+                                                if (response.ok) {
+                                                    alert("Product deleted.");
+                                                    navigate('/admin/dashboard');
+                                                } else {
+                                                    alert("Failed to delete product.");
+                                                }
+                                            } catch (err) {
+                                                console.error(err);
+                                                alert("Error deleting product.");
+                                            }
+                                        }
+                                    }}
+                                    className="flex-1 bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                >
+                                    Delete Product
+                                </button>
+                            </div>
+                        ) : (
+                            /* User Controls: Quantity & Add to Cart */
+                            <div className="flex items-center gap-4 border-t pt-8 mt-6">
+                                <div className="flex items-center border rounded-lg">
+                                    <button
+                                        className="px-4 py-2 hover:bg-gray-100 font-bold text-gray-600"
+                                        onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                                    >-</button>
+                                    <span className="px-4 py-2 font-bold text-gray-800 bg-gray-50">{quantity}</span>
+                                    <button
+                                        className="px-4 py-2 hover:bg-gray-100 font-bold text-gray-600"
+                                        onClick={() => setQuantity(q => q + 1)}
+                                    >+</button>
+                                </div>
+
+                                {product.stock > 0 ? (
+                                    <button
+                                        onClick={handleAddToCart}
+                                        className="flex-1 bg-header-bg text-white py-3 px-6 rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                                    >
+                                        Add to Cart
+                                    </button>
+                                ) : (
+                                    <button disabled className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-bold cursor-not-allowed">
+                                        Sold Out
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                        <p className="text-xs text-gray-400 mt-4 text-center">
+                            {product.stock > 0 ? `${product.stock} items remaining` : "Restocking soon!"}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ProductDetails;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import Context
 
 const AdminLogin = () => {
     const navigate = useNavigate();
+    const { login } = useAuth(); // <--- Get login from Context
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -33,7 +35,7 @@ const AdminLogin = () => {
 
                 // 🛑 SECURITY CHECK: Is this user actually an ADMIN?
                 if (user.role === 'ADMIN') {
-                    localStorage.setItem('user', JSON.stringify(user));
+                    login(user); // <--- Use Context!
                     navigate('/admin/dashboard'); // Go to Admin Panel
                 } else {
                     // It is a valid user, but NOT an admin
@@ -58,7 +60,7 @@ const AdminLogin = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username or Email Address</label>
                         <input
                             type="text"
                             name="username"
@@ -80,7 +82,7 @@ const AdminLogin = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-serif font-bold text-base">
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-base">
                             LOGIN
                         </button>
                     </div>

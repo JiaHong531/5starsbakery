@@ -39,17 +39,15 @@ const Login = () => {
             if (response.ok) {
                 const user = await response.json();
 
-                // ------------------------------------------------
-                // CRITICAL CHANGE: Use Context instead of localStorage
-                // ------------------------------------------------
-                login(user);
-                // This triggers the Header to update INSTANTLY!
-
                 if (user.role === 'ADMIN') {
-                    navigate('/admin/dashboard');
-                } else {
-                    navigate('/');
+                    setError('Admins cannot login here. Please use the Admin Portal.');
+                    return;
                 }
+
+                // ✅ SUCCESS (Customer Only)
+                login(user);
+                navigate('/');
+
             } else {
                 setError('Invalid username, email, or password.');
             }
@@ -68,7 +66,7 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block mb-1.5 font-bold font-sans">Username or email address</label>
+                        <label className="block mb-1.5 font-bold font-sans">Username or Email Address</label>
                         <input
                             type="text"
                             name="usernameOrEmail"
@@ -90,7 +88,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-serif font-bold text-base">
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-base">
                             LOGIN
                         </button>
                     </div>

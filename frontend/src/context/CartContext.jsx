@@ -28,6 +28,10 @@ export const CartProvider = ({ children }) => {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
     };
 
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
     const updateQuantity = (productId, newQuantity) => {
         if (newQuantity < 1) {
             removeFromCart(productId);
@@ -57,7 +61,8 @@ export const CartProvider = ({ children }) => {
             getCartCount,
             getCartTotal,
             isCartOpen,
-            toggleCart
+            toggleCart,
+            clearCart
         }}>
             {children}
         </CartContext.Provider>

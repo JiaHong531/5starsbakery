@@ -11,7 +11,8 @@ public class Product {
     private String imageUrl;
 
     // Constructor
-    public Product(int id, String name, String description, String ingredients, double price, int stock, String category, String imageUrl) {
+    public Product(int id, String name, String description, String ingredients, double price, int stock,
+            String category, String imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -22,7 +23,36 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // Note: GSON library reads these private fields automatically,
-    // so you don't strictly need Getters/Setters for JSON to work,
-    // but it is good practice to generate them if you use them elsewhere.
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }

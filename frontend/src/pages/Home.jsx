@@ -11,6 +11,7 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     // Hooks
     const { searchQuery } = useSearch();
@@ -42,10 +43,7 @@ const Home = () => {
     const handleAddToCart = (product) => {
 
         if (!user) {
-            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
-            if (confirmLogin) {
-                navigate("/login");
-            }
+            setShowLoginModal(true);
             return;
         }
 
@@ -78,7 +76,7 @@ const Home = () => {
             <div className="flex-1">
                 {/* Header Section */}
                 <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold mb-3 text-text-main">Our Fresh Menu</h2>
+                    <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Our Fresh Menu</h2>
                     <p className="text-gray-500">Baked with love, served with code.</p>
                 </div>
 
@@ -89,8 +87,11 @@ const Home = () => {
                         /* Card Container */
                         <div key={cake.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
 
-                            {/* Image Area */}
-                            <div className="h-64 overflow-hidden relative group">
+                            {/* Image Area - Clickable to go to Details */}
+                            <div
+                                onClick={() => navigate(`/product/${cake.id}`)}
+                                className="h-64 overflow-hidden relative group cursor-pointer"
+                            >
                                 <img
                                     src={cake.imageUrl}
                                     alt={cake.name}
@@ -105,7 +106,12 @@ const Home = () => {
                             {/* Content Area */}
                             <div className="p-5 flex flex-col flex-grow">
                                 <div className="flex-grow">
-                                    <h3 className="text-xl font-bold mb-2 text-gray-800">{cake.name}</h3>
+                                    <h3
+                                        onClick={() => navigate(`/product/${cake.id}`)}
+                                        className="text-xl font-bold mb-2 text-gray-800 cursor-pointer hover:text-accent-1 transition-colors"
+                                    >
+                                        {cake.name}
+                                    </h3>
                                     <p className="text-gray-600 text-sm line-clamp-2">{cake.description}</p>
                                     <p className="text-xs text-gray-400 italic mt-2">Contains: {cake.ingredients}</p>
                                 </div>
@@ -120,7 +126,7 @@ const Home = () => {
                                     {cake.stock > 0 ? (
                                         <button
                                             onClick={() => handleAddToCart(cake)}
-                                            className="btn btn-primary shadow-md active:scale-95 transition-transform"
+                                            className="btn btn-primary shadow-md"
                                         >
                                             Add to Cart
                                         </button>
@@ -135,6 +141,32 @@ const Home = () => {
                     ))}
                 </div>
             </div>
+            {showLoginModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                    {/* Simple toast message */}
+                    <div className="bg-white p-6 rounded-lg w-80 text-center">
+                        <h3 className="text-xl font-bold font-serif mb-2">Login Required</h3>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Please login to add items to cart.
+                        </p>
+
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={() => setShowLoginModal(false)}
+                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded"
+                            >
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -7,7 +7,7 @@ const categories = [
     { name: 'Cakes', value: 'Cake', icon: <FaBirthdayCake className="mr-3" /> },
     { name: 'Muffins', value: 'Muffin', icon: <img src={muffinIcon} alt="Muffin" className="w-4 h-4 mr-3" /> },
     { name: 'Cupcakes', value: 'Cupcake', icon: <img src={cupcakeIcon} alt="Cupcake" className="w-4 h-4 mr-3" /> },
-    { name: 'Cookies', value: 'Cookie', icon: <FaCookie className="mr-3" /> },
+    { name: 'Cookies', value: 'Cookies', icon: <FaCookie className="mr-3" /> },
 ];
 
 const Sidebar = ({ selectedCategory, onSelectCategory }) => {
