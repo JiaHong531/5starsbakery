@@ -60,7 +60,7 @@ const ProductDetails = () => {
             <div className="max-w-6xl mx-auto">
                 {/* Back Button */}
                 <button
-                    onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                    onClick={() => navigate(-1)}
                     className="flex items-center mb-8 hover:opacity-80 transition-opacity"
                 >
                     <img

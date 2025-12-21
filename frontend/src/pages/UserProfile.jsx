@@ -14,33 +14,55 @@ const UserProfile = () => {
     const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'success' }); // type: 'success' or 'error'
 
     // Initialize with default values to avoid uncontrolled input warnings
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        first_name: '',
-        last_name: '',
-        phone_number: '',
-        gender: '',
-        birthdate: '',
-        password: '',
-        confirm_password: '' // New field
+    const [formData, setFormData] = useState(() => {
+        const savedData = sessionStorage.getItem('userProfileForm');
+        return savedData ? JSON.parse(savedData) : {
+            username: '',
+            email: '',
+            first_name: '',
+            last_name: '',
+            phone_number: '',
+            gender: '',
+            birthdate: '',
+            password: '',
+            confirm_password: ''
+        };
     });
 
     useEffect(() => {
         if (user) {
-            setFormData({
-                username: user.username || '',
-                email: user.email || '',
-                first_name: user.firstName || '',
-                last_name: user.lastName || '',
-                phone_number: user.phoneNumber || '',
-                gender: user.gender || '',
-                birthdate: user.birthdate ? user.birthdate.split('T')[0] : '', // Ensure date format YYYY-MM-DD
-                password: user.password || '',
-                confirm_password: ''
-            });
+            // Only overwrite if no saved data (optional) or merge?
+            // Actually, if we are editing, we usually start with user data.
+            // But if user navigates away mid-edit, they want their EDITS back.
+            // So we should only load user data if NO saved data exists OR if not isEditing?
+            // Wait, the original code resets form data on user change.
+            // Let's keep it simple: if saved data exists, we use it (done in useState).
+            // But if user changes, we might want to update non-edited fields?
+            // Simplest approach for "Back button" persistence:
+            // If we have saved data, we prefer it.
+            // But if page loads fresh (no saved data), we load from user.
+            // The useState handles the initial load.
+            // This Effect updates generic data. PREVENT overwriting saved edits.
+            const savedData = sessionStorage.getItem('userProfileForm');
+            if (!savedData) {
+                setFormData({
+                    username: user.username || '',
+                    email: user.email || '',
+                    first_name: user.firstName || '',
+                    last_name: user.lastName || '',
+                    phone_number: user.phoneNumber || '',
+                    gender: user.gender || '',
+                    birthdate: user.birthdate ? user.birthdate.split('T')[0] : '', // Ensure date format YYYY-MM-DD
+                    password: user.password || '',
+                    confirm_password: ''
+                });
+            }
         }
     }, [user]);
+
+    useEffect(() => {
+        sessionStorage.setItem('userProfileForm', JSON.stringify(formData));
+    }, [formData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,6 +115,7 @@ const UserProfile = () => {
             if (response.ok) {
                 login(updatedUser);
                 setIsEditing(false);
+                sessionStorage.removeItem('userProfileForm');
 
                 showNotification("Success!", "Profile updated successfully.", "success");
 
@@ -136,7 +159,7 @@ const UserProfile = () => {
                 {/* Header Section with Back Button */}
                 <div className="flex items-center mb-8 gap-4 ml-20">
                     <button
-                        onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                        onClick={() => navigate(-1)}
                         className="hover:opacity-80 transition-opacity"
                     >
                         <img

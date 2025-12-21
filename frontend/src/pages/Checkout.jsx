@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,12 +8,19 @@ const Checkout = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    const [shipping, setShipping] = useState({
-        address: '',
-        city: '',
-        zip: '',
-        state: ''
+    const [shipping, setShipping] = useState(() => {
+        const savedData = sessionStorage.getItem('checkoutForm');
+        return savedData ? JSON.parse(savedData) : {
+            address: '',
+            city: '',
+            zip: '',
+            state: ''
+        };
     });
+
+    useEffect(() => {
+        sessionStorage.setItem('checkoutForm', JSON.stringify(shipping));
+    }, [shipping]);
 
     const handleChange = (e) => {
         setShipping({ ...shipping, [e.target.name]: e.target.value });
@@ -55,6 +62,7 @@ const Checkout = () => {
 
             if (response.ok) {
                 alert("Order Placed Successfully!");
+                sessionStorage.removeItem('checkoutForm');
                 if (clearCart) clearCart(); // Reset cart using context if available
                 navigate('/'); // Or navigate to Order History
             } else {

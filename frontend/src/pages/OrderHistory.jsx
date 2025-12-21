@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import backIcon from '../assets/back.png';
-import { FaBoxOpen, FaCalendarAlt, FaMoneyBillWave} from 'react-icons/fa';
+import { FaBoxOpen, FaCalendarAlt, FaMoneyBillWave } from 'react-icons/fa';
 
 const OrderHistory = () => {
     const { user } = useAuth();
@@ -50,7 +50,7 @@ const OrderHistory = () => {
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center mb-8 gap-4 -ml-9">
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate(-1)}
                         className="hover:opacity-80 transition-opacity"
                     >
                         <img
@@ -107,8 +107,8 @@ const OrderHistory = () => {
                                     </div>
                                     <div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-                                                order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                                                    'bg-gray-100 text-gray-700'
+                                            order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
+                                                'bg-gray-100 text-gray-700'
                                             }`}>
                                             {order.status}
                                         </span>

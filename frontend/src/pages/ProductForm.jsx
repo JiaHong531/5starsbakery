@@ -10,14 +10,18 @@ const ProductForm = () => {
 
     const isEditMode = Boolean(id);
 
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        ingredients: '',
-        price: '',
-        stock: '',
-        category: 'Cake', // Default
-        imageUrl: ''
+    const [formData, setFormData] = useState(() => {
+        // Load from storage if available
+        const savedData = sessionStorage.getItem(`productForm_${id || 'new'}`);
+        return savedData ? JSON.parse(savedData) : {
+            name: '',
+            description: '',
+            ingredients: '',
+            price: '',
+            stock: '',
+            category: 'Cake',
+            imageUrl: ''
+        };
     });
 
     const [loading, setLoading] = useState(false);
@@ -57,6 +61,11 @@ const ProductForm = () => {
         }
     }, [id, isEditMode, user, navigate]);
 
+    // Save to session storage whenever formData changes
+    useEffect(() => {
+        sessionStorage.setItem(`productForm_${id || 'new'}`, JSON.stringify(formData));
+    }, [formData, id]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -81,6 +90,7 @@ const ProductForm = () => {
 
             if (response.ok) {
                 alert(`Product ${isEditMode ? 'updated' : 'created'} successfully!`);
+                sessionStorage.removeItem(`productForm_${id || 'new'}`);
                 navigate('/admin/dashboard');
             } else {
                 alert("Failed to save product.");
@@ -100,7 +110,7 @@ const ProductForm = () => {
             <div className="max-w-3xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center mb-8 gap-4">
-                    <button onClick={() => navigate('/admin/dashboard')} className="hover:opacity-80">
+                    <button onClick={() => navigate(-1)} className="hover:opacity-80">
                         <img
                             src={backIcon}
                             alt="Back"
@@ -209,7 +219,7 @@ const ProductForm = () => {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => navigate('/admin/dashboard')}
+                                onClick={() => navigate(-1)}
                                 className="btn flex-1 bg-header-bg text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-colors"
                             >
                                 Cancel

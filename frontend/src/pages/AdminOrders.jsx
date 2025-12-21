@@ -83,7 +83,7 @@ const AdminOrders = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="flex items-center mb-8 gap-4">
                     <button
-                        onClick={() => navigate('/admin/dashboard')}
+                        onClick={() => navigate(-1)}
                         className="hover:opacity-80 transition-opacity"
                     >
                         <img
