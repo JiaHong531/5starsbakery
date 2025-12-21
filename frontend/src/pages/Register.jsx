@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import viewIcon from '../assets/view.png';
 import hiddenIcon from '../assets/hidden.png';
 
 const Register = () => {
     const navigate = useNavigate(); // Hook for redirection
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        gender: '',
-        phone: '',
-        birthday: '',
-        agreeTerms: false,
+    const [formData, setFormData] = useState(() => {
+        const savedData = sessionStorage.getItem('registerFormData');
+        return savedData ? JSON.parse(savedData) : {
+            firstName: '',
+            lastName: '',
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            gender: '',
+            phone: '',
+            birthday: '',
+            agreeTerms: false,
+        };
     });
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        sessionStorage.setItem('registerFormData', JSON.stringify(formData));
+    }, [formData]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -64,6 +71,7 @@ const Register = () => {
 
             if (response.ok) {
                 alert("Registration Successful! Please Login.");
+                sessionStorage.removeItem('registerFormData');
                 navigate('/login'); // Redirect to login page
             } else {
                 alert(data.message || "Registration failed.");
@@ -230,7 +238,7 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
-                            <span className="font-sans text-sm">I agree with the <Link to="/terms" className="text-header-bg font-bold underline">Terms and Conditions</Link> and <Link to="/privacy-policy" className="text-header-bg font-bold underline">Privacy Policy</Link></span>
+                            <span className="font-sans text-sm">I agree with the <Link to="/terms" state={{ fromRegister: true }} className="text-header-bg font-bold underline">Terms and Conditions</Link> and <Link to="/privacy-policy" state={{ fromRegister: true }} className="text-header-bg font-bold underline">Privacy Policy</Link></span>
                         </label>
                     </div>
 

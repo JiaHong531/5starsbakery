@@ -1,16 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import backIcon from '../assets/back.png';
 
 const PrivacyPolicy = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleBack = () => {
+        if (location.state?.fromRegister) {
+            navigate(-1);
+        } else {
+            navigate('/');
+        }
+    };
 
     return (
         <div className="container-custom py-10">
             <div className="relative flex items-center justify-center mb-12">
 
                 <button
-                    onClick={() => navigate('/')}
+                    onClick={handleBack}
                     className="absolute left-0 hover:opacity-80 transition-opacity"
                 >
                     <img
