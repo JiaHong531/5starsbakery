@@ -26,6 +26,8 @@ const ProductForm = () => {
     // Categories for Dropdown
     const categories = ["Cake", "Muffin", "Cupcake", "Cookies"];
 
+    const [imageFile, setImageFile] = useState(null);
+
     useEffect(() => {
         // Redirect if not admin
         if (!user || user.role !== 'ADMIN') {
@@ -62,21 +64,36 @@ const ProductForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
+        // 1. Prepare Multipart Data
+        const data = new FormData();
+        if (imageFile) {
+            data.append('image', imageFile);
+        }
+
+        // Append all text fields from formData
+        Object.keys(formData).forEach(key => {
+            data.append(key, formData[key]);
+        });
+
+        // 2. Determine URL and Method
         const url = isEditMode
             ? `http://localhost:8080/api/products/${id}`
-            : `http://localhost:8080/api/products`;
-
-        const method = isEditMode ? 'PUT' : 'POST';
+            : `http://localhost:8080/api/products/upload`; // Point to your new upload servlet
 
         try {
             const response = await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                method: 'POST', // Use POST for both; your Servlet handles the logic
+                body: data,
             });
 
             if (response.ok) {
@@ -86,8 +103,8 @@ const ProductForm = () => {
                 alert("Failed to save product.");
             }
         } catch (error) {
-            console.error("Error saving product:", error);
-            alert("Error saving product.");
+            console.error("Upload error:", error);
+            alert("Error connecting to server.");
         } finally {
             setLoading(false);
         }
@@ -184,18 +201,13 @@ const ProductForm = () => {
 
                         {/* Image URL */}
                         <div>
-                            <label className="block text-gray-700 font-bold mb-2">Image URL</label>
+                            <label className="block text-gray-700 font-bold mb-2">Select Product Image</label>
                             <input
-                                type="text" name="imageUrl" required
-                                value={formData.imageUrl} onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1"
-                                placeholder="https://..."
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className="w-full px-4 py-2 border rounded-lg"
                             />
-                            {formData.imageUrl && (
-                                <div className="mt-4 w-full h-48 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center border">
-                                    <img src={formData.imageUrl} alt="Preview" className="h-full object-cover" onError={(e) => e.target.style.display = 'none'} />
-                                </div>
-                            )}
                         </div>
 
                         {/* Buttons */}
