@@ -202,12 +202,30 @@ const ProductForm = () => {
                         {/* Image URL */}
                         <div>
                             <label className="block text-gray-700 font-bold mb-2">Select Product Image</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                className="w-full px-4 py-2 border rounded-lg"
-                            />
+                            <div className="flex items-center gap-4 p-2 border rounded-lg bg-white">
+                                {/* 1. The fake button (a label) */}
+                                <label
+                                    htmlFor="file-upload"
+                                    className="btn btn-primary text-text-light py-2 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-sm cursor-pointer"
+                                    style={{ backgroundColor: '#FCA588' }} // Explicit colour matching your image, remove if btn-primary is already this color
+                                >
+                                    Choose Image
+                                </label>
+
+                                {/* 2. The actual, hidden file input */}
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="hidden" // This class hides the ugly default button
+                                />
+
+                                {/* 3. Show the selected file name */}
+                                <span className="text-gray-600 text-sm italic overflow-hidden text-ellipsis whitespace-nowrap">
+                                    {imageFile ? imageFile.name : "No file chosen"}
+                                </span>
+                            </div>
                         </div>
 
                         {/* Buttons */}
