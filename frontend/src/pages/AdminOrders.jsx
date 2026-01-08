@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 import { FaCalendarAlt, FaUser, FaBox, FaMoneyBillWave, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 
 const AdminOrders = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { showConfirm, showToast } = useNotification();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(null); // Track which order is updating
@@ -35,7 +37,8 @@ const AdminOrders = () => {
     }, [user, navigate]);
 
     const handleStatusChange = async (orderId, newStatus) => {
-        if (!window.confirm(`Update order #${orderId} to ${newStatus}?`)) return;
+        const confirmed = await showConfirm(`Update order #${orderId} to ${newStatus}?`, "Update Order Status");
+        if (!confirmed) return;
 
         setUpdating(orderId);
         try {
@@ -50,12 +53,13 @@ const AdminOrders = () => {
                 setOrders(prev => prev.map(o =>
                     o.orderId === orderId ? { ...o, status: newStatus } : o
                 ));
+                showToast(`Order #${orderId} updated to ${newStatus}`, "success");
             } else {
-                alert("Failed to update status");
+                showToast("Failed to update status", "error");
             }
         } catch (error) {
             console.error(error);
-            alert("Error updating status");
+            showToast("Error updating status", "error");
         } finally {
             setUpdating(null);
         }

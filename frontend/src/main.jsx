@@ -5,18 +5,21 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { SearchProvider } from './context/SearchContext.jsx'
 import { CartProvider } from './context/CartContext.jsx'
-import { AuthProvider } from './context/AuthContext.jsx' // <--- Import This
+import { AuthProvider } from './context/AuthContext.jsx'
+import { NotificationProvider } from './context/NotificationContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider> {/* <--- Wrap Here */}
-        <SearchProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </SearchProvider>
-      </AuthProvider> {/* <--- Close Here */}
+      <NotificationProvider>
+        <AuthProvider>
+          <SearchProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </SearchProvider>
+        </AuthProvider>
+      </NotificationProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )

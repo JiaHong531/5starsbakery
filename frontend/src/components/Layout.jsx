@@ -3,6 +3,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import CartSidebar from './CartSidebar';
+import ConfirmModal from './ConfirmModal';
+import ToastContainer from './ToastContainer';
 
 const Layout = () => {
     const location = useLocation();
@@ -18,6 +20,9 @@ const Layout = () => {
                 <Outlet />
             </main>
             <Footer />
+            {/* Global notification components */}
+            <ConfirmModal />
+            <ToastContainer />
         </div>
     );
 };
