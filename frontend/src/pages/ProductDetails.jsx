@@ -62,7 +62,7 @@ const ProductDetails = () => {
             <div className="max-w-6xl mx-auto">
                 {/* Back Button - Animated */}
                 <button
-                    onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                    onClick={() => navigate(-1)}
                     className="flex items-center mb-8 hover:opacity-80 transition-all duration-300 group animate-slideInLeft"
                 >
                     <img
@@ -72,7 +72,7 @@ const ProductDetails = () => {
                         style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                     />
                     <span className="font-serif font-bold text-header-bg text-3xl transition-all duration-300 group-hover:tracking-wide">
-                        {user && user.role === 'ADMIN' ? "Back to Dashboard" : "Back to Menu"}
+                        Back
                     </span>
                 </button>
 

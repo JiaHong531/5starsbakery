@@ -288,25 +288,38 @@ const ProductForm = () => {
                             {isNewCategory && (
                                 <div className="space-y-4 animate-slideUp">
                                     <div>
-                                        <label className="block text-sm font-bold text-accent-2 mb-1">New Category Name</label>
+                                        <label className="block text-gray-700 font-bold mb-2">New Category Name</label>
                                         <input
                                             type="text"
                                             value={newCategoryName}
                                             onChange={(e) => setNewCategoryName(e.target.value)}
                                             placeholder="e.g., Donuts"
-                                            className="w-full px-4 py-2 border border-accent-2 rounded-lg"
+                                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 transition-all duration-300 hover:border-accent-1"
                                             required={isNewCategory}
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-accent-2 mb-1">Category Icon</label>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleIconChange}
-                                            className="w-full px-4 py-2 border border-accent-2 rounded-lg bg-white"
-                                            required={isNewCategory}
-                                        />
+                                        <label className="block text-gray-700 font-bold mb-2">Category Icon</label>
+                                        <div className="flex items-center gap-4 p-2 border rounded-lg bg-white">
+                                            <label
+                                                htmlFor="cat-icon-upload"
+                                                className="btn btn-primary text-text-light py-2 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-sm cursor-pointer"
+                                                style={{ backgroundColor: '#FCA588' }}
+                                            >
+                                                Choose Image
+                                            </label>
+                                            <input
+                                                id="cat-icon-upload"
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleIconChange}
+                                                className="hidden"
+                                                required={isNewCategory}
+                                            />
+                                            <span className="text-gray-600 text-sm italic overflow-hidden text-ellipsis whitespace-nowrap">
+                                                {newCategoryIcon ? newCategoryIcon.name : "No file chosen"}
+                                            </span>
+                                        </div>
                                         <p className="text-xs text-gray-500 mt-1">Upload a small icon (PNG/JPG)</p>
                                     </div>
                                 </div>

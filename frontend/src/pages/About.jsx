@@ -11,7 +11,7 @@ const About = () => {
                 <div className="relative flex items-center justify-center mb-12 animate-slideUp">
 
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate(-1)}
                         className="absolute left-0 hover:opacity-80 transition-all duration-300 group"
                     >
                         <img

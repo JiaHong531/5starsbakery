@@ -50,7 +50,7 @@ const OrderHistory = () => {
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center mb-8 gap-4 -ml-9 animate-slideUp">
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate(-1)}
                         className="hover:opacity-80 transition-all duration-300 group"
                     >
                         <img

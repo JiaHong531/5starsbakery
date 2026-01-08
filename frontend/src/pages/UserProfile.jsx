@@ -136,7 +136,7 @@ const UserProfile = () => {
                 {/* Header Section with Back Button - Animated */}
                 <div className="flex items-center mb-8 gap-4 ml-20 animate-slideUp">
                     <button
-                        onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
+                        onClick={() => navigate(-1)}
                         className="hover:opacity-80 transition-all duration-300 group"
                     >
                         <img
