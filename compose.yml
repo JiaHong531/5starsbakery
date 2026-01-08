@@ -7,6 +7,7 @@ services:
       - bakery-db
     volumes:
       - ./frontend/public/product-images:/opt/product-images
+      - ./frontend/public/category-icons:/opt/category-icons
     environment:
       DB_URL: jdbc:mysql://bakery-db:3306/bakerydb?allowPublicKeyRetrieval=true&useSSL=false
       DB_USER: bakeryuser

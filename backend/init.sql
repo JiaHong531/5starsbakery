@@ -61,6 +61,21 @@ CREATE TABLE feedback (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+-- 6. Categories (Dynamic)
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    display_name VARCHAR(50) NOT NULL,
+    icon_url VARCHAR(255)
+);
+
+-- Default categories
+INSERT INTO categories (name, display_name, icon_url) VALUES
+('Cake', 'Cakes', '/category-icons/cake.png'),
+('Muffin', 'Muffins', '/category-icons/muffin.png'),
+('Cupcake', 'Cupcakes', '/category-icons/cupcake.png'),
+('Cookies', 'Cookies', '/category-icons/cookies.png');
+
 -- =============================================
 -- DUMMY DATA (So your website isn't empty)
 -- =============================================

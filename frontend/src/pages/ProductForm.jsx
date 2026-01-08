@@ -18,18 +18,22 @@ const ProductForm = () => {
         ingredients: '',
         price: '',
         stock: '',
-        category: 'Cake', // Default
+        category: '', // Default empty, will be set after fetch
         imageUrl: ''
     });
 
-    const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(isEditMode);
+    // New Category State
+    const [categories, setCategories] = useState([]);
+    const [isNewCategory, setIsNewCategory] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState('');
+    const [newCategoryIcon, setNewCategoryIcon] = useState(null);
 
-    // Categories for Dropdown
-    const categories = ["Cake", "Muffin", "Cupcake", "Cookies"];
+    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
 
     const [imageFile, setImageFile] = useState(null);
 
+    // Initial Data Fetch
     useEffect(() => {
         // Redirect if not admin
         if (!user || user.role !== 'ADMIN') {
@@ -37,33 +41,59 @@ const ProductForm = () => {
             return;
         }
 
-        if (isEditMode) {
-            // Fetch existing product data
-            fetch(`http://localhost:8080/api/products/${id}`)
-                .then(res => res.json())
-                .then(data => {
+        const fetchData = async () => {
+            try {
+                // 1. Fetch Categories
+                const catResponse = await fetch('http://localhost:8080/api/categories');
+                const catData = await catResponse.json();
+                setCategories(catData);
+
+                // Set default category if creating new product
+                if (!isEditMode && catData.length > 0) {
+                    setFormData(prev => ({ ...prev, category: catData[0].name }));
+                }
+
+                // 2. Fetch Product if Edit Mode
+                if (isEditMode) {
+                    const prodResponse = await fetch(`http://localhost:8080/api/products/${id}`);
+                    const prodData = await prodResponse.json();
+
                     setFormData({
-                        name: data.name,
-                        description: data.description,
-                        ingredients: data.ingredients,
-                        price: data.price,
-                        stock: data.stock,
-                        category: data.category,
-                        imageUrl: data.imageUrl
+                        name: prodData.name,
+                        description: prodData.description,
+                        ingredients: prodData.ingredients,
+                        price: prodData.price,
+                        stock: prodData.stock,
+                        category: prodData.category,
+                        imageUrl: prodData.imageUrl
                     });
-                    setFetching(false);
-                })
-                .catch(err => {
-                    console.error("Failed to fetch product", err);
-                    showToast("Failed to load product for editing.", "error");
-                    navigate('/admin/dashboard');
-                });
-        }
+                }
+            } catch (err) {
+                console.error("Failed to fetch data", err);
+                showToast("Failed to load data.", "error");
+                if (isEditMode) navigate('/admin/dashboard');
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        fetchData();
     }, [id, isEditMode, user, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+
+        if (name === 'category') {
+            if (value === 'NEW') {
+                setIsNewCategory(true);
+                setFormData(prev => ({ ...prev, category: 'NEW' }));
+            } else {
+                setIsNewCategory(false);
+                setFormData(prev => ({ ...prev, category: value }));
+            }
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleFileChange = (e) => {
@@ -72,23 +102,56 @@ const ProductForm = () => {
         }
     };
 
+    const handleIconChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setNewCategoryIcon(e.target.files[0]);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
+            let finalCategory = formData.category;
+
+            // 1. If New Category, Create it First
+            if (isNewCategory) {
+                if (!newCategoryName || !newCategoryIcon) {
+                    showToast("Please provide category name and icon.", "error");
+                    setLoading(false);
+                    return;
+                }
+
+                const catData = new FormData();
+                catData.append('name', newCategoryName);
+                catData.append('displayName', newCategoryName); // Use same name for display
+                catData.append('icon', newCategoryIcon);
+
+                const catResponse = await fetch('http://localhost:8080/api/categories/upload', {
+                    method: 'POST',
+                    body: catData
+                });
+
+                if (!catResponse.ok) throw new Error("Failed to create category");
+
+                const catResult = await catResponse.json();
+                finalCategory = catResult.category.name; // Use the new category name
+            }
+
             let response;
 
+            // 2. Create/Update Product
             if (isEditMode) {
-                // EDIT MODE: Use PUT with JSON body (matches ProductServlet.doPut)
+                // EDIT MODE: Use PUT with JSON body
                 const productData = {
                     name: formData.name,
                     description: formData.description,
                     ingredients: formData.ingredients,
                     price: parseFloat(formData.price),
                     stock: parseInt(formData.stock),
-                    category: formData.category,
-                    imageUrl: formData.imageUrl // Keep existing image URL
+                    category: finalCategory, // Use the resolved category
+                    imageUrl: formData.imageUrl
                 };
 
                 response = await fetch(`http://localhost:8080/api/products/${id}`, {
@@ -97,14 +160,20 @@ const ProductForm = () => {
                     body: JSON.stringify(productData),
                 });
             } else {
-                // CREATE MODE: Use POST with FormData (for image upload)
+                // CREATE MODE: Use POST with FormData
                 const data = new FormData();
                 if (imageFile) {
                     data.append('image', imageFile);
                 }
-                Object.keys(formData).forEach(key => {
-                    data.append(key, formData[key]);
-                });
+
+                // Append all fields manually to ensure 'category' is updated
+                data.append('name', formData.name);
+                data.append('description', formData.description);
+                data.append('ingredients', formData.ingredients);
+                data.append('price', formData.price);
+                data.append('stock', formData.stock);
+                data.append('category', finalCategory); // Use finalCategory
+                data.append('imageUrl', formData.imageUrl);
 
                 response = await fetch('http://localhost:8080/api/products/upload', {
                     method: 'POST',
@@ -201,50 +270,74 @@ const ProductForm = () => {
                             </div>
                         </div>
 
-                        {/* Category */}
-                        <div>
+                        {/* Category Selection */}
+                        <div className="p-4 border rounded-lg bg-gray-50">
                             <label className="block text-gray-700 font-bold mb-2">Category</label>
                             <select
                                 name="category"
                                 value={formData.category} onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 bg-white"
+                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 bg-white mb-4"
                             >
                                 {categories.map(cat => (
-                                    <option key={cat} value={cat}>{cat}</option>
+                                    <option key={cat.category_id || cat.name} value={cat.name}>{cat.display_name || cat.name}</option>
                                 ))}
+                                <option value="NEW">➕ Add New Category</option>
                             </select>
+
+                            {/* New Category Inputs - Only show if NEW is selected */}
+                            {isNewCategory && (
+                                <div className="space-y-4 animate-slideUp">
+                                    <div>
+                                        <label className="block text-sm font-bold text-accent-2 mb-1">New Category Name</label>
+                                        <input
+                                            type="text"
+                                            value={newCategoryName}
+                                            onChange={(e) => setNewCategoryName(e.target.value)}
+                                            placeholder="e.g., Donuts"
+                                            className="w-full px-4 py-2 border border-accent-2 rounded-lg"
+                                            required={isNewCategory}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-accent-2 mb-1">Category Icon</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleIconChange}
+                                            className="w-full px-4 py-2 border border-accent-2 rounded-lg bg-white"
+                                            required={isNewCategory}
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">Upload a small icon (PNG/JPG)</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Image URL */}
+                        {/* Product Image URL */}
                         <div>
                             <label className="block text-gray-700 font-bold mb-2">Select Product Image</label>
                             <div className="flex items-center gap-4 p-2 border rounded-lg bg-white">
-                                {/* 1. The fake button (a label) */}
                                 <label
                                     htmlFor="file-upload"
                                     className="btn btn-primary text-text-light py-2 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-sm cursor-pointer"
-                                    style={{ backgroundColor: '#FCA588' }} // Explicit colour matching your image, remove if btn-primary is already this color
+                                    style={{ backgroundColor: '#FCA588' }}
                                 >
                                     Choose Image
                                 </label>
-
-                                {/* 2. The actual, hidden file input */}
                                 <input
                                     id="file-upload"
                                     type="file"
                                     accept="image/*"
                                     onChange={handleFileChange}
-                                    className="hidden" // This class hides the ugly default button
+                                    className="hidden"
                                 />
-
-                                {/* 3. Show the selected file name */}
                                 <span className="text-gray-600 text-sm italic overflow-hidden text-ellipsis whitespace-nowrap">
                                     {imageFile ? imageFile.name : "No file chosen"}
                                 </span>
                             </div>
                         </div>
 
-                        {/* Buttons - Enhanced */}
+                        {/* Buttons */}
                         <div className="flex gap-4 pt-4 border-t animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <button
                                 type="submit"
