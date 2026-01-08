@@ -19,6 +19,13 @@ const Home = () => {
     const navigate = useNavigate();
     const { user } = useAuth(); // Use the context instead of localStorage
 
+    // Redirect admin users to admin dashboard
+    useEffect(() => {
+        if (user && user.role === 'ADMIN') {
+            navigate('/admin/dashboard', { replace: true });
+        }
+    }, [user, navigate]);
+
     // 2. Fetch from Java Backend
     useEffect(() => {
         fetch("http://localhost:8080/api/products")
@@ -74,31 +81,39 @@ const Home = () => {
 
             {/* Main Content Area */}
             <div className="flex-1">
-                {/* Header Section */}
-                <div className="text-center mb-8">
-                    <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Our Fresh Menu</h2>
-                    <p className="text-text-secondary">Baked with love, served with code.</p>
+                {/* Header Section - Animated */}
+                <div className="text-center mb-8 animate-fadeIn">
+                    <h2 className="text-5xl font-serif font-bold mb-3 text-text-main animate-slideUp">
+                        Our Fresh Menu
+                    </h2>
+                    <p className="text-text-secondary animate-slideUp stagger-1">
+                        Baked with love, served with code.
+                    </p>
                 </div>
 
                 {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProducts.map((cake) => (
+                    {filteredProducts.map((cake, index) => (
 
-                        /* Card Container */
-                        <div key={cake.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
+                        /* Card Container - Enhanced with animations */
+                        <div
+                            key={cake.id}
+                            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col card-interactive card-shine gradient-border animate-slideUp"
+                            style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
+                        >
 
                             {/* Image Area - Clickable to go to Details */}
                             <div
                                 onClick={() => navigate(`/product/${cake.id}`)}
-                                className="h-64 overflow-hidden relative group cursor-pointer"
+                                className="h-64 overflow-hidden relative group cursor-pointer img-zoom"
                             >
                                 <img
                                     src={cake.imageUrl}
                                     alt={cake.name}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
-                                {/* Category Badge */}
-                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700">
+                                {/* Category Badge - Animated */}
+                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700 transition-all duration-300 group-hover:bg-accent-1 group-hover:text-white group-hover:scale-105">
                                     {cake.category}
                                 </span>
                             </div>
@@ -108,7 +123,7 @@ const Home = () => {
                                 <div className="flex-grow">
                                     <h3
                                         onClick={() => navigate(`/product/${cake.id}`)}
-                                        className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-colors"
+                                        className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-all duration-300 hover:translate-x-1"
                                     >
                                         {cake.name}
                                     </h3>
@@ -118,7 +133,7 @@ const Home = () => {
 
                                 {/* Footer Area: Price & Button */}
                                 <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-                                    <span className="text-2xl font-bold text-text-main">
+                                    <span className="text-2xl font-bold text-text-main transition-all duration-300 hover:scale-110 hover:text-accent-1">
                                         RM{cake.price.toFixed(2)}
                                     </span>
 
@@ -126,12 +141,12 @@ const Home = () => {
                                     {cake.stock > 0 ? (
                                         <button
                                             onClick={() => handleAddToCart(cake)}
-                                            className="btn btn-primary shadow-md text-text-light hover:bg-accent-2 transition-colors"
+                                            className="btn btn-primary shadow-md text-text-light hover:bg-accent-2 transition-all duration-300 hover:scale-105 active:scale-95"
                                         >
                                             Add to Cart
                                         </button>
                                     ) : (
-                                        <button disabled className="px-5 py-2.5 rounded font-bold bg-gray-300 text-gray-500 cursor-not-allowed">
+                                        <button disabled className="px-5 py-2.5 rounded font-bold bg-gray-300 text-gray-500 cursor-not-allowed opacity-60">
                                             Sold Out
                                         </button>
                                     )}
@@ -142,24 +157,24 @@ const Home = () => {
                 </div>
             </div>
             {showLoginModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-                    {/* Simple toast message */}
-                    <div className="bg-white p-6 rounded-lg w-80 text-center">
-                        <h3 className="text-xl font-bold font-serif mb-2">Login Required</h3>
-                        <p className="text-gray-600 mb-6 text-sm">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/75 backdrop-blur-sm animate-fadeIn">
+                    {/* Animated modal */}
+                    <div className="bg-white p-6 rounded-xl w-80 text-center shadow-2xl animate-scaleIn">
+                        <h3 className="text-xl font-bold font-serif mb-2 animate-slideUp">Login Required</h3>
+                        <p className="text-gray-600 mb-6 text-sm animate-slideUp stagger-1">
                             Please login to add items to cart.
                         </p>
 
-                        <div className="flex justify-center gap-4">
+                        <div className="flex justify-center gap-4 animate-slideUp stagger-2">
                             <button
                                 onClick={() => setShowLoginModal(false)}
-                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded"
+                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-400 hover:scale-105 active:scale-95"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => navigate('/login')}
-                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded"
+                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-accent-2 hover:scale-105 active:scale-95 hover:shadow-lg"
                             >
                                 Login
                             </button>

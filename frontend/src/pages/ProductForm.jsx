@@ -115,15 +115,15 @@ const ProductForm = () => {
     if (fetching) return <div className="p-10 text-center">Loading product data...</div>;
 
     return (
-        <div className="min-h-screen bg-bg-light p-8">
+        <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-3xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center mb-8 gap-4">
-                    <button onClick={() => navigate('/admin/dashboard')} className="hover:opacity-80">
+                {/* Header - Animated */}
+                <div className="flex items-center mb-8 gap-4 animate-slideUp">
+                    <button onClick={() => navigate('/admin/dashboard')} className="hover:opacity-80 transition-all duration-300 group">
                         <img
                             src={backIcon}
                             alt="Back"
-                            className="w-8 h-8 object-contain"
+                            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                             style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                         />
                     </button>
@@ -132,16 +132,16 @@ const ProductForm = () => {
                     </h1>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-md p-8">
+                <div className="bg-white rounded-xl shadow-md p-8 animate-scaleIn">
                     <form onSubmit={handleSubmit} className="space-y-6">
 
                         {/* Name */}
-                        <div>
+                        <div className="animate-slideUp stagger-1" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <label className="block text-gray-700 font-bold mb-2">Product Name</label>
                             <input
                                 type="text" name="name" required
                                 value={formData.name} onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1"
+                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 transition-all duration-300 hover:border-accent-1"
                             />
                         </div>
 
@@ -230,19 +230,19 @@ const ProductForm = () => {
                             </div>
                         </div>
 
-                        {/* Buttons */}
-                        <div className="flex gap-4 pt-4 border-t">
+                        {/* Buttons - Enhanced */}
+                        <div className="flex gap-4 pt-4 border-t animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="btn flex-1 btn-primary text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-colors"
+                                className="btn flex-1 btn-primary text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                             >
                                 {loading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Product')}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => navigate('/admin/dashboard')}
-                                className="btn flex-1 bg-header-bg text-text-light py-3 rounded-lg font-bold hover:bg-accent-2 transition-colors"
+                                className="btn flex-1 bg-header-bg text-text-light py-3 rounded-lg font-bold hover:bg-red-600 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 Cancel
                             </button>

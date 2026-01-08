@@ -70,26 +70,26 @@ const Checkout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-bg-light p-8">
+        <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                {/* Shipping Form */}
-                <div className="bg-white p-8 rounded-lg shadow-md">
-                    <h2 className="text-3xl font-serif font-bold text-header-bg mb-6">Shipping Details</h2>
+                {/* Shipping Form - Animated */}
+                <div className="bg-white p-8 rounded-lg shadow-md animate-slideInLeft">
+                    <h2 className="text-3xl font-serif font-bold text-header-bg mb-6 animate-slideUp">Shipping Details</h2>
                     <form onSubmit={handlePlaceOrder}>
-                        <div className="mb-4">
+                        <div className="mb-4 animate-slideUp stagger-1" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <label className="block text-gray-700 font-bold mb-2">Address</label>
                             <input
                                 type="text"
                                 name="address"
                                 value={shipping.address}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none"
+                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none transition-all duration-300 hover:border-accent-1"
                                 required
                                 placeholder="123 Bakery Lane"
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="grid grid-cols-2 gap-4 mb-4 animate-slideUp stagger-2" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <div>
                                 <label className="block text-gray-700 font-bold mb-2">City</label>
                                 <input
@@ -97,7 +97,7 @@ const Checkout = () => {
                                     name="city"
                                     value={shipping.city}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none"
+                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none transition-all duration-300 hover:border-accent-1"
                                     required
                                 />
                             </div>
@@ -108,25 +108,25 @@ const Checkout = () => {
                                     name="state"
                                     value={shipping.state}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none"
+                                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none transition-all duration-300 hover:border-accent-1"
                                     required
                                 />
                             </div>
                         </div>
-                        <div className="mb-6">
+                        <div className="mb-6 animate-slideUp stagger-3" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <label className="block text-gray-700 font-bold mb-2">Zip Code</label>
                             <input
                                 type="text"
                                 name="zip"
                                 value={shipping.zip}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none"
+                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none transition-all duration-300 hover:border-accent-1"
                                 required
                             />
                         </div>
 
-                        {/* Payment Mock */}
-                        <div className="mb-6 p-4 bg-gray-50 rounded border border-gray-200">
+                        {/* Payment Mock - Animated */}
+                        <div className="mb-6 p-4 bg-gray-50 rounded border border-gray-200 animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <h3 className="font-bold text-gray-600 mb-2">Payment Information</h3>
                             <p className="text-sm text-gray-500 italic">This is a demo. No real payment will be processed.</p>
                             <div className="mt-2 text-gray-400">
@@ -136,47 +136,51 @@ const Checkout = () => {
 
                         <button
                             type="submit"
-                            className="btn w-full py-3 bg-accent-1 text-text-light font-bold rounded-lg hover:bg-accent-2 transition-colors text-lg shadow-md"
+                            className="btn w-full py-3 bg-accent-1 text-text-light font-bold rounded-lg hover:bg-accent-2 transition-all duration-300 text-lg shadow-md hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] animate-glow"
                         >
                             Place Order (RM{getCartTotal().toFixed(2)})
                         </button>
                     </form>
                 </div>
 
-                {/* Order Summary */}
-                <div className="bg-white p-8 rounded-lg shadow-md h-fit">
-                    <h2 className="text-3xl font-serif font-bold text-header-bg mb-6">Order Summary</h2>
+                {/* Order Summary - Animated */}
+                <div className="bg-white p-8 rounded-lg shadow-md h-fit animate-slideInRight">
+                    <h2 className="text-3xl font-serif font-bold text-header-bg mb-6 animate-slideUp">Order Summary</h2>
                     <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-2">
-                        {cartItems.map(item => (
-                            <div key={item.id} className="flex justify-between items-center border-b pb-4">
+                        {cartItems.map((item, index) => (
+                            <div
+                                key={item.id}
+                                className="flex justify-between items-center border-b pb-4 animate-slideUp hover:bg-gray-50 transition-colors duration-300 p-2 rounded-lg"
+                                style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
+                            >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden">
+                                    <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden img-zoom">
                                         <img
                                             src={item.imageUrl || 'https://placehold.co/100?text=Cake'}
                                             alt={item.name}
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover transition-transform duration-300"
                                         />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-text-main">{item.name}</h4>
+                                        <h4 className="font-bold text-text-main hover:text-accent-1 transition-colors">{item.name}</h4>
                                         <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                                     </div>
                                 </div>
-                                <span className="font-bold text-accent-1">RM{(item.price * item.quantity).toFixed(2)}</span>
+                                <span className="font-bold text-accent-1 transition-all duration-300 hover:scale-110">RM{(item.price * item.quantity).toFixed(2)}</span>
                             </div>
                         ))}
                     </div>
 
-                    <div className="border-t pt-4 space-y-2">
+                    <div className="border-t pt-4 space-y-2 animate-fadeIn stagger-3">
                         <div className="flex justify-between text-text-main">
                             <span>Subtotal</span>
                             <span>RM{getCartTotal().toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-gray-600">
                             <span>Shipping</span>
-                            <span>Free</span>
+                            <span className="text-green-600 font-medium">Free</span>
                         </div>
-                        <div className="flex justify-between text-2xl font-bold text-header-bg mt-4 pt-4 border-t">
+                        <div className="flex justify-between text-2xl font-bold text-header-bg mt-4 pt-4 border-t transition-all duration-300 hover:scale-[1.02]">
                             <span>Total</span>
                             <span>RM{getCartTotal().toFixed(2)}</span>
                         </div>

@@ -44,14 +44,18 @@ const Header = () => {
         <header className="bg-header-bg text-text-light py-4 relative">
             <div className="w-full px-8 flex justify-between items-center">
 
-                {/* Logo Section */}
+                {/* Logo Section - Enhanced with animations */}
                 <div className="text-2xl font-bold">
                     <div
                         onClick={() => handleNavigation(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
-                        className="hover:text-accent-1 transition-colors flex items-center gap-4 cursor-pointer"
+                        className="hover:text-accent-1 transition-all duration-300 flex items-center gap-4 cursor-pointer group"
                     >
-                        <img src={logo} alt="5 Stars Bakery Logo" className="h-24 w-auto object-contain" />
-                        <h1 className="font-cursive font-normal">5StarsBakery</h1>
+                        <img
+                            src={logo}
+                            alt="5 Stars Bakery Logo"
+                            className="h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                        />
+                        <h1 className="font-cursive font-normal transition-all duration-300 group-hover:tracking-wider">5StarsBakery</h1>
                     </div>
                 </div>
 
@@ -79,43 +83,44 @@ const Header = () => {
                 <div className="flex items-center gap-4">
 
                     {/* Admin Orders Icon */}
+                    {/* Admin Orders Icon - With bounce animation */}
                     {user && user.role === 'ADMIN' && (
                         <div
-                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-colors"
+                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-all duration-300 icon-bounce hover:scale-110"
                             onClick={() => navigate('/admin/orders')}
                             title="View Customer Orders"
                         >
-                            <FaClipboardList size={22} className="text-text-light" />
+                            <FaClipboardList size={22} className="text-text-light transition-colors duration-300 hover:text-accent-1" />
                         </div>
                     )}
 
-                    {/* Cart Icon - HIDE FOR ADMIN & AUTH PAGES */}
+                    {/* Cart Icon - HIDE FOR ADMIN & AUTH PAGES - Enhanced animations */}
                     {showCartIcon && (
                         <div
-                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-colors"
+                            className="relative cursor-pointer p-2.5 rounded-full hover:bg-white/10 transition-all duration-300 icon-wiggle hover:scale-110 group"
                             onClick={toggleCart}
                         >
-                            <FaShoppingCart size={24} className="text-text-light" />
-                            <span className="absolute top-1 right-1 bg-accent-2 text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full shadow-md">
+                            <FaShoppingCart size={24} className="text-text-light transition-transform duration-300 group-hover:rotate-12" />
+                            <span className="absolute top-1 right-1 bg-accent-2 text-white text-xs font-bold h-5 w-5 flex items-center justify-center rounded-full shadow-md transition-all duration-300 group-hover:scale-125 group-hover:bg-accent-1 animate-pulse-soft">
                                 {getCartCount()}
                             </span>
                         </div>
                     )}
 
-                    {/* User Profile & Dropdown - HIDDEN on Auth Pages for Guests */}
+                    {/* User Profile & Dropdown - HIDDEN on Auth Pages for Guests - Enhanced animations */}
                     {showProfileIcon && (
                         <div className="relative cursor-pointer">
                             <div
-                                className="p-2.5 rounded-full hover:bg-white/10 transition-colors flex items-center gap-2"
+                                className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-300 flex items-center gap-2 group hover:scale-105"
                                 onClick={toggleDropdown}
                             >
-                                <FaUser size={24} className="text-text-light" />
+                                <FaUser size={24} className="text-text-light transition-transform duration-300 group-hover:scale-110" />
                                 {/* Show Name if Logged In */}
-                                {user && <span className="text-sm font-bold hidden md:block">{user.username}</span>}
+                                {user && <span className="text-sm font-bold hidden md:block transition-all duration-300 group-hover:tracking-wide">{user.username}</span>}
                             </div>
 
                             {showDropdown && (
-                                <div className="absolute top-full right-0 bg-white text-text-main shadow-lg rounded overflow-hidden z-50 min-w-[200px] mt-2 border border-gray-100">
+                                <div className="absolute top-full right-0 bg-white text-text-main shadow-xl rounded-lg overflow-hidden z-50 min-w-[200px] mt-2 border border-gray-100 animate-scaleIn origin-top-right">
 
                                     {user ? (
                                         // --- LOGGED IN MENU ---
@@ -132,7 +137,7 @@ const Header = () => {
                                                 <>
                                                     <button
                                                         onClick={() => handleNavigation('/my-orders')}
-                                                        className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                                        className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-all duration-200 font-serif font-bold text-base hover:translate-x-1 hover:text-accent-1"
                                                     >
                                                         My Orders
                                                     </button>
@@ -142,7 +147,7 @@ const Header = () => {
 
                                             <button
                                                 onClick={handleLogout}
-                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                                className="block w-full px-5 py-2.5 text-left hover:bg-red-50 transition-all duration-200 font-serif font-bold text-base hover:translate-x-1 hover:text-red-500"
                                             >
                                                 Logout
                                             </button>
@@ -152,13 +157,13 @@ const Header = () => {
                                         <>
                                             <button
                                                 onClick={() => handleNavigation('/login')}
-                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-all duration-200 font-serif font-bold text-base hover:translate-x-1 hover:text-accent-1"
                                             >
                                                 Login
                                             </button>
                                             <button
                                                 onClick={() => handleNavigation('/register')}
-                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-colors font-serif font-bold text-base"
+                                                className="block w-full px-5 py-2.5 text-left hover:bg-gray-100 transition-all duration-200 font-serif font-bold text-base hover:translate-x-1 hover:text-accent-1"
                                             >
                                                 Register
                                             </button>
