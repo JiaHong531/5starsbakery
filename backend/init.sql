@@ -72,6 +72,6 @@ VALUES
 
 -- 3. Products
 INSERT INTO products (name, description, ingredients, price, stock_quantity, category, image_url) VALUES
-('Signature Chocolate Lava', 'Rich dark chocolate cake with a molten center.', 'Flour, Sugar, 70% Dark Chocolate, Eggs, Butter', 15.00, 20, 'Cake', '/images/chocolate-lava.png'),
-('Blueberry Crumble Muffin', 'Fresh blueberries topped with crunchy cinnamon crumble.', 'Flour, Blueberries, Cinnamon, Brown Sugar', 5.50, 50, 'Muffin', '/images/blueberry-muffin.png'),
-('Red Velvet Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/images/red-velvet.png');
+('Signature Chocolate Lava', 'Rich dark chocolate cake with a molten center.', 'Flour, Sugar, 70% Dark Chocolate, Eggs, Butter', 15.00, 20, 'Cake', '/product-images/signature_chocolate_lava_1736355294000.jpeg'),
+('Blueberry Crumble Muffin', 'Fresh blueberries topped with crunchy cinnamon crumble.', 'Flour, Blueberries, Cinnamon, Brown Sugar', 5.50, 50, 'Muffin', '/product-images/blueberry_crumble_muffin_1736355294001.jpeg'),
+('Red Velvet Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/product-images/red_velvet_cupcake_1736355294002.jpeg');

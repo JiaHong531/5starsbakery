@@ -6,7 +6,7 @@ services:
     depends_on:
       - bakery-db
     volumes:
-      - ./frontend/public/images:/usr/local/tomcat/webapps/backend/images
+      - ./frontend/public/product-images:/opt/product-images
     environment:
       DB_URL: jdbc:mysql://bakery-db:3306/bakerydb?allowPublicKeyRetrieval=true&useSSL=false
       DB_USER: bakeryuser
@@ -30,7 +30,6 @@ services:
       # 2. THE MAGIC LINK: This loads your init.sql into the database automatically
       # MAKE SURE THIS PATH IS CORRECT on your laptop:
       - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
-
 
 volumes:
   db_data:

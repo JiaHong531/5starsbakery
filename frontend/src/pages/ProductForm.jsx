@@ -76,27 +76,41 @@ const ProductForm = () => {
         e.preventDefault();
         setLoading(true);
 
-        // 1. Prepare Multipart Data
-        const data = new FormData();
-        if (imageFile) {
-            data.append('image', imageFile);
-        }
-
-        // Append all text fields from formData
-        Object.keys(formData).forEach(key => {
-            data.append(key, formData[key]);
-        });
-
-        // 2. Determine URL and Method
-        const url = isEditMode
-            ? `http://localhost:8080/api/products/${id}`
-            : `http://localhost:8080/api/products/upload`; // Point to your new upload servlet
-
         try {
-            const response = await fetch(url, {
-                method: 'POST', // Use POST for both; your Servlet handles the logic
-                body: data,
-            });
+            let response;
+
+            if (isEditMode) {
+                // EDIT MODE: Use PUT with JSON body (matches ProductServlet.doPut)
+                const productData = {
+                    name: formData.name,
+                    description: formData.description,
+                    ingredients: formData.ingredients,
+                    price: parseFloat(formData.price),
+                    stock: parseInt(formData.stock),
+                    category: formData.category,
+                    imageUrl: formData.imageUrl // Keep existing image URL
+                };
+
+                response = await fetch(`http://localhost:8080/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData),
+                });
+            } else {
+                // CREATE MODE: Use POST with FormData (for image upload)
+                const data = new FormData();
+                if (imageFile) {
+                    data.append('image', imageFile);
+                }
+                Object.keys(formData).forEach(key => {
+                    data.append(key, formData[key]);
+                });
+
+                response = await fetch('http://localhost:8080/api/products/upload', {
+                    method: 'POST',
+                    body: data,
+                });
+            }
 
             if (response.ok) {
                 showToast(`Product ${isEditMode ? 'updated' : 'created'} successfully!`, "success");
