@@ -61,6 +61,21 @@ CREATE TABLE feedback (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+-- 6. Categories (Dynamic)
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    display_name VARCHAR(50) NOT NULL,
+    icon_url VARCHAR(255)
+);
+
+-- Default categories
+INSERT INTO categories (name, display_name, icon_url) VALUES
+('Cake', 'Cakes', '/category-icons/cake.png'),
+('Muffin', 'Muffins', '/category-icons/muffin.png'),
+('Cupcake', 'Cupcakes', '/category-icons/cupcake.png'),
+('Cookies', 'Cookies', '/category-icons/cookies.png');
+
 -- =============================================
 -- DUMMY DATA (So your website isn't empty)
 -- =============================================
@@ -72,41 +87,6 @@ VALUES
 
 -- 3. Products
 INSERT INTO products (name, description, ingredients, price, stock_quantity, category, image_url) VALUES
-
-('Almond London', 'Crunchy almond coated in chocolate.', 'Flour, Almond, Chocolate', 18.00, 50, 'Cookies', '/images/Almond London.jpg'),
-('Apple Cinnamon', 'Sweet apple filling with a hint of cinnamon.', 'Flour, Apple, Cinnamon, Sugar', 4.50, 40, 'Muffin', '/images/Apple Cinnamon.png'),
-('Banana Walnut', 'Moist banana cake with crunchy walnuts.', 'Flour, Banana, Walnut, Sugar', 12.00, 25, 'Cake', '/images/Banana Walnut.jpg'),
-('Black Forest Cake', 'Decadent chocolate sponge with cherries.', 'Flour, Cocoa, Cherries, Cream', 16.00, 15, 'Cake', '/images/Black Forest Cake.jpg'),
-('Banana Cupcake', 'Sweet banana flavored cupcake.', 'Flour, Banana, Sugar, Butter', 5.00, 40, 'Cupcake', '/images/Banana Cupcake.jpg'),
-('Blueberry Streusel', 'Topped with sweet crunchy streusel.', 'Flour, Blueberry, Sugar, Butter', 6.00, 35, 'Muffin', '/images/Blueberry Streusel.png'),
-('Burnt Cheesecake', 'Creamy cheesecake with a caramelized top.', 'Cream Cheese, Sugar, Eggs, Flour', 22.00, 10, 'Cake', '/images/Burnt Cheesecake.jpg'),
-('Caramel Popcorn', 'Sweet and salty caramelized popcorn.', 'Corn, Sugar, Butter', 8.00, 60, 'Cookies', '/images/Caramel Popcorn.jpg'),
-('Chocolate Chip', 'Classic crunchy chocolate chip cookies.', 'Flour, Chocolate Chips, Butter', 10.00, 50, 'Cookies', '/images/Chocolate Chip.jpg'),
-('Chocolate Cupcake', 'Rich chocolate cupcake with frosting.', 'Flour, Cocoa, Sugar, Butter', 5.50, 40, 'Cupcake', '/images/Chocolate Cupcake.jpg'),
-('Classic Butter Buttercake', 'Traditional buttery sponge cake.', 'Flour, Butter, Sugar, Eggs', 10.00, 30, 'Cake', '/images/Classic Butter Buttercake.png'),
-('Coconut Lime', 'Zesty lime cake with coconut flakes.', 'Flour, Lime, Coconut, Sugar', 12.00, 20, 'Cake', '/images/Coconut Lime.png'),
-('Cookies & Cream', 'Cookies and cream flavored treat.', 'Flour, Oreo, Sugar, Butter', 12.00, 25, 'Cookies', '/images/Cookies & Cream.png'),
-('Double Chocolate Chip', 'Double the chocolate goodness.', 'Flour, Cocoa, Chocolate Chips', 12.00, 40, 'Cookies', '/images/Double Chocolate Chip.jpg'),
-('Double Dark Cocoa', 'Intense dark chocolate flavor.', 'Flour, Dark Cocoa, Sugar', 14.00, 30, 'Cookies', '/images/Double Dark Cocoa.png'),
-('Durian Musang King Crepe', 'Premium Musang King durian layers.', 'Flour, Durian, Cream, Sugar', 25.00, 10, 'Cake', '/images/Durian Musang King Crepe Cake.png'),
-('Earl Grey Shortbread', 'Buttery shortbread with Earl Grey tea.', 'Flour, Butter, Earl Grey Tea', 15.00, 35, 'Cookies', '/images/Earl Grey Shortbread.jpg'),
-('Honey Corn Muffin', 'Sweet corn muffin with honey glaze.', 'Flour, Cornmeal, Honey, Butter', 5.00, 45, 'Muffin', '/images/Honey Corn Muffin.jpg'),
-('Kek Pandan Gula Melaka', 'Aromatic pandan cake with palm sugar.', 'Flour, Pandan, Gula Melaka', 14.00, 20, 'Cake', '/images/Kek_Pandan_Gula_Melaka.jpeg'),
-('Lemon Cupcake', 'Zesty lemon flavored cupcake.', 'Flour, Lemon, Sugar, Butter', 5.50, 40, 'Cupcake', '/images/Lemon Cupcake.jpg'),
-('Lemon Poppyseed', 'Lemon cake with crunchy poppyseeds.', 'Flour, Lemon, Poppyseeds', 11.00, 30, 'Cake', '/images/Lemon Poppyseed.jpg'),
-('Macadamia White Choc', 'White chocolate cookies with macadamia.', 'Flour, White Choc, Macadamia', 16.00, 35, 'Cookies', '/images/Macadamia White Choc.jpg'),
-('Mango Mousse Cake', 'Light mango mousse on sponge cake.', 'Mango, Cream, Flour, Sugar', 18.00, 15, 'Cake', '/images/Mango Mousse Cake.jpg'),
-('Milo Dinosaur Cupcake', 'Milo flavored cupcake with extra powder.', 'Flour, Milo, Sugar, Butter', 6.00, 40, 'Cupcake', '/images/Milo Dinosaur Cupcake.jpg'),
-('Oatmeal Raisin', 'Healthy oatmeal cookies with raisins.', 'Oats, Raisins, Flour, Sugar', 9.00, 50, 'Cookies', '/images/Oatmeal Raisin.jpg'),
-('Ondeh-Ondeh Cake', 'Pandan cake with coconut and gula melaka.', 'Flour, Pandan, Coconut, Gula Melaka', 16.00, 20, 'Cake', '/images/Ondeh-Ondeh Cake.png'),
-('Peanut Butter Cookies', 'Rich peanut butter flavor.', 'Flour, Peanut Butter, Sugar', 10.00, 45, 'Cookies', '/images/Peanut Butter Cookies.jpg'),
-('Peanut Butter Jelly', 'PB&J remix in a cookie.', 'Flour, Peanut Butter, Jam', 11.00, 40, 'Cookies', '/images/Peanut Butter Jelly.png'),
-('Pineapple Tarts', 'Buttery tart with pineapple jam.', 'Flour, Butter, Pineapple Jam', 20.00, 30, 'Cookies', '/images/Pineapple Tarts.jpg'),
-('Red Velvet w Cream Cheese', 'Red velvet cookie with cream cheese.', 'Flour, Cocoa, Cream Cheese', 12.00, 35, 'Cookies', '/images/Red Velvet with Cream Cheese.jpg'),
-('Red Velvet w Nuts', 'Red velvet cookie with crunchy nuts.', 'Flour, Cocoa, Nuts, Sugar', 13.00, 35, 'Cookies', '/images/Red Velvet with Nuts Cookie.jpg'),
-('Salted Caramel', 'Sweet cake with salted caramel drizzle.', 'Flour, Caramel, Salt, Sugar', 14.00, 25, 'Cake', '/images/Salted Caramel.png'),
-('Savory Cheese & Chive', 'Savory scone with cheese and chives.', 'Flour, Cheese, Chives, Butter', 7.00, 40, 'Cookies', '/images/Savory Cheese & Chive.jpg'),
-('Strawberry Cupcake', 'Pink strawberry flavored cupcake.', 'Flour, Strawberry, Sugar', 5.50, 40, 'Cupcake', '/images/Strawberry Cupcake.jpg'),
-('Tiramisu (Alcohol-Free)', 'Classic coffee dessert without alcohol.', 'Mascarpone, Coffee, Ladyfingers', 18.00, 15, 'Cake', '/images/Tiramisu (Alcohol-Free).jpg'),
-('Vanilla Bean', 'Pure vanilla flavored cake.', 'Flour, Vanilla Bean, Sugar', 10.00, 30, 'Cake', '/images/Vanilla Bean.jpg'),
-('Yam Taro Layer Cake', 'Traditional layered yam cake.', 'Flour, Yam/Taro, Sugar', 15.00, 20, 'Cake', '/images/Yam Taro Layer Cake.png');
+('Signature Chocolate Lava', 'Rich dark chocolate cake with a molten center.', 'Flour, Sugar, 70% Dark Chocolate, Eggs, Butter', 15.00, 20, 'Cake', '/images/chocolate-lava.png'),
+('Blueberry Crumble Muffin', 'Fresh blueberries topped with crunchy cinnamon crumble.', 'Flour, Blueberries, Cinnamon, Brown Sugar', 5.50, 50, 'Muffin', '/images/blueberry-muffin.png'),
+('Red Velvet Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/images/red-velvet.png');

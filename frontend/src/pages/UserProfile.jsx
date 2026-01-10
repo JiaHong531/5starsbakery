@@ -131,25 +131,25 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="min-h-screen bg-bg-light p-8">
+        <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-4xl mx-auto">
-                {/* Header Section with Back Button */}
-                <div className="flex items-center mb-8 gap-4 ml-20">
+                {/* Header Section with Back Button - Animated */}
+                <div className="flex items-center mb-8 gap-4 ml-20 animate-slideUp">
                     <button
-                        onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
-                        className="hover:opacity-80 transition-opacity"
+                        onClick={() => navigate(-1)}
+                        className="hover:opacity-80 transition-all duration-300 group"
                     >
                         <img
                             src={backIcon}
                             alt="Back"
-                            className="w-8 h-8 object-contain"
+                            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                             style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                         />
                     </button>
                     <h1 className="text-3xl font-serif font-bold text-header-bg">My Profile</h1>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+                <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto animate-scaleIn">
                     <div className="space-y-6">
 
                         {/* Username Field (Read-only usually, but editable here if desired, let's keep editable for now based on prev code) */}
@@ -306,12 +306,12 @@ const UserProfile = () => {
                             </div>
                         )}
 
-                        {/* Action Buttons */}
-                        <div className="flex gap-4 mt-8 pt-4 border-t">
+                        {/* Action Buttons - Enhanced animations */}
+                        <div className="flex gap-4 mt-8 pt-4 border-t animate-fadeIn">
                             {!isEditing ? (
                                 <button
                                     onClick={toggleEdit}
-                                    className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-opacity-90 hover:bg-accent-2 transition-colors font-bold"
+                                    className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-opacity-90 hover:bg-accent-2 transition-all duration-300 font-bold hover:scale-105 hover:shadow-lg active:scale-95"
                                 >
                                     Edit Info
                                 </button>
@@ -319,13 +319,13 @@ const UserProfile = () => {
                                 <>
                                     <button
                                         onClick={handleSave}
-                                        className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-accent-2 transition-colors font-bold"
+                                        className="btn btn-primary px-6 py-2 text-text-light rounded-lg hover:bg-accent-2 transition-all duration-300 font-bold hover:scale-105 hover:shadow-lg active:scale-95"
                                     >
                                         Save Changes
                                     </button>
                                     <button
                                         onClick={toggleEdit}
-                                        className="btn px-6 py-2 bg-header-bg text-text-light rounded-lg hover:bg-accent-2 transition-colors font-bold"
+                                        className="btn px-6 py-2 bg-header-bg text-text-light rounded-lg hover:bg-red-600 transition-all duration-300 font-bold hover:scale-105 active:scale-95"
                                     >
                                         Cancel
                                     </button>
@@ -336,8 +336,8 @@ const UserProfile = () => {
                 </div>
             </div>
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full transform transition-all scale-100 text-center">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fadeIn">
+                    <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full animate-scaleIn text-center">
 
                         {/* Icon based on Type */}
                         <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${modalContent.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
