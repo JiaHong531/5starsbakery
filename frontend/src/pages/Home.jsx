@@ -20,14 +20,19 @@ const Home = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    // Redirect admin users to admin dashboard
     useEffect(() => {
         if (user && user.role === 'ADMIN') {
             navigate('/admin/dashboard', { replace: true });
         }
     }, [user, navigate]);
 
-    // 2. Fetch from Java Backend
+    useEffect(() => {
+        const menuHeader = document.getElementById('menu-section');
+        if (menuHeader) {
+            menuHeader.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [selectedCategory]);
+
     useEffect(() => {
         fetch("http://localhost:8080/api/products")
             .then((response) => {
@@ -60,17 +65,18 @@ const Home = () => {
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
     if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
-    // Filter Products
-    const filteredProducts = products.filter(product => {
-        const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
-        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-    });
+    const filteredProducts = products
+        .filter(product => {
+            const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+            const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchesCategory && matchesSearch;
+        })
+        .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical Sort (A-Z)
 
     return (
         <div className="flex flex-col min-h-screen">
 
-            <Hero />
+            {!user && <Hero />}
 
             <div className="container-custom py-10 flex gap-8">
                 {/* Sidebar */}
@@ -92,7 +98,10 @@ const Home = () => {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div
+                        key={selectedCategory}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    >
                         {filteredProducts.map((cake, index) => (
                             <div
                                 key={cake.id}
