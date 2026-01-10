@@ -74,11 +74,8 @@ INSERT INTO categories (name, display_name, icon_url) VALUES
 ('Cake', 'Cakes', '/category-icons/cake.png'),
 ('Muffin', 'Muffins', '/category-icons/muffin.png'),
 ('Cupcake', 'Cupcakes', '/category-icons/cupcake.png'),
-('Cookies', 'Cookies', '/category-icons/cookies.png');
-
--- =============================================
--- DUMMY DATA (So your website isn't empty)
--- =============================================
+('Cookies', 'Cookies', '/category-icons/cookies.png'),
+('Tart', 'Tarts', '/category-icons/tart.png');
 
 INSERT INTO users (username, first_name, last_name, email, password, role, phone_number, gender, birthdate)
 VALUES
@@ -115,8 +112,8 @@ INSERT INTO products (name, description, ingredients, price, stock_quantity, cat
 ('Ondeh-Ondeh Cake', 'Pandan cake with coconut and gula melaka.', 'Flour, Pandan, Coconut, Gula Melaka', 16.00, 20, 'Cake', '/product-images/ondeh_ondeh_cake_1768035835886.png'),
 ('Peanut Butter Cookies', 'Rich peanut butter flavor.', 'Flour, Peanut Butter, Sugar', 10.00, 45, 'Cookies', '/product-images/peanut_butter_cookies_1768035835888.jpg'),
 ('Peanut Butter Jelly', 'PB&J remix in a cookie.', 'Flour, Peanut Butter, Jam', 11.00, 40, 'Cookies', '/product-images/peanut_butter_jelly_1768035835890.png'),
-('Pineapple Tarts', 'Buttery tart with pineapple jam.', 'Flour, Butter, Pineapple Jam', 20.00, 30, 'Cookies', '/product-images/pineapple_tarts_1768035835892.jpg'),
-('Red Velvet w Cream Cheese', 'Red velvet cookie with cream cheese.', 'Flour, Cocoa, Cream Cheese', 12.00, 35, 'Cookies', '/product-images/red_velvet_with_cream_cheese_1768035835894.jpg'),
+('Pineapple Tarts', 'Buttery tart with pineapple jam.', 'Flour, Butter, Pineapple Jam', 20.00, 30, 'Tart', '/product-images/pineapple_tarts_1768035835892.jpg'),
+('Red Velvet w Cream Cheese', 'Red velvet cookie with cream cheese.', 'Flour, Cocoa, Cream Cheese', 12.00, 35, 'Cake', '/product-images/red_velvet_with_cream_cheese_1768035835894.jpg'),
 ('Red Velvet w Nuts', 'Red velvet cookie with crunchy nuts.', 'Flour, Cocoa, Nuts, Sugar', 13.00, 35, 'Cookies', '/product-images/red_velvet_with_nuts_cookie_1768035835896.jpg'),
 ('Salted Caramel', 'Sweet cake with salted caramel drizzle.', 'Flour, Caramel, Salt, Sugar', 14.00, 25, 'Cake', '/product-images/salted_caramel_1768035835900.png'),
 ('Savory Cheese & Chive', 'Savory scone with cheese and chives.', 'Flour, Cheese, Chives, Butter', 7.00, 40, 'Cookies', '/product-images/savory_cheese_chive_1768035835903.jpg'),
@@ -128,5 +125,5 @@ INSERT INTO products (name, description, ingredients, price, stock_quantity, cat
 ('Blueberry Crumble Muffin', 'Fresh blueberries topped with crunchy cinnamon crumble.', 'Flour, Blueberries, Cinnamon, Brown Sugar', 5.50, 50, 'Muffin', '/product-images/blueberry_crumble_muffin_1736355294001.jpeg'),
 ('Classic Red Velvet nd
 Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/product-images/red_velvet_cupcake_1736355294002.jpeg'),
-('Classic Fruit Tart', 'Fresh fruit tart with custard.', 'Flour, Butter, Custard, Mixed Fruits', 12.00, 20, 'Cake', '/product-images/classic_fruit_tart_1767906945267.jpeg'),
+('Classic Fruit Tart', 'Fresh fruit tart with custard.', 'Flour, Butter, Custard, Mixed Fruits', 12.00, 20, 'Tart', '/product-images/classic_fruit_tart_1767906945267.jpeg'),
 ('Triple Chocolate Chunk Cookies', 'Cookies with three types of chocolate.', 'Flour, Dark Chocolate, Milk Chocolate, White Chocolate', 11.00, 40, 'Cookies', '/product-images/triple_chocolate_chunk_cookies_1767907109430.jpeg');

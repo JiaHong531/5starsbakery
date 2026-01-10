@@ -38,13 +38,20 @@ const Sidebar = ({ selectedCategory, onSelectCategory }) => {
                                     }`}
                             >
                                 <span className={`mr-3 transition-transform duration-300 w-5 h-5 flex items-center justify-center ${selectedCategory !== category.name ? 'group-hover:scale-125 group-hover:rotate-12' : ''}`}>
-                                    {/* Use icon_url from DB. If it starts with slash, it's relative to public */}
-                                    <img
-                                        src={category.iconUrl || category.icon_url}
-                                        alt={category.name}
-                                        className="w-full h-full object-contain"
-                                        onError={(e) => { e.target.style.display = 'none' }}
+                                    <div
+                                        className="w-full h-full bg-current"
+                                        style={{
+                                            maskImage: `url(${category.iconUrl || category.icon_url})`,
+                                            WebkitMaskImage: `url(${category.iconUrl || category.icon_url})`,
+                                            maskSize: 'contain',
+                                            WebkitMaskSize: 'contain',
+                                            maskRepeat: 'no-repeat',
+                                            WebkitMaskRepeat: 'no-repeat',
+                                            maskPosition: 'center',
+                                            WebkitMaskPosition: 'center'
+                                        }}
                                     />
+
                                 </span>
                                 <span className="font-medium">{category.displayName || category.display_name}</span>
                             </button>
