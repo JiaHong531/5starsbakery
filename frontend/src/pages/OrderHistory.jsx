@@ -5,27 +5,15 @@ import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 import { FaBoxOpen, FaCalendarAlt, FaMoneyBillWave, FaChevronDown, FaChevronUp, FaClock, FaStar, FaReceipt, FaTimes, FaCheck, FaCreditCard, FaWallet } from 'react-icons/fa';
 
-const OrderHistory = () => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
-    const { showToast, showConfirm } = useNotification();
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [expandedOrders, setExpandedOrders] = useState({});
-    const [showReceiptModal, setShowReceiptModal] = useState(null);
-    const [showReviewModal, setShowReviewModal] = useState(null);
-    const [reviewData, setReviewData] = useState({ rating: 5, comment: '' });
-    const [reviews, setReviews] = useState({}); // Store reviews locally
-
-    // Order status steps
+/**
+ * Status Progress Bar Component
+ * Visualizes the order status steps.
+ */
+const StatusProgressBar = ({ status }) => {
     const statusSteps = ['PENDING', 'PREPARING', 'READY_FOR_PICKUP', 'COMPLETED'];
+    const getStatusIndex = (s) => (s === 'CANCELLED' ? -1 : statusSteps.indexOf(s));
 
-    const getStatusIndex = (status) => {
-        if (status === 'CANCELLED') return -1;
-        return statusSteps.indexOf(status);
-    };
-
-    const getStatusLabel = (status) => {
+    const getStatusLabel = (s) => {
         const labels = {
             'PENDING': 'Order Placed',
             'PREPARING': 'Preparing',
@@ -33,8 +21,69 @@ const OrderHistory = () => {
             'COMPLETED': 'Completed',
             'CANCELLED': 'Cancelled'
         };
-        return labels[status] || status;
+        return labels[s] || s;
     };
+
+    const currentIndex = getStatusIndex(status);
+
+    if (status === 'CANCELLED') {
+        return (
+            <div className="flex items-center justify-center py-3 bg-red-50 rounded-lg">
+                <FaTimes className="text-red-500 mr-2" />
+                <span className="text-red-600 font-bold">Order Cancelled</span>
+            </div>
+        );
+    }
+
+    return (
+        <div className="py-4">
+            <div className="flex items-center justify-between relative">
+                {/* Progress Line */}
+                <div className="absolute top-4 left-0 right-0 h-1 bg-gray-200 -z-10">
+                    <div
+                        className="h-full bg-gradient-to-r from-accent-1 to-accent-2 transition-all duration-500"
+                        style={{ width: `${(currentIndex / (statusSteps.length - 1)) * 100}%` }}
+                    />
+                </div>
+
+                {statusSteps.map((step, index) => (
+                    <div key={step} className="flex flex-col items-center z-10">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${index <= currentIndex
+                            ? 'bg-accent-1 text-white shadow-md'
+                            : 'bg-gray-200 text-gray-400'
+                            }`}>
+                            {index < currentIndex ? (
+                                <FaCheck size={12} />
+                            ) : (
+                                <span className="text-xs font-bold">{index + 1}</span>
+                            )}
+                        </div>
+                        <span className={`text-xs mt-2 font-medium ${index <= currentIndex ? 'text-header-bg' : 'text-gray-400'
+                            }`}>
+                            {getStatusLabel(step)}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const OrderHistory = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { showToast, showConfirm } = useNotification();
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [expandedOrders, setExpandedOrders] = useState({});
+
+    // Modals
+    const [showReceiptModal, setShowReceiptModal] = useState(null); // Stores the full order object
+    const [showReviewModal, setShowReviewModal] = useState(null);   // Stores the full order object for review
+
+    // Reviews
+    const [reviewData, setReviewData] = useState({}); // { itemId: { rating, comment } }
+    const [reviews, setReviews] = useState({}); // Local storage for completed reviews { [orderId]: { ... } }
 
     useEffect(() => {
         if (!user) {
@@ -44,7 +93,7 @@ const OrderHistory = () => {
 
         const userId = user.id || user.user_id || user.userId;
 
-        fetch(`http://localhost:8080/api/orders?userId=${userId}`)
+        fetch(`https://bakery-backend-kt9m.onrender.com/api/orders?userId=${userId}`)
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch orders");
                 return res.json();
@@ -67,12 +116,23 @@ const OrderHistory = () => {
         }));
     };
 
+    const getStatusLabel = (status) => {
+        const labels = {
+            'PENDING': 'Order Placed',
+            'PREPARING': 'Preparing',
+            'READY_FOR_PICKUP': 'Ready',
+            'COMPLETED': 'Completed',
+            'CANCELLED': 'Cancelled'
+        };
+        return labels[status] || status;
+    };
+
     const handleCancelOrder = async (orderId) => {
         const confirmed = await showConfirm("Are you sure you want to cancel this order?", "Cancel Order");
         if (!confirmed) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/orders/${orderId}`, {
+            const response = await fetch(`https://bakery-backend-kt9m.onrender.com/api/orders/${orderId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'CANCELLED' })
@@ -94,13 +154,18 @@ const OrderHistory = () => {
 
     const handleSubmitReview = () => {
         if (showReviewModal) {
+            // Save reviews for the specific order.
+            // Currently saving to local state as a "Reviewed" flag + data
             setReviews(prev => ({
                 ...prev,
-                [showReviewModal]: reviewData
+                [showReviewModal.orderId]: {
+                    items: reviewData,
+                    rating: 5 // Default for the badge, or could calculate average
+                }
             }));
-            showToast("Thank you for your review! ⭐", "success");
+            showToast("Thank you for your reviews! ⭐", "success");
             setShowReviewModal(null);
-            setReviewData({ rating: 5, comment: '' });
+            setReviewData({});
         }
     };
 
@@ -117,54 +182,6 @@ const OrderHistory = () => {
             </div>
         );
     }
-
-    // Status Progress Bar Component
-    const StatusProgressBar = ({ status }) => {
-        const currentIndex = getStatusIndex(status);
-        const isCancelled = status === 'CANCELLED';
-
-        if (isCancelled) {
-            return (
-                <div className="flex items-center justify-center py-3 bg-red-50 rounded-lg">
-                    <FaTimes className="text-red-500 mr-2" />
-                    <span className="text-red-600 font-bold">Order Cancelled</span>
-                </div>
-            );
-        }
-
-        return (
-            <div className="py-4">
-                <div className="flex items-center justify-between relative">
-                    {/* Progress Line */}
-                    <div className="absolute top-4 left-0 right-0 h-1 bg-gray-200 -z-10">
-                        <div
-                            className="h-full bg-gradient-to-r from-accent-1 to-accent-2 transition-all duration-500"
-                            style={{ width: `${(currentIndex / (statusSteps.length - 1)) * 100}%` }}
-                        />
-                    </div>
-
-                    {statusSteps.map((step, index) => (
-                        <div key={step} className="flex flex-col items-center z-10">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${index <= currentIndex
-                                ? 'bg-accent-1 text-white shadow-md'
-                                : 'bg-gray-200 text-gray-400'
-                                }`}>
-                                {index < currentIndex ? (
-                                    <FaCheck size={12} />
-                                ) : (
-                                    <span className="text-xs font-bold">{index + 1}</span>
-                                )}
-                            </div>
-                            <span className={`text-xs mt-2 font-medium ${index <= currentIndex ? 'text-header-bg' : 'text-gray-400'
-                                }`}>
-                                {getStatusLabel(step)}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
 
     return (
         <>
@@ -349,7 +366,7 @@ const OrderHistory = () => {
                                             {/* Review Button - Only for COMPLETED */}
                                             {order.status === 'COMPLETED' && !reviews[order.orderId] && (
                                                 <button
-                                                    onClick={() => setShowReviewModal(order.orderId)}
+                                                    onClick={() => setShowReviewModal(order)}
                                                     className="flex items-center gap-2 px-4 py-2 bg-accent-1 text-white rounded-lg hover:bg-accent-2 transition-all duration-300 font-medium text-sm"
                                                 >
                                                     <FaStar size={14} />
@@ -478,44 +495,72 @@ const OrderHistory = () => {
             {/* Review Modal */}
             {showReviewModal && (
                 <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 animate-fadeIn">
-                    <div className="bg-white rounded-xl max-w-md w-full shadow-2xl animate-scaleIn">
+                    <div className="bg-white rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-scaleIn">
                         <div className="p-6">
-                            <h3 className="text-xl font-bold text-header-bg mb-4">Leave a Review</h3>
+                            <h3 className="text-xl font-bold text-header-bg mb-2">Rate your Items</h3>
+                            <p className="text-sm text-gray-500 mb-6">Tell us what you thought of your treats!</p>
 
-                            {/* Star Rating */}
-                            <div className="mb-4">
-                                <p className="text-sm text-gray-600 mb-2">How was your experience?</p>
-                                <div className="flex gap-2">
-                                    {[1, 2, 3, 4, 5].map(star => (
-                                        <button
-                                            key={star}
-                                            onClick={() => setReviewData(prev => ({ ...prev, rating: star }))}
-                                            className="text-3xl transition-transform hover:scale-125"
-                                        >
-                                            <FaStar className={star <= reviewData.rating ? 'text-yellow-400' : 'text-gray-300'} />
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                            <div className="space-y-6">
+                                {showReviewModal.items?.map((item) => (
+                                    <div key={item.itemId} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                        <div className="flex gap-4 mb-4">
+                                            <div className="w-16 h-16 bg-white rounded-md border border-gray-200 overflow-hidden flex-shrink-0">
+                                                <img
+                                                    src={item.imageUrl || 'https://placehold.co/100x100?text=Cake'}
+                                                    alt={item.productName}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-header-bg">{item.productName}</h4>
+                                                <p className="text-xs text-gray-500">RM{item.price?.toFixed(2)}</p>
+                                            </div>
+                                        </div>
 
-                            {/* Comment */}
-                            <div className="mb-4">
-                                <label className="block text-sm text-gray-600 mb-2">Your feedback (optional)</label>
-                                <textarea
-                                    value={reviewData.comment}
-                                    onChange={(e) => setReviewData(prev => ({ ...prev, comment: e.target.value }))}
-                                    placeholder="Tell us about your experience..."
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent-1 outline-none resize-none h-24"
-                                />
+                                        {/* Star Rating for Item */}
+                                        <div className="mb-3">
+                                            <div className="flex gap-1">
+                                                {[1, 2, 3, 4, 5].map(star => (
+                                                    <button
+                                                        key={star}
+                                                        onClick={() => setReviewData(prev => ({
+                                                            ...prev,
+                                                            [item.itemId]: { ...prev[item.itemId], rating: star }
+                                                        }))}
+                                                        className="text-2xl transition-transform hover:scale-110 focus:outline-none"
+                                                    >
+                                                        <FaStar
+                                                            className={star <= (reviewData[item.itemId]?.rating || 0)
+                                                                ? 'text-yellow-400'
+                                                                : 'text-gray-300'
+                                                            }
+                                                        />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Comment for Item */}
+                                        <textarea
+                                            value={reviewData[item.itemId]?.comment || ''}
+                                            onChange={(e) => setReviewData(prev => ({
+                                                ...prev,
+                                                [item.itemId]: { ...prev[item.itemId], comment: e.target.value }
+                                            }))}
+                                            placeholder="How was it?"
+                                            className="w-full p-2 text-sm border rounded-lg focus:ring-1 focus:ring-accent-1 outline-none resize-none h-20 bg-white"
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
                         {/* Modal Actions */}
-                        <div className="p-4 bg-gray-50 border-t flex gap-3">
+                        <div className="p-4 bg-gray-50 border-t flex gap-3 sticky bottom-0 z-10">
                             <button
                                 onClick={() => {
                                     setShowReviewModal(null);
-                                    setReviewData({ rating: 5, comment: '' });
+                                    setReviewData({});
                                 }}
                                 className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors font-medium"
                             >
@@ -523,9 +568,9 @@ const OrderHistory = () => {
                             </button>
                             <button
                                 onClick={handleSubmitReview}
-                                className="flex-1 py-2 bg-accent-1 text-white rounded-lg hover:bg-accent-2 transition-colors font-medium"
+                                className="flex-1 py-2 bg-accent-1 text-white rounded-lg hover:bg-accent-2 transition-colors font-medium shadow-md"
                             >
-                                Submit Review
+                                Submit Reviews
                             </button>
                         </div>
                     </div>

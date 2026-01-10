@@ -20,7 +20,7 @@ const AdminOrders = () => {
             return;
         }
 
-        fetch("http://localhost:8080/api/orders?all=true")
+        fetch("https://bakery-backend-kt9m.onrender.com/api/orders?all=true")
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch orders");
                 return res.json();
@@ -42,7 +42,7 @@ const AdminOrders = () => {
 
         setUpdating(orderId);
         try {
-            const response = await fetch(`http://localhost:8080/api/orders/${orderId}`, {
+            const response = await fetch(`https://bakery-backend-kt9m.onrender.com/api/orders/${orderId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })
