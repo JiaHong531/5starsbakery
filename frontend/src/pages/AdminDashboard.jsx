@@ -110,7 +110,7 @@ const AdminDashboard = () => {
 
 
     return (
-        <div className="container-custom py-10 flex gap-8 relative min-h-screen">
+        <div className="container-custom py-10 flex gap-8 relative min-h-screen animate-fadeIn">
             {/* Sidebar */}
             <Sidebar
                 selectedCategory={selectedCategory}
@@ -119,13 +119,13 @@ const AdminDashboard = () => {
 
             {/* Main Content Area */}
             <div className="flex-1 pb-16">
-                {/* Header Section */}
-                <div className="text-center mb-8">
+                {/* Header Section - Animated */}
+                <div className="text-center mb-8 animate-slideUp">
                     <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Admin Dashboard</h2>
-                    <p className="text-text-secondary mb-6">Manage your bakery inventory.</p>
+                    <p className="text-text-secondary mb-6 animate-fadeIn stagger-1">Manage your bakery inventory.</p>
                     <button
                         onClick={() => navigate('/admin/orders')}
-                        className="btn px-6 py-2 bg-accent-1 text-text-light font-bold rounded-full shadow-lg hover:bg-accent-2 transition-colors"
+                        className="btn px-6 py-2 bg-accent-1 text-text-light font-bold rounded-full shadow-lg hover:bg-accent-2 transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95"
                     >
                         View Customer Orders
                     </button>
@@ -133,24 +133,25 @@ const AdminDashboard = () => {
 
                 {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProducts.map((cake) => (
+                    {filteredProducts.map((cake, index) => (
 
-                        /* Card Container - Click to view details */
+                        /* Card Container - Animated with stagger */
                         <div
                             key={cake.id}
                             onClick={() => navigate(`/product/${cake.id}`)}
-                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col cursor-pointer relative"
+                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col cursor-pointer relative card-interactive animate-slideUp"
+                            style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
                         >
 
                             {/* Image Area */}
-                            <div className="h-64 overflow-hidden relative group">
+                            <div className="h-64 overflow-hidden relative group img-zoom">
                                 <img
                                     src={cake.imageUrl}
                                     alt={cake.name}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
-                                {/* Category Badge */}
-                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700">
+                                {/* Category Badge - Animated */}
+                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700 transition-all duration-300 hover:bg-accent-1 hover:text-white">
                                     {cake.category}
                                 </span>
                             </div>
@@ -159,7 +160,7 @@ const AdminDashboard = () => {
                             <div className="p-5 flex flex-col flex-grow relative">
 
                                 <div className="flex-grow">
-                                    <h3 className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-colors">{cake.name}</h3>
+                                    <h3 className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-all duration-300 hover:translate-x-1">{cake.name}</h3>
                                     <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
                                     <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
 
@@ -171,24 +172,24 @@ const AdminDashboard = () => {
 
                                 {/* Footer Area: Price & Action Icons */}
                                 <div className="flex justify-between items-end mt-6 pt-4 border-t border-gray-100">
-                                    <span className="text-2xl font-bold text-text-main">
+                                    <span className="text-2xl font-bold text-text-main transition-all duration-300 hover:scale-110 origin-left hover:text-accent-1">
                                         RM{cake.price.toFixed(2)}
                                     </span>
 
-                                    {/* Action Icons: Edit & Delete (moved to bottom right) */}
+                                    {/* Action Icons: Edit & Delete - Enhanced animations */}
                                     <div className="flex gap-2">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 navigate(`/admin/edit-product/${cake.id}`);
                                             }}
-                                            className="hover:scale-110 transition-transform"
+                                            className="hover:scale-125 transition-all duration-300 hover:rotate-12 active:scale-95"
                                         >
                                             <img src={editIcon} alt="Edit" className="w-6 h-6" style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }} />
                                         </button>
                                         <button
                                             onClick={(e) => handleDelete(cake.id, e)}
-                                            className="hover:scale-110 transition-transform"
+                                            className="hover:scale-125 transition-all duration-300 hover:rotate-12 active:scale-95"
                                         >
                                             <img src={deleteIcon} alt="Delete" className="w-6 h-6" style={{ filter: "brightness(0) saturate(100%) invert(29%) sepia(86%) saturate(2421%) hue-rotate(352deg) brightness(101%) contrast(105%)" }} />
                                         </button>
@@ -201,11 +202,11 @@ const AdminDashboard = () => {
 
             </div>
 
-            {/* Floating Add Button - Fixed Viewport Position (z-40 to stay under footer z-50) */}
+            {/* Floating Add Button - With pulse animation */}
             <div ref={buttonRef} className="fixed right-10 z-40 transition-all duration-75" style={{ bottom: '40px' }}>
                 <button
                     onClick={() => navigate('/admin/add-product')}
-                    className="hover:scale-110 transition-transform shadow-lg rounded-full"
+                    className="hover:scale-125 transition-all duration-300 shadow-lg rounded-full animate-pulse-soft hover:animate-none active:scale-95"
                 >
                     <img src={addIcon} alt="Add Product" className="w-16 h-16" style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }} />
                 </button>

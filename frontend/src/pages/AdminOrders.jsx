@@ -83,24 +83,24 @@ const AdminOrders = () => {
     if (loading) return <div className="text-center py-20 font-bold text-gray-500">Loading Orders...</div>;
 
     return (
-        <div className="min-h-screen bg-bg-light p-8">
+        <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-6xl mx-auto">
-                <div className="flex items-center mb-8 gap-4">
+                <div className="flex items-center mb-8 gap-4 animate-slideUp">
                     <button
-                        onClick={() => navigate('/admin/dashboard')}
-                        className="hover:opacity-80 transition-opacity"
+                        onClick={() => navigate(-1)}
+                        className="hover:opacity-80 transition-all duration-300 group"
                     >
                         <img
                             src={backIcon}
                             alt="Back"
-                            className="w-8 h-8 object-contain"
+                            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                             style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                         />
                     </button>
                     <h1 className="text-3xl font-serif font-bold text-header-bg">Customer Orders</h1>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="bg-white rounded-xl shadow-md overflow-hidden animate-slideUp stagger-1">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead className="bg-gray-50 border-b border-gray-100">
@@ -115,8 +115,12 @@ const AdminOrders = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {orders.map((order) => (
-                                    <tr key={order.orderId} className="hover:bg-gray-50 transition-colors">
+                                {orders.map((order, index) => (
+                                    <tr
+                                        key={order.orderId}
+                                        className="hover:bg-accent-1/5 transition-all duration-300 animate-slideUp"
+                                        style={{ animationDelay: `${index * 0.05}s`, opacity: 0, animationFillMode: 'forwards' }}
+                                    >
                                         <td className="p-4 font-mono text-gray-500">#{order.orderId}</td>
                                         <td className="p-4 flex items-center gap-2">
                                             <FaUser className="text-gray-300" />
@@ -138,7 +142,7 @@ const AdminOrders = () => {
                                                 ))}
                                             </div>
                                         </td>
-                                        <td className="p-4 font-bold text-header-bg">
+                                        <td className="p-4 font-bold text-header-bg transition-all duration-300 hover:scale-105 hover:text-accent-1">
                                             RM{order.totalAmount.toFixed(2)}
                                         </td>
                                         <td className="p-4">
