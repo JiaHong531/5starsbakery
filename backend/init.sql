@@ -126,6 +126,7 @@ INSERT INTO products (name, description, ingredients, price, stock_quantity, cat
 ('Yam Taro Layer Cake', 'Traditional layered yam cake.', 'Flour, Yam/Taro, Sugar', 15.00, 20, 'Cake', '/product-images/yam_taro_layer_cake_1768035835915.png'),
 ('Signature Chocolate Lava', 'Rich dark chocolate cake with a molten center.', 'Flour, Sugar, 70% Dark Chocolate, Eggs, Butter', 15.00, 20, 'Cake', '/product-images/signature_chocolate_lava_1736355294000.jpeg'),
 ('Blueberry Crumble Muffin', 'Fresh blueberries topped with crunchy cinnamon crumble.', 'Flour, Blueberries, Cinnamon, Brown Sugar', 5.50, 50, 'Muffin', '/product-images/blueberry_crumble_muffin_1736355294001.jpeg'),
-('Classic Red Velvet Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/product-images/red_velvet_cupcake_1736355294002.jpeg'),
+('Classic Red Velvet nd
+Cupcake', 'Classic red velvet with cream cheese frosting.', 'Cocoa Powder, Vinegar, Red Dye, Cream Cheese', 8.00, 30, 'Cupcake', '/product-images/red_velvet_cupcake_1736355294002.jpeg'),
 ('Classic Fruit Tart', 'Fresh fruit tart with custard.', 'Flour, Butter, Custard, Mixed Fruits', 12.00, 20, 'Cake', '/product-images/classic_fruit_tart_1767906945267.jpeg'),
 ('Triple Chocolate Chunk Cookies', 'Cookies with three types of chocolate.', 'Flour, Dark Chocolate, Milk Chocolate, White Chocolate', 11.00, 40, 'Cookies', '/product-images/triple_chocolate_chunk_cookies_1767907109430.jpeg');
