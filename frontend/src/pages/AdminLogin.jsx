@@ -52,14 +52,14 @@ const AdminLogin = () => {
 
     return (
         <div className="flex justify-center items-center min-h-[60vh] px-4">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[500px]">
-                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Login as Administrator</h2>
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[500px] animate-scaleIn">
+                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif animate-slideUp">Login as Administrator</h2>
 
-                {/* Error Display */}
-                {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded text-center text-sm">{error}</div>}
+                {/* Error Display - Animated */}
+                {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded text-center text-sm animate-wiggle">{error}</div>}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-1" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Username or Email Address</label>
                         <input
                             type="text"
@@ -70,7 +70,7 @@ const AdminLogin = () => {
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-2" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Password</label>
                         <input
                             type="password"
@@ -81,14 +81,14 @@ const AdminLogin = () => {
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-text-light hover:bg-accent-2 transition-colors">
+                    <div className="mb-4 animate-slideUp stagger-3" style={{ opacity: 0, animationFillMode: 'forwards' }}>
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-text-light hover:bg-accent-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]">
                             LOGIN
                         </button>
                     </div>
                 </form>
-                <div className="mt-6 flex flex-col items-center gap-2">
-                    <Link to="/login" className="text-text-main text-sm hover:underline font-sans">Login as User</Link>
+                <div className="mt-6 flex flex-col items-center gap-2 animate-fadeIn stagger-4">
+                    <Link to="/login" className="text-text-main text-sm hover:underline font-sans transition-all duration-300 hover:text-accent-1">Login as User</Link>
                 </div>
             </div>
         </div>

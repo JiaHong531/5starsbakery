@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNotification } from '../context/NotificationContext';
 import viewIcon from '../assets/view.png';
 import hiddenIcon from '../assets/hidden.png';
 
 const Register = () => {
-    const navigate = useNavigate(); // Hook for redirection
+    const navigate = useNavigate();
+    const { showToast } = useNotification();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -34,7 +36,7 @@ const Register = () => {
 
         // 1. Validation
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match!");
+            showToast("Passwords do not match!", "error");
             return;
         }
 
@@ -63,24 +65,24 @@ const Register = () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert("Registration Successful! Please Login.");
+                showToast("Registration Successful! Please Login.", "success");
                 navigate('/login'); // Redirect to login page
             } else {
-                alert(data.message || "Registration failed.");
+                showToast(data.message || "Registration failed.", "error");
             }
 
         } catch (error) {
             console.error("Error:", error);
-            alert("Server connection failed.");
+            showToast("Server connection failed.", "error");
         }
     };
 
     return (
         <div className="flex justify-center items-center min-h-[80vh] py-8 px-4">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[600px]">
-                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif">Register</h2>
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[600px] animate-scaleIn">
+                <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif animate-slideUp">Register</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="flex gap-4 mb-4">
+                    <div className="flex gap-4 mb-4 animate-slideUp stagger-1" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <div className="flex-1">
                             <label className="block mb-1.5 font-bold font-sans">First Name</label>
                             <input
@@ -105,7 +107,7 @@ const Register = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-2" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Username</label>
                         <input
                             type="text"
@@ -117,7 +119,7 @@ const Register = () => {
                         />
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-2" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Email Address</label>
                         <input
                             type="email"
@@ -129,7 +131,7 @@ const Register = () => {
                         />
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-3" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Password</label>
                         <div className="relative">
                             <input
@@ -143,7 +145,7 @@ const Register = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute inset-y-0 right-3 flex items-center"
+                                className="absolute inset-y-0 right-3 flex items-center transition-transform duration-300 hover:scale-110"
                             >
                                 <img
                                     src={showPassword ? viewIcon : hiddenIcon}
@@ -155,7 +157,7 @@ const Register = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-3" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Confirm Password</label>
                         <div className="relative">
                             <input
@@ -169,7 +171,7 @@ const Register = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute inset-y-0 right-3 flex items-center"
+                                className="absolute inset-y-0 right-3 flex items-center transition-transform duration-300 hover:scale-110"
                             >
                                 <img
                                     src={showConfirmPassword ? viewIcon : hiddenIcon}
@@ -181,7 +183,7 @@ const Register = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Gender</label>
                         <select
                             name="gender"
@@ -196,7 +198,7 @@ const Register = () => {
                         </select>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Phone Number</label>
                         <input
                             type="tel"
@@ -208,7 +210,7 @@ const Register = () => {
                         />
                     </div>
 
-                    <div className="mb-4">
+                    <div className="mb-4 animate-slideUp stagger-5" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                         <label className="block mb-1.5 font-bold font-sans">Birthday</label>
                         <input
                             type="date"
@@ -220,29 +222,29 @@ const Register = () => {
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="flex items-center text-sm">
+                    <div className="mb-4 animate-slideUp stagger-5" style={{ opacity: 0, animationFillMode: 'forwards' }}>
+                        <label className="flex items-center text-sm group cursor-pointer">
                             <input
                                 type="checkbox"
                                 name="agreeTerms"
-                                className="mr-2.5"
+                                className="mr-2.5 transition-transform duration-300 group-hover:scale-110"
                                 checked={formData.agreeTerms}
                                 onChange={handleChange}
                                 required
                             />
-                            <span className="font-sans text-sm">I agree with the <Link to="/terms" className="text-header-bg font-bold underline">Terms and Conditions</Link> and <Link to="/privacy-policy" className="text-header-bg font-bold underline">Privacy Policy</Link></span>
+                            <span className="font-sans text-sm">I agree with the <Link to="/terms" className="text-header-bg font-bold underline hover:text-accent-1 transition-colors">Terms and Conditions</Link> and <Link to="/privacy-policy" className="text-header-bg font-bold underline hover:text-accent-1 transition-colors">Privacy Policy</Link></span>
                         </label>
                     </div>
 
-                    <div className="mb-4">
-                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-text-light hover:bg-accent-2 transition-colors">
+                    <div className="mb-4 animate-slideUp stagger-6" style={{ opacity: 0, animationFillMode: 'forwards' }}>
+                        <button type="submit" className="btn btn-primary w-full font-sans font-bold text-text-light hover:bg-accent-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]">
                             REGISTER
                         </button>
                     </div>
                 </form>
-                <div className="mt-6 text-center">
+                <div className="mt-6 text-center animate-fadeIn stagger-6">
                     <p className="text-text-main text-sm font-sans">
-                        Already have an account?&nbsp;<Link to="/login" className="hover:underline">
+                        Already have an account?&nbsp;<Link to="/login" className="hover:underline transition-all duration-300 hover:text-accent-1 font-bold">
                             Click to Login
                         </Link>
                     </p>

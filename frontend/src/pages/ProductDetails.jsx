@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 
 const ProductDetails = () => {
@@ -9,6 +10,7 @@ const ProductDetails = () => {
     const navigate = useNavigate();
     const { addToCart } = useCart();
     const { user } = useAuth();
+    const { showConfirm, showToast } = useNotification();
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,9 +34,9 @@ const ProductDetails = () => {
             });
     }, [id]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (!user) {
-            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
+            const confirmLogin = await showConfirm("You need to login to add items to your cart. Go to login page?", "Login Required");
             if (confirmLogin) navigate("/login");
             return;
         }
@@ -49,51 +51,50 @@ const ProductDetails = () => {
         for (let i = 0; i < quantity; i++) {
             addToCart(product);
         }
-        alert(`${quantity} x ${product.name} added to cart!`);
+        showToast(`${quantity} x ${product.name} added to cart!`, "success");
     };
 
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading details...</div>;
     if (error || !product) return <div className="text-center py-20 text-red-500 font-bold">{error || "Product not found"}</div>;
 
     return (
-        <div className="min-h-screen bg-bg-light p-8">
+        <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-6xl mx-auto">
-                {/* Back Button */}
+                {/* Back Button - Animated */}
                 <button
-                    onClick={() => navigate(user && user.role === 'ADMIN' ? '/admin/dashboard' : '/')}
-                    className="flex items-center mb-8 hover:opacity-80 transition-opacity"
+                    onClick={() => navigate(-1)}
+                    className="flex items-center mb-8 hover:opacity-80 transition-all duration-300 group animate-slideInLeft"
                 >
                     <img
                         src={backIcon}
                         alt="Back"
-                        className="w-8 h-8 object-contain mr-2"
-                        // Using same filter as UserProfile for consistency
+                        className="w-8 h-8 object-contain mr-2 transition-transform duration-300 group-hover:-translate-x-2"
                         style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                     />
-                    <span className="font-serif font-bold text-header-bg text-3xl">
-                        {user && user.role === 'ADMIN' ? "Back to Dashboard" : "Back to Menu"}
+                    <span className="font-serif font-bold text-header-bg text-3xl transition-all duration-300 group-hover:tracking-wide">
+                        Back
                     </span>
                 </button>
 
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-                    {/* Image Section */}
-                    <div className="md:w-1/2 relative bg-gray-100">
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row animate-slideUp card-interactive">
+                    {/* Image Section - With zoom effect */}
+                    <div className="md:w-1/2 relative bg-gray-100 img-zoom overflow-hidden">
                         <img
                             src={product.imageUrl}
                             alt={product.name}
-                            className="w-full h-full object-cover min-h-[400px]"
+                            className="w-full h-full object-cover min-h-[400px] transition-transform duration-500"
                         />
-                        <span className="absolute top-4 right-4 bg-white/90 backdrop-blur text-sm font-bold px-4 py-1 rounded-full shadow-sm text-gray-700">
+                        <span className="absolute top-4 right-4 bg-white/90 backdrop-blur text-sm font-bold px-4 py-1 rounded-full shadow-sm text-gray-700 transition-all duration-300 hover:bg-accent-1 hover:text-white hover:scale-105">
                             {product.category}
                         </span>
                     </div>
 
-                    {/* Details Section */}
+                    {/* Details Section - Animated */}
                     <div className="md:w-1/2 p-10 flex flex-col justify-center">
-                        <h1 className="text-4xl font-serif font-bold text-text-main mb-4">{product.name}</h1>
-                        <p className="text-3xl font-bold text-accent-1 mb-6">RM{product.price.toFixed(2)}</p>
+                        <h1 className="text-4xl font-serif font-bold text-text-main mb-4 animate-slideUp">{product.name}</h1>
+                        <p className="text-3xl font-bold text-accent-1 mb-6 animate-slideUp stagger-1 transition-all duration-300 hover:scale-105 origin-left">{`RM${product.price.toFixed(2)}`}</p>
 
-                        <div className="prose prose-stone mb-8">
+                        <div className="prose prose-stone mb-8 animate-slideUp stagger-2">
                             <h3 className="text-lg font-bold text-text-main mb-2">Description</h3>
                             <p className="text-text-secondary leading-relaxed mb-4">{product.description}</p>
 
@@ -103,46 +104,47 @@ const ProductDetails = () => {
 
                         {/* Admin Controls VS User Cart Controls */}
                         {user && user.role === 'ADMIN' ? (
-                            <div className="flex gap-4 border-t pt-8 mt-6">
+                            <div className="flex gap-4 border-t pt-8 mt-6 animate-slideUp stagger-3">
                                 <button
                                     onClick={() => navigate(`/admin/edit-product/${id}`)}
-                                    className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
+                                    className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-all duration-300 shadow-md hover:scale-105 active:scale-95 hover:shadow-xl"
                                 >
                                     Edit Product
                                 </button>
                                 <button
                                     onClick={async () => {
-                                        if (window.confirm("Are you sure you want to delete this product?")) {
+                                        const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
+                                        if (confirmed) {
                                             try {
                                                 const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
                                                 if (response.ok) {
-                                                    alert("Product deleted.");
+                                                    showToast("Product deleted.", "success");
                                                     navigate('/admin/dashboard');
                                                 } else {
-                                                    alert("Failed to delete product.");
+                                                    showToast("Failed to delete product.", "error");
                                                 }
                                             } catch (err) {
                                                 console.error(err);
-                                                alert("Error deleting product.");
+                                                showToast("Error deleting product.", "error");
                                             }
                                         }
                                     }}
-                                    className="btn flex-1 bg-header-bg text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
+                                    className="btn flex-1 bg-header-bg text-text-light py-3 px-6 rounded-lg font-bold hover:bg-red-600 transition-all duration-300 shadow-md hover:scale-105 active:scale-95 hover:shadow-xl"
                                 >
                                     Delete Product
                                 </button>
                             </div>
                         ) : (
                             /* User Controls: Quantity & Add to Cart */
-                            <div className="flex items-center gap-4 border-t pt-8 mt-6">
-                                <div className="flex items-center border rounded-lg">
+                            <div className="flex items-center gap-4 border-t pt-8 mt-6 animate-slideUp stagger-3">
+                                <div className="flex items-center border rounded-lg overflow-hidden">
                                     <button
-                                        className="px-4 py-2 hover:bg-gray-100 font-bold text-gray-600"
+                                        className="px-4 py-2 hover:bg-accent-1 hover:text-white font-bold text-gray-600 transition-all duration-300"
                                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
                                     >-</button>
                                     <span className="px-4 py-2 font-bold text-gray-800 bg-gray-50">{quantity}</span>
                                     <button
-                                        className="px-4 py-2 hover:bg-gray-100 font-bold text-gray-600"
+                                        className="px-4 py-2 hover:bg-accent-1 hover:text-white font-bold text-gray-600 transition-all duration-300"
                                         onClick={() => setQuantity(q => q + 1)}
                                     >+</button>
                                 </div>
@@ -150,19 +152,19 @@ const ProductDetails = () => {
                                 {product.stock > 0 ? (
                                     <button
                                         onClick={handleAddToCart}
-                                        className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-md active:scale-95"
+                                        className="btn flex-1 btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-all duration-300 shadow-md hover:scale-105 active:scale-95 hover:shadow-xl"
                                     >
                                         Add to Cart
                                     </button>
                                 ) : (
-                                    <button disabled className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-bold cursor-not-allowed">
+                                    <button disabled className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-bold cursor-not-allowed opacity-60">
                                         Sold Out
                                     </button>
                                 )}
                             </div>
                         )}
 
-                        <p className="text-xs text-gray-400 mt-4 text-center">
+                        <p className="text-xs text-gray-400 mt-4 text-center animate-fadeIn stagger-4">
                             {product.stock > 0 ? `${product.stock} items remaining` : "Restocking soon!"}
                         </p>
                     </div>

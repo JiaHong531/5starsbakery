@@ -6,18 +6,18 @@ const About = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="container-custom py-16">
+        <div className="container-custom py-16 animate-fadeIn">
             <div className="max-w-4xl mx-auto">
-                <div className="relative flex items-center justify-center mb-12">
+                <div className="relative flex items-center justify-center mb-12 animate-slideUp">
 
                     <button
-                        onClick={() => navigate('/')}
-                        className="absolute left-0 hover:opacity-80 transition-opacity"
+                        onClick={() => navigate(-1)}
+                        className="absolute left-0 hover:opacity-80 transition-all duration-300 group"
                     >
                         <img
                             src={backIcon}
                             alt="Back"
-                            className="w-8 h-8 object-contain"
+                            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                             style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                         />
                     </button>
@@ -27,7 +27,7 @@ const About = () => {
                     </h1>
                 </div>
                 <div className="space-y-12 text-text-main font-sans text-lg leading-relaxed text-justify">
-                    <section className="text-center">
+                    <section className="text-center animate-slideUp stagger-1">
                         <p className="text-xl text-text-secondary mb-6 font-medium italic">
                             "Baking with Passion, Serving with Love."
                         </p>
@@ -39,7 +39,7 @@ const About = () => {
                     </section>
 
                     <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <section>
+                        <section className="animate-slideUp stagger-2">
                             <h2 className="text-3xl font-serif mb-6 text-header-bg">Our Philosophy</h2>
                             <p className="mb-4">
                                 At the heart of 5 Stars Bakery lies an unwavering commitment to quality. We believe that exceptional baked goods start with
@@ -51,22 +51,22 @@ const About = () => {
                             </p>
                         </section>
 
-                        <div className="bg-bg-secondary p-8 rounded-lg shadow-sm">
+                        <div className="bg-bg-secondary p-8 rounded-lg shadow-sm animate-slideUp stagger-3 card-interactive">
                             <h3 className="text-2xl font-serif mb-4 text-header-bg">Why Choose Us?</h3>
                             <ul className="space-y-3">
-                                <li className="flex items-center text-text-secondary">
-                                    <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
+                                <li className="flex items-center text-text-secondary transition-all duration-300 hover:translate-x-2 hover:text-accent-1">
+                                    <span className="w-2 h-2 bg-header-bg rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></span>
                                     Baked Fresh Daily
                                 </li>
-                                <li className="flex items-center text-text-secondary">
+                                <li className="flex items-center text-text-secondary transition-all duration-300 hover:translate-x-2 hover:text-accent-1">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     Premium Natural Ingredients
                                 </li>
-                                <li className="flex items-center text-text-secondary">
+                                <li className="flex items-center text-text-secondary transition-all duration-300 hover:translate-x-2 hover:text-accent-1">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     No Artificial Preservatives
                                 </li>
-                                <li className="flex items-center text-text-secondary">
+                                <li className="flex items-center text-text-secondary transition-all duration-300 hover:translate-x-2 hover:text-accent-1">
                                     <span className="w-2 h-2 bg-header-bg rounded-full mr-3"></span>
                                     Muslim Friendly
                                 </li>
@@ -74,7 +74,7 @@ const About = () => {
                         </div>
                     </div>
 
-                    <section>
+                    <section className="animate-slideUp stagger-4">
                         <h2 className="text-3xl font-serif mb-6 text-header-bg">The Experience</h2>
                         <p className="mb-4">
                             Walking into 5 Stars Bakery is an experience for the senses. The aroma of freshly baked bread, the sight of glistening pastries,

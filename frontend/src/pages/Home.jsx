@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import Hero from '../components/Hero';
 import { useSearch } from '../context/SearchContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +18,14 @@ const Home = () => {
     const { searchQuery } = useSearch();
     const { addToCart } = useCart();
     const navigate = useNavigate();
-    const { user } = useAuth(); // Use the context instead of localStorage
+    const { user } = useAuth();
+
+    // Redirect admin users to admin dashboard
+    useEffect(() => {
+        if (user && user.role === 'ADMIN') {
+            navigate('/admin/dashboard', { replace: true });
+        }
+    }, [user, navigate]);
 
     // 2. Fetch from Java Backend
     useEffect(() => {
@@ -39,127 +47,130 @@ const Home = () => {
             });
     }, []);
 
-    // --- NEW LOGIC: SECURITY CHECK ---
+    // Security Check
     const handleAddToCart = (product) => {
-
         if (!user) {
             setShowLoginModal(true);
             return;
         }
-
-        // If logged in, proceed normally
         addToCart(product);
     };
-    // ---------------------------------
 
-    // 3. Loading & Error States
+    // Loading & Error States
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
     if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
-    // 4. Filter Products
+    // Filter Products
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
-    // 5. The UI
     return (
-        <div className="container-custom py-10 flex gap-8">
-            {/* Sidebar */}
-            <Sidebar
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-            />
+        <div className="flex flex-col min-h-screen">
 
-            {/* Main Content Area */}
-            <div className="flex-1">
-                {/* Header Section */}
-                <div className="text-center mb-8">
-                    <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Our Fresh Menu</h2>
-                    <p className="text-text-secondary">Baked with love, served with code.</p>
-                </div>
+            <Hero />
 
-                {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProducts.map((cake) => (
+            <div className="container-custom py-10 flex gap-8">
+                {/* Sidebar */}
+                <Sidebar
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={setSelectedCategory}
+                />
 
-                        /* Card Container */
-                        <div key={cake.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
+                {/* Main Content Area */}
+                <div className="flex-1">
 
-                            {/* Image Area - Clickable to go to Details */}
+                    <div id="menu-section" className="text-center mb-8 animate-fadeIn scroll-mt-24">
+                        <h2 className="text-5xl font-serif font-bold mb-3 text-text-main animate-slideUp">
+                            Our Fresh Menu
+                        </h2>
+                        <p className="text-text-secondary animate-slideUp stagger-1">
+                            Baked with love, served with code.
+                        </p>
+                    </div>
+
+                    {/* Product Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {filteredProducts.map((cake, index) => (
                             <div
-                                onClick={() => navigate(`/product/${cake.id}`)}
-                                className="h-64 overflow-hidden relative group cursor-pointer"
+                                key={cake.id}
+                                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col card-interactive card-shine gradient-border animate-slideUp"
+                                style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
                             >
-                                <img
-                                    src={cake.imageUrl}
-                                    alt={cake.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                                {/* Category Badge */}
-                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700">
-                                    {cake.category}
-                                </span>
-                            </div>
-
-                            {/* Content Area */}
-                            <div className="p-5 flex flex-col flex-grow">
-                                <div className="flex-grow">
-                                    <h3
-                                        onClick={() => navigate(`/product/${cake.id}`)}
-                                        className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-colors"
-                                    >
-                                        {cake.name}
-                                    </h3>
-                                    <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
-                                    <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
-                                </div>
-
-                                {/* Footer Area: Price & Button */}
-                                <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
-                                    <span className="text-2xl font-bold text-text-main">
-                                        RM{cake.price.toFixed(2)}
+                                {/* Image Area */}
+                                <div
+                                    onClick={() => navigate(`/product/${cake.id}`)}
+                                    className="h-64 overflow-hidden relative group cursor-pointer img-zoom"
+                                >
+                                    <img
+                                        src={cake.imageUrl}
+                                        alt={cake.name}
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                    <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700 transition-all duration-300 group-hover:bg-accent-1 group-hover:text-white group-hover:scale-105">
+                                        {cake.category}
                                     </span>
+                                </div>
 
-                                    {/* Logic: Check Stock */}
-                                    {cake.stock > 0 ? (
-                                        <button
-                                            onClick={() => handleAddToCart(cake)}
-                                            className="btn btn-primary shadow-md text-text-light hover:bg-accent-2 transition-colors"
+                                {/* Content Area */}
+                                <div className="p-5 flex flex-col flex-grow">
+                                    <div className="flex-grow">
+                                        <h3
+                                            onClick={() => navigate(`/product/${cake.id}`)}
+                                            className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-all duration-300 hover:translate-x-1"
                                         >
-                                            Add to Cart
-                                        </button>
-                                    ) : (
-                                        <button disabled className="px-5 py-2.5 rounded font-bold bg-gray-300 text-gray-500 cursor-not-allowed">
-                                            Sold Out
-                                        </button>
-                                    )}
+                                            {cake.name}
+                                        </h3>
+                                        <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
+                                        <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
+                                    </div>
+
+                                    {/* Footer Area */}
+                                    <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+                                        <span className="text-2xl font-bold text-text-main transition-all duration-300 hover:scale-110 hover:text-accent-1">
+                                            RM{cake.price.toFixed(2)}
+                                        </span>
+
+                                        {cake.stock > 0 ? (
+                                            <button
+                                                onClick={() => handleAddToCart(cake)}
+                                                className="btn btn-primary shadow-md text-text-light hover:bg-accent-2 transition-all duration-300 hover:scale-105 active:scale-95"
+                                            >
+                                                Add to Cart
+                                            </button>
+                                        ) : (
+                                            <button disabled className="px-5 py-2.5 rounded font-bold bg-gray-300 text-gray-500 cursor-not-allowed opacity-60">
+                                                Sold Out
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
+
+            {/* Login Modal */}
             {showLoginModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-                    {/* Simple toast message */}
-                    <div className="bg-white p-6 rounded-lg w-80 text-center">
-                        <h3 className="text-xl font-bold font-serif mb-2">Login Required</h3>
-                        <p className="text-gray-600 mb-6 text-sm">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/75 backdrop-blur-sm animate-fadeIn">
+                    <div className="bg-white p-6 rounded-xl w-80 text-center shadow-2xl animate-scaleIn">
+                        <h3 className="text-xl font-bold font-serif mb-2 animate-slideUp">Login Required</h3>
+                        <p className="text-gray-600 mb-6 text-sm animate-slideUp stagger-1">
                             Please login to add items to cart.
                         </p>
-
-                        <div className="flex justify-center gap-4">
+                        <div className="flex justify-center gap-4 animate-slideUp stagger-2">
                             <button
                                 onClick={() => setShowLoginModal(false)}
-                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded"
+                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-400 hover:scale-105 active:scale-95"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => navigate('/login')}
-                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded"
+                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-accent-2 hover:scale-105 active:scale-95 hover:shadow-lg"
                             >
                                 Login
                             </button>
