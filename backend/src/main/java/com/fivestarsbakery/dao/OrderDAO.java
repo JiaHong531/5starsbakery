@@ -5,11 +5,43 @@ import com.fivestarsbakery.model.OrderItem;
 import com.fivestarsbakery.util.DBConnection;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class OrderDAO {
 
+    // Helper method to parse pickup date and time to Timestamp
+    private Timestamp parsePickupDateTime(String pickupDate, String pickupTime) {
+        if (pickupDate == null || pickupTime == null || pickupDate.isEmpty() || pickupTime.isEmpty()) {
+            return new Timestamp(System.currentTimeMillis()); // Default to now
+        }
+        try {
+            // Parse "2026-01-11" + "01:00 PM" format
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+            java.util.Date date = sdf.parse(pickupDate + " " + pickupTime);
+            return new Timestamp(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new Timestamp(System.currentTimeMillis()); // Fallback to now
+        }
+    }
+
+    // Helper method to format timestamp to date string
+    private String formatPickupDate(Timestamp ts) {
+        if (ts == null) return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(ts);
+    }
+
+    // Helper method to format timestamp to time string
+    private String formatPickupTime(Timestamp ts) {
+        if (ts == null) return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        return sdf.format(ts);
+    }
+
     public boolean createOrder(Order order) {
-        String insertOrderSql = "INSERT INTO orders (user_id, total_amount, status, pickup_time) VALUES (?, ?, 'PENDING', NOW())";
+        String insertOrderSql = "INSERT INTO orders (user_id, total_amount, status, pickup_time) VALUES (?, ?, 'PENDING', ?)";
         String insertItemSql = "INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)";
 
         Connection conn = null;
@@ -24,9 +56,9 @@ public class OrderDAO {
             psOrder = conn.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS);
             psOrder.setInt(1, order.getUserId());
             psOrder.setBigDecimal(2, order.getTotalAmount());
-            // Pickup time defaults to NOW() for simplicity for this task, or we could pass
-            // it if needed.
-            // Schema has pickup_time NOT NULL. NOW() works.
+            // Parse pickup date and time into a Timestamp
+            Timestamp pickupTimestamp = parsePickupDateTime(order.getPickupDate(), order.getPickupTime());
+            psOrder.setTimestamp(3, pickupTimestamp);
 
             int rows = psOrder.executeUpdate();
             if (rows == 0) {
@@ -114,7 +146,9 @@ public class OrderDAO {
                     order.setUserId(rs.getInt("user_id"));
                     order.setTotalAmount(rs.getBigDecimal("total_amount"));
                     order.setStatus(rs.getString("status"));
-                    order.setPickupTime(rs.getTimestamp("pickup_time"));
+                    Timestamp pickupTs = rs.getTimestamp("pickup_time");
+                    order.setPickupDate(formatPickupDate(pickupTs));
+                    order.setPickupTime(formatPickupTime(pickupTs));
                     order.setCreatedAt(rs.getTimestamp("created_at"));
                     order.setItems(new java.util.ArrayList<>());
                     orders.add(order);
@@ -186,7 +220,9 @@ public class OrderDAO {
                     order.setUserId(rs.getInt("user_id"));
                     order.setTotalAmount(rs.getBigDecimal("total_amount"));
                     order.setStatus(rs.getString("status"));
-                    order.setPickupTime(rs.getTimestamp("pickup_time"));
+                    Timestamp pickupTs2 = rs.getTimestamp("pickup_time");
+                    order.setPickupDate(formatPickupDate(pickupTs2));
+                    order.setPickupTime(formatPickupTime(pickupTs2));
                     order.setCreatedAt(rs.getTimestamp("created_at"));
                     order.setUsername(rs.getString("username"));
 
