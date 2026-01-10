@@ -340,7 +340,7 @@ const UserProfile = () => {
                     <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full animate-scaleIn text-center">
 
                         {/* Icon based on Type */}
-                        <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${modalContent.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                        <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${modalContent.type === 'success' ? 'bg-green-100 text-text-main' : 'bg-red-100 text-red-600'}`}>
                             {modalContent.type === 'success' ? <FaCheckCircle size={28} /> : <FaExclamationCircle size={28} />}
                         </div>
 
@@ -351,7 +351,7 @@ const UserProfile = () => {
 
                         <button
                             onClick={() => setShowModal(false)}
-                            className={`w-full py-2.5 rounded-lg font-bold text-text-main transition-colors ${modalContent.type === 'success' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
+                            className={`w-full py-2.5 rounded-lg font-bold text-text-light transition-colors ${modalContent.type === 'success' ? 'bg-accent-1 hover:bg-accent-2' : 'bg-header-bg hover:bg-red-700'}`}
                         >
                             OK
                         </button>
