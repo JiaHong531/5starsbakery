@@ -31,17 +31,28 @@ public class DBConnection {
             if (password == null)
                 password = DEFAULT_PASSWORD;
 
-            // Attempt Connection
-            con = DriverManager.getConnection(url, user, password);
-
+            // Retry logic: Try to connect for 30 seconds
+            for (int i = 0; i < 15; i++) {
+                try {
+                    con = DriverManager.getConnection(url, user, password);
+                    if (con != null) {
+                        System.out.println("✅ Database Connected Successfully!");
+                        return con;
+                    }
+                } catch (SQLException e) {
+                    System.out.println("⚠️ Connection failed, retrying in 2s... (" + (i + 1) + "/15)");
+                    try { Thread.sleep(2000); } catch (InterruptedException ex) { 
+                        Thread.currentThread().interrupt(); 
+                    }
+                }
+            }
+            System.out.println("❌ Could not connect to database after 30 seconds.");
+            
         } catch (ClassNotFoundException e) {
             System.out.println("❌ Driver Not Found! (Check pom.xml)");
             e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("❌ Connection Failed! (Check Docker)");
-            e.printStackTrace();
         }
-        return con;
+        return null;
     }
 
     // 2. The Main Method (For Testing Only)
