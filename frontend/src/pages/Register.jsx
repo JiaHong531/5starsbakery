@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNotification } from '../context/NotificationContext';
 import viewIcon from '../assets/view.png';
 import hiddenIcon from '../assets/hidden.png';
 
 const Register = () => {
-    const navigate = useNavigate(); // Hook for redirection
+    const navigate = useNavigate();
+    const { showToast } = useNotification();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -34,7 +36,7 @@ const Register = () => {
 
         // 1. Validation
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match!");
+            showToast("Passwords do not match!", "error");
             return;
         }
 
@@ -63,15 +65,15 @@ const Register = () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert("Registration Successful! Please Login.");
+                showToast("Registration Successful! Please Login.", "success");
                 navigate('/login'); // Redirect to login page
             } else {
-                alert(data.message || "Registration failed.");
+                showToast(data.message || "Registration failed.", "error");
             }
 
         } catch (error) {
             console.error("Error:", error);
-            alert("Server connection failed.");
+            showToast("Server connection failed.", "error");
         }
     };
 

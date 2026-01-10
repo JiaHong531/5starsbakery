@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-    const { cartItems, getCartTotal, getCartCount, clearCart } = useCart(); // Assuming clearCart exists or will be added
+    const { cartItems, getCartTotal, getCartCount, clearCart } = useCart();
     const { user } = useAuth();
+    const { showToast } = useNotification();
     const navigate = useNavigate();
 
     const [shipping, setShipping] = useState({
@@ -23,12 +25,12 @@ const Checkout = () => {
         e.preventDefault();
 
         if (cartItems.length === 0) {
-            alert("Your cart is empty!");
+            showToast("Your cart is empty!", "error");
             return;
         }
 
         if (!user) {
-            alert("You must be logged in to place an order.");
+            showToast("You must be logged in to place an order.", "error");
             navigate('/login');
             return;
         }
@@ -54,16 +56,16 @@ const Checkout = () => {
             });
 
             if (response.ok) {
-                alert("Order Placed Successfully!");
+                showToast("Order Placed Successfully!", "success");
                 if (clearCart) clearCart(); // Reset cart using context if available
                 navigate('/'); // Or navigate to Order History
             } else {
                 const err = await response.json();
-                alert(`Failed to place order: ${err.message || 'Unknown error'}`);
+                showToast(`Failed to place order: ${err.message || 'Unknown error'}`, "error");
             }
         } catch (error) {
             console.error("Order error:", error);
-            alert("Server error processing order.");
+            showToast("Server error processing order.", "error");
         }
     };
 

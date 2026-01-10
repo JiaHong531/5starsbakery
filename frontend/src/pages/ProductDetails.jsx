@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 
 const ProductDetails = () => {
@@ -9,6 +10,7 @@ const ProductDetails = () => {
     const navigate = useNavigate();
     const { addToCart } = useCart();
     const { user } = useAuth();
+    const { showConfirm, showToast } = useNotification();
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,9 +34,9 @@ const ProductDetails = () => {
             });
     }, [id]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (!user) {
-            const confirmLogin = window.confirm("You need to login to add items to your cart. Go to login page?");
+            const confirmLogin = await showConfirm("You need to login to add items to your cart. Go to login page?", "Login Required");
             if (confirmLogin) navigate("/login");
             return;
         }
@@ -49,7 +51,7 @@ const ProductDetails = () => {
         for (let i = 0; i < quantity; i++) {
             addToCart(product);
         }
-        alert(`${quantity} x ${product.name} added to cart!`);
+        showToast(`${quantity} x ${product.name} added to cart!`, "success");
     };
 
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading details...</div>;
@@ -112,18 +114,19 @@ const ProductDetails = () => {
                                 </button>
                                 <button
                                     onClick={async () => {
-                                        if (window.confirm("Are you sure you want to delete this product?")) {
+                                        const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
+                                        if (confirmed) {
                                             try {
                                                 const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
                                                 if (response.ok) {
-                                                    alert("Product deleted.");
+                                                    showToast("Product deleted.", "success");
                                                     navigate('/admin/dashboard');
                                                 } else {
-                                                    alert("Failed to delete product.");
+                                                    showToast("Failed to delete product.", "error");
                                                 }
                                             } catch (err) {
                                                 console.error(err);
-                                                alert("Error deleting product.");
+                                                showToast("Error deleting product.", "error");
                                             }
                                         }
                                     }}

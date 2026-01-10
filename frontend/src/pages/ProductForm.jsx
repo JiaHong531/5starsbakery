@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 
 const ProductForm = () => {
     const { id } = useParams(); // If ID exists, we are in EDIT mode
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { showToast } = useNotification();
 
     const isEditMode = Boolean(id);
 
@@ -53,7 +55,7 @@ const ProductForm = () => {
                 })
                 .catch(err => {
                     console.error("Failed to fetch product", err);
-                    alert("Failed to load product for editing.");
+                    showToast("Failed to load product for editing.", "error");
                     navigate('/admin/dashboard');
                 });
         }
@@ -97,14 +99,14 @@ const ProductForm = () => {
             });
 
             if (response.ok) {
-                alert(`Product ${isEditMode ? 'updated' : 'created'} successfully!`);
+                showToast(`Product ${isEditMode ? 'updated' : 'created'} successfully!`, "success");
                 navigate('/admin/dashboard');
             } else {
-                alert("Failed to save product.");
+                showToast("Failed to save product.", "error");
             }
         } catch (error) {
             console.error("Upload error:", error);
-            alert("Error connecting to server.");
+            showToast("Error connecting to server.", "error");
         } finally {
             setLoading(false);
         }

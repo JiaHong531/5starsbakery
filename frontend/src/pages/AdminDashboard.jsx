@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import { useSearch } from '../context/SearchContext';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 import editIcon from '../assets/edit.png';
 import deleteIcon from '../assets/bin.png';
 import addIcon from '../assets/add.png';
@@ -17,7 +18,8 @@ const AdminDashboard = () => {
     // Hooks
     const { searchQuery } = useSearch();
     const navigate = useNavigate();
-    const { user } = useAuth(); // Use the context instead of localStorage
+    const { user } = useAuth();
+    const { showConfirm, showToast } = useNotification();
 
     // 6. Floating Button Logic
     const buttonRef = React.useRef(null);
@@ -88,17 +90,19 @@ const AdminDashboard = () => {
     // Handle Delete
     const handleDelete = async (id, e) => {
         e.stopPropagation(); // Prevent card navigation
-        if (window.confirm("Are you sure you want to delete this product?")) {
+        const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
+        if (confirmed) {
             try {
                 const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
                 if (response.ok) {
                     setProducts(prev => prev.filter(p => p.id !== id));
+                    showToast("Product deleted successfully!", "success");
                 } else {
-                    alert("Failed to delete product.");
+                    showToast("Failed to delete product.", "error");
                 }
             } catch (err) {
                 console.error(err);
-                alert("Error deleting product.");
+                showToast("Error deleting product.", "error");
             }
         }
     };
