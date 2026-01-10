@@ -6,8 +6,8 @@ services:
     depends_on:
       - bakery-db
     volumes:
-      - ./frontend/public/product-images:/opt/product-images
-      - ./frontend/public/category-icons:/opt/category-icons
+      - ./frontend/public/product-images:/usr/local/tomcat/webapps/product-images
+      - ./frontend/public/category-icons:/usr/local/tomcat/webapps/category-icons
     environment:
       DB_URL: jdbc:mysql://bakery-db:3306/bakerydb?allowPublicKeyRetrieval=true&useSSL=false
       DB_USER: bakeryuser
