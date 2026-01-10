@@ -9,13 +9,10 @@ public class Order {
     private int userId;
     private BigDecimal totalAmount;
     private String status;
-    private Timestamp pickupTime;
+    private String pickupDate;  // Date string from frontend (e.g., "2026-01-11")
+    private String pickupTime;  // Time slot string from frontend (e.g., "01:00 PM")
     private Timestamp createdAt;
-    private String shippingAddress; // Not in DB yet, but passed from frontend. We might ignore or add column.
-    // Plan: We will just log it or ignore it for now as DB doesn't have it in
-    // init.sql schema shown earlier.
-    // Wait, let's check init.sql again. It didn't have shipping_address.
-    // I will adhere to the DB schema for storage, but accept it in JSON.
+    private String shippingAddress; // Legacy field, kept for compatibility
 
     private List<OrderItem> items; // For JSON deserialization
 
@@ -54,11 +51,19 @@ public class Order {
         this.status = status;
     }
 
-    public Timestamp getPickupTime() {
+    public String getPickupDate() {
+        return pickupDate;
+    }
+
+    public void setPickupDate(String pickupDate) {
+        this.pickupDate = pickupDate;
+    }
+
+    public String getPickupTime() {
         return pickupTime;
     }
 
-    public void setPickupTime(Timestamp pickupTime) {
+    public void setPickupTime(String pickupTime) {
         this.pickupTime = pickupTime;
     }
 
@@ -94,5 +99,15 @@ public class Order {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    private String paymentMethod; // "cash" or "online_banking"
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

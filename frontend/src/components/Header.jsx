@@ -37,7 +37,7 @@ const Header = () => {
         clearCart();
         logout();
         setShowDropdown(false);
-        navigate("/login");
+        navigate("/");
     };
 
     return (
