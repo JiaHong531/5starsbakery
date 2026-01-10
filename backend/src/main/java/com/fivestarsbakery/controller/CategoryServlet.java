@@ -54,7 +54,7 @@ public class CategoryServlet extends HttpServlet {
             throws IOException, ServletException {
         try {
             // 1. Setup upload directory - use the Docker volume path
-            String uploadPath = "/opt/category-icons";
+            String uploadPath = "/usr/local/tomcat/webapps/category-icons";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists())
                 uploadDir.mkdirs();

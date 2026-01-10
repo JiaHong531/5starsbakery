@@ -22,8 +22,8 @@ public class FileUploadServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // 1. Get the path to Tomcat's internal 'images' folder
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
+            // 1. Get the path to Tomcat's internal 'product-images' folder
+            String uploadPath = "/usr/local/tomcat/webapps/product-images";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdir();
 
@@ -44,7 +44,7 @@ public class FileUploadServlet extends HttpServlet {
             int stock = Integer.parseInt(request.getParameter("stock"));
 
             // 4. Create the URL string that React expects
-            String finalImageUrl = "/images/" + fileName;
+            String finalImageUrl = "/product-images/" + fileName;
 
             // 5. Save to MySQL
             ProductDAO dao = new ProductDAO();
