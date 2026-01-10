@@ -44,7 +44,7 @@ const ProductForm = () => {
         const fetchData = async () => {
             try {
                 // 1. Fetch Categories
-                const catResponse = await fetch('http://localhost:8080/api/categories');
+                const catResponse = await fetch('https://bakery-backend-kt9m.onrender.com/api/categories');
                 const catData = await catResponse.json();
                 setCategories(catData);
 
@@ -55,7 +55,7 @@ const ProductForm = () => {
 
                 // 2. Fetch Product if Edit Mode
                 if (isEditMode) {
-                    const prodResponse = await fetch(`http://localhost:8080/api/products/${id}`);
+                    const prodResponse = await fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`);
                     const prodData = await prodResponse.json();
 
                     setFormData({
@@ -128,7 +128,7 @@ const ProductForm = () => {
                 catData.append('displayName', newCategoryName); // Use same name for display
                 catData.append('icon', newCategoryIcon);
 
-                const catResponse = await fetch('http://localhost:8080/api/categories/upload', {
+                const catResponse = await fetch('https://bakery-backend-kt9m.onrender.com/api/categories/upload', {
                     method: 'POST',
                     body: catData
                 });
@@ -154,7 +154,7 @@ const ProductForm = () => {
                     imageUrl: formData.imageUrl
                 };
 
-                response = await fetch(`http://localhost:8080/api/products/${id}`, {
+                response = await fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData),
@@ -175,7 +175,7 @@ const ProductForm = () => {
                 data.append('category', finalCategory); // Use finalCategory
                 data.append('imageUrl', formData.imageUrl);
 
-                response = await fetch('http://localhost:8080/api/products/upload', {
+                response = await fetch('https://bakery-backend-kt9m.onrender.com/api/products/upload', {
                     method: 'POST',
                     body: data,
                 });

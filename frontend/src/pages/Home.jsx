@@ -34,7 +34,7 @@ const Home = () => {
     }, [selectedCategory]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/products")
+        fetch("https://bakery-backend-kt9m.onrender.com/api/products")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to connect to Backend");
