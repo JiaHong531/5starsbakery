@@ -20,14 +20,19 @@ const Home = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    // Redirect admin users to admin dashboard
     useEffect(() => {
         if (user && user.role === 'ADMIN') {
             navigate('/admin/dashboard', { replace: true });
         }
     }, [user, navigate]);
 
-    // 2. Fetch from Java Backend
+    useEffect(() => {
+        const menuHeader = document.getElementById('menu-section');
+        if (menuHeader) {
+            menuHeader.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [selectedCategory]);
+
     useEffect(() => {
         fetch("http://localhost:8080/api/products")
             .then((response) => {
@@ -60,7 +65,6 @@ const Home = () => {
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
     if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
-    // --- UPDATED FILTER & SORT LOGIC ---
     const filteredProducts = products
         .filter(product => {
             const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
@@ -68,7 +72,6 @@ const Home = () => {
             return matchesCategory && matchesSearch;
         })
         .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical Sort (A-Z)
-    // ------------------------------------
 
     return (
         <div className="flex flex-col min-h-screen">

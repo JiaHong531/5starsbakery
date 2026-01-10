@@ -5,6 +5,7 @@ import Footer from './Footer';
 import CartSidebar from './CartSidebar';
 import ConfirmModal from './ConfirmModal';
 import ToastContainer from './ToastContainer';
+import ScrollToTop from './ScrollToTop';
 
 const Layout = () => {
     const location = useLocation();
@@ -19,6 +20,7 @@ const Layout = () => {
                 {/* <Outlet /> is where Home, Login, etc. will appear */}
                 <Outlet />
             </main>
+            <ScrollToTop />
             <Footer />
             {/* Global notification components */}
             <ConfirmModal />
