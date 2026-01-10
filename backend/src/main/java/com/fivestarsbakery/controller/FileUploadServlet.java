@@ -5,10 +5,7 @@ import com.fivestarsbakery.model.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,36 +22,38 @@ public class FileUploadServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // 1. Save File
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
+            // 1. Get the path to Tomcat's internal 'images' folder
+            String uploadPath = "/usr/local/tomcat/webapps/images";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdir();
 
+            // 2. Process the Image Part
             Part filePart = request.getPart("image");
             String fileName = filePart.getSubmittedFileName();
+
+            // Save the file physically inside the container
+            // Docker will then sync this to your frontend/public/images folder
             filePart.write(uploadPath + File.separator + fileName);
 
-            // 2. Extract data and save to DB
+            // 3. Extract data for DB entry
             String name = request.getParameter("name");
             String desc = request.getParameter("description");
             String ingredients = request.getParameter("ingredients");
             String category = request.getParameter("category");
-
             double price = Double.parseDouble(request.getParameter("price"));
             int stock = Integer.parseInt(request.getParameter("stock"));
 
+            // 4. Create the URL string that React expects
             String finalImageUrl = "/images/" + fileName;
 
-            // 3. Save to DB
+            // 5. Save to MySQL
             ProductDAO dao = new ProductDAO();
             Product p = new Product(0, name, desc, ingredients, price, stock, category, finalImageUrl);
             boolean success = dao.addProduct(p);
 
-            // 4. Clean Response
             response.getWriter().write("{\"success\": " + success + ", \"imageUrl\": \"" + finalImageUrl + "\"}");
 
         } catch (Exception e) {
-            e.printStackTrace();
             response.setStatus(500);
             response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
         }

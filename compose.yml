@@ -6,7 +6,7 @@ services:
     depends_on:
       - bakery-db
     volumes:
-      - ./frontend/public/images:/usr/local/tomcat/webapps/backend/images
+      - ./frontend/public/images:/usr/local/tomcat/webapps/images
     environment:
       DB_URL: jdbc:mysql://bakery-db:3306/bakerydb?allowPublicKeyRetrieval=true&useSSL=false
       DB_USER: bakeryuser
