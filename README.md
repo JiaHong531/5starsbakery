@@ -5,6 +5,10 @@ Welcome to the **5 Stars Bakery** project repository! This  is a Java-based e-co
 
 Built for the **CAT201** assignment.
 
+## 🌐 Live Demo
+- **Frontend:** [https://5starsbakery.vercel.app](https://5starsbakery.vercel.app)
+- **Backend API:** [https://bakery-backend-kt9m.onrender.com](https://bakery-backend-kt9m.onrender.com)
+
 ---
 
 ## 🛠️ The Kitchen (Tech Stack)
