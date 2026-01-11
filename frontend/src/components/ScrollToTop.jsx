@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FaArrowUp } from 'react-icons/fa';
 
 const ScrollToTop = () => {
+    const { pathname } = useLocation();
     const [isVisible, setIsVisible] = useState(false);
+
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     const toggleVisibility = () => {
         if (window.scrollY > 300) {

@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Handles user authentication/login.
+ * - POST /api/login (Validates credentials and returns user details)
+ */
 @WebServlet("/api/login")
 public class LoginServlet extends HttpServlet {
 
@@ -23,18 +27,19 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         try {
-            // 1. Read JSON from React
+            
+            // 1. Parse JSON body
             User loginRequest = gson.fromJson(req.getReader(), User.class);
 
-            // 2. Check Database (Username OR Email)
+            // 2. Validate credentials against DB
             User foundUser = userDAO.login(loginRequest.getUsername(), loginRequest.getPassword());
 
             if (foundUser != null) {
-                // Success: Send user data back
+                
                 String jsonResponse = gson.toJson(foundUser);
                 out.write(jsonResponse);
             } else {
-                // Failure: Send 401 Unauthorized
+                
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 out.write("{\"message\": \"Invalid email/username or password\"}");
             }

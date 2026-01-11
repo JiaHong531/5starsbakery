@@ -15,13 +15,14 @@ import ProductForm from './pages/ProductForm';
 import Checkout from './pages/Checkout';
 import OrderHistory from './pages/OrderHistory';
 import AdminOrders from './pages/AdminOrders';
+import ManageCategories from './pages/ManageCategories';
 import './App.css';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* The Layout wraps all these pages */}
+        {}
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
@@ -37,6 +38,7 @@ function App() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="my-orders" element={<OrderHistory />} />
         <Route path="admin/orders" element={<AdminOrders />} />
+        <Route path="admin/categories" element={<ManageCategories />} />
       </Route>
     </Routes>
   );

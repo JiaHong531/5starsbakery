@@ -162,3 +162,50 @@ INSERT INTO products (name, description, ingredients, price, stock_quantity, cat
 ('Turkey Slice & Cranberry', 'Savory turkey and cranberry roll.', 'Flour, Turkey, Cranberry', 6.00, 30, 'Bread', '/product-images/Turkey Slice & Cranberry.jpg'),
 ('White Bread', 'Classic white loaf.', 'Flour, Milk, Butter', 6.00, 20, 'Loaves', '/product-images/White Bread.jpg'),
 ('Whole Wheat Bread', 'Healthy whole wheat loaf.', 'Whole Wheat Flour, Water', 7.00, 20, 'Loaves', '/product-images/Whole Wheat Bread.png');
+
+-- 7. Dummy Feedback/Reviews Data
+INSERT INTO feedback (user_id, product_id, rating, comment) VALUES
+-- Cakes (product_id 4, 7, 6, 9, 13, 16, 20, 27, 28)
+(2, 4, 5, 'Best Black Forest cake I have ever had! The cherries are so fresh.'),
+(2, 7, 5, 'The burnt cheesecake was absolutely divine. Perfectly caramelized!'),
+(2, 7, 4, 'Really creamy and delicious. Would order again.'),
+(2, 6, 5, 'Durian lovers must try this! Authentic Musang King flavor.'),
+(2, 6, 5, 'Premium quality durian crepe cake. Worth every ringgit.'),
+(2, 9, 4, 'Pandan flavor is spot on. Love the gula melaka sweetness.'),
+(2, 13, 5, 'Light and refreshing mango mousse. Perfect for hot days!'),
+(2, 16, 4, 'Ondeh-ondeh cake brings back childhood memories.'),
+(2, 20, 5, 'Classic red velvet with perfect cream cheese ratio.'),
+(2, 27, 4, 'Yam taro layers are so soft and flavorful.'),
+(2, 28, 5, 'The molten chocolate center is heavenly!'),
+(2, 28, 5, 'Signature lava cake is a must-try. So rich!'),
+
+-- Muffins (product_id 2, 3, 6, 8, 11, 23, 29)
+(2, 2, 4, 'Apple cinnamon muffin is warm and comforting.'),
+(2, 3, 5, 'Banana walnut is my go-to breakfast muffin!'),
+(2, 8, 4, 'Honey corn muffin is subtly sweet. Kids love it.'),
+(2, 11, 4, 'Lemon poppyseed is zesty and refreshing.'),
+(2, 29, 5, 'Blueberry crumble topping is amazing!'),
+(2, 29, 4, 'Fresh blueberries and crunchy crumble. Yum!'),
+
+-- Cupcakes (product_id 5, 8, 10, 12, 14, 18, 22, 24, 26, 30)
+(2, 5, 4, 'Banana cupcake is moist and fluffy.'),
+(2, 10, 5, 'Rich chocolate cupcake with perfect frosting!'),
+(2, 12, 4, 'Coconut lime is a unique tropical treat.'),
+(2, 14, 5, 'Milo dinosaur cupcake - childhood in a bite!'),
+(2, 22, 5, 'Salted caramel drizzle is addictive.'),
+(2, 24, 4, 'Strawberry cupcake is pretty and tasty.'),
+(2, 30, 5, 'Red velvet cupcake is a classic favorite.'),
+
+-- Cookies (product_id 1, 9, 4, 5, 7, 12, 15, 17, 21, 32, 51)
+(2, 1, 5, 'Almond London cookies are crunchy perfection!'),
+(2, 9, 4, 'Classic chocolate chip never disappoints.'),
+(2, 4, 5, 'Double chocolate chip is for serious choco lovers.'),
+(2, 15, 4, 'Oatmeal raisin is healthy and delicious.'),
+(2, 17, 5, 'Peanut butter cookies are so addictive!'),
+
+-- Croissants & Breads
+(2, 33, 5, 'Flaky almond croissant is heavenly!'),
+(2, 40, 4, 'Classic French butter croissant is authentic.'),
+(2, 36, 4, 'Cheese stick bun is savory and satisfying.'),
+(2, 37, 5, 'Chicken floss bun is a Malaysian favorite!'),
+(2, 53, 4, 'Mexican coffee bun has the best butter filling.');

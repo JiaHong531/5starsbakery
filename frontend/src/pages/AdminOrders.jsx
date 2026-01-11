@@ -11,10 +11,10 @@ const AdminOrders = () => {
     const { showConfirm, showToast } = useNotification();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [updating, setUpdating] = useState(null); // Track which order is updating
+    const [updating, setUpdating] = useState(null);
 
     useEffect(() => {
-        // Security Check
+
         if (!user || user.role !== 'ADMIN') {
             navigate('/');
             return;
@@ -49,7 +49,7 @@ const AdminOrders = () => {
             });
 
             if (response.ok) {
-                // Update local state
+
                 setOrders(prev => prev.map(o =>
                     o.orderId === orderId ? { ...o, status: newStatus } : o
                 ));

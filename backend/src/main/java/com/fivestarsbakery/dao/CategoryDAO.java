@@ -47,4 +47,35 @@ public class CategoryDAO {
             return false;
         }
     }
+
+    public Category getCategoryById(int id) {
+        Category category = null;
+        String sql = "SELECT * FROM categories WHERE category_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                     category = new Category(
+                        rs.getInt("category_id"),
+                        rs.getString("name"),
+                        rs.getString("display_name"),
+                        rs.getString("icon_url"));
+                }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return category;
+    }
+
+    public boolean deleteCategory(int id) {
+        String sql = "DELETE FROM categories WHERE category_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

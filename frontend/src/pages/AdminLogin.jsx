@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import Context
+import { useAuth } from '../context/AuthContext';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
-    const { login } = useAuth(); // <--- Get login from Context
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -33,12 +33,12 @@ const AdminLogin = () => {
             if (response.ok) {
                 const user = await response.json();
 
-                // 🛑 SECURITY CHECK: Is this user actually an ADMIN?
+
                 if (user.role === 'ADMIN') {
-                    login(user); // <--- Use Context!
-                    navigate('/admin/dashboard'); // Go to Admin Panel
+                    login(user);
+                    navigate('/admin/dashboard');
                 } else {
-                    // It is a valid user, but NOT an admin
+
                     setError('Access Denied. You are not an Administrator.');
                 }
             } else {
@@ -55,7 +55,7 @@ const AdminLogin = () => {
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-[500px] animate-scaleIn">
                 <h2 className="mb-6 text-header-bg text-center text-4xl font-bold font-serif animate-slideUp">Login as Administrator</h2>
 
-                {/* Error Display - Animated */}
+                { }
                 {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded text-center text-sm animate-wiggle">{error}</div>}
 
                 <form onSubmit={handleSubmit}>

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class UserDAO {
 
-    // REGISTER METHOD
+    
     public boolean register(User user) {
         String sql = "INSERT INTO users (username, first_name, last_name, email, password, phone_number, gender, birthdate, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')";
 
@@ -22,10 +22,10 @@ public class UserDAO {
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            ps.setString(6, user.getPhoneNumber()); // Matches User.java
+            ps.setString(6, user.getPhoneNumber()); 
             ps.setString(7, user.getGender());
 
-            // Convert String date to SQL Date
+            
             ps.setDate(8, java.sql.Date.valueOf(user.getBirthdate()));
 
             int rows = ps.executeUpdate();
@@ -37,7 +37,7 @@ public class UserDAO {
         }
     }
 
-    // LOGIN METHOD
+    
     public User login(String loginInput, String password) {
         User user = null;
         String sql = "SELECT * FROM users WHERE (email = ? OR username = ?) AND password = ?";
@@ -57,10 +57,10 @@ public class UserDAO {
                     user.setFirstName(rs.getString("first_name"));
                     user.setLastName(rs.getString("last_name"));
                     user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password")); // Added
-                    user.setPhoneNumber(rs.getString("phone_number")); // Added
-                    user.setGender(rs.getString("gender")); // Added
-                    user.setBirthdate(rs.getString("birthdate")); // Added
+                    user.setPassword(rs.getString("password")); 
+                    user.setPhoneNumber(rs.getString("phone_number")); 
+                    user.setGender(rs.getString("gender")); 
+                    user.setBirthdate(rs.getString("birthdate")); 
                     user.setRole(rs.getString("role"));
                 }
             }
@@ -70,17 +70,18 @@ public class UserDAO {
         return user;
     }
 
-    // UPDATE USER METHOD
+    
     public boolean updateUser(User user) {
-        String sql = "UPDATE users SET email = ?, password = ?, phone_number = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET username = ?, email = ?, password = ?, phone_number = ? WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getPhoneNumber());
-            ps.setInt(4, user.getId());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getPhoneNumber());
+            ps.setInt(5, user.getId());
 
             int rows = ps.executeUpdate();
             return rows > 0;

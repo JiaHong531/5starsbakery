@@ -11,9 +11,9 @@ import java.io.IOException;
 
 @WebServlet("/api/products/upload")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024, // 1MB
-        maxFileSize = 1024 * 1024 * 10,  // 10MB
-        maxRequestSize = 1024 * 1024 * 50 // 50MB
+        fileSizeThreshold = 1024 * 1024, 
+        maxFileSize = 1024 * 1024 * 10,  
+        maxRequestSize = 1024 * 1024 * 50 
 )
 public class FileUploadServlet extends HttpServlet {
 
@@ -22,20 +22,20 @@ public class FileUploadServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // 1. Get the path to Tomcat's internal 'product-images' folder
+            
             String uploadPath = "/usr/local/tomcat/webapps/product-images";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdir();
 
-            // 2. Process the Image Part
+            
             Part filePart = request.getPart("image");
             String fileName = filePart.getSubmittedFileName();
 
-            // Save the file physically inside the container
-            // Docker will then sync this to your frontend/public/images folder
+            
+            
             filePart.write(uploadPath + File.separator + fileName);
 
-            // 3. Extract data for DB entry
+            
             String name = request.getParameter("name");
             String desc = request.getParameter("description");
             String ingredients = request.getParameter("ingredients");
@@ -43,10 +43,10 @@ public class FileUploadServlet extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             int stock = Integer.parseInt(request.getParameter("stock"));
 
-            // 4. Create the URL string that React expects
+            
             String finalImageUrl = "/product-images/" + fileName;
 
-            // 5. Save to MySQL
+            
             ProductDAO dao = new ProductDAO();
             Product p = new Product(0, name, desc, ingredients, price, stock, category, finalImageUrl);
             boolean success = dao.addProduct(p);

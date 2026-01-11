@@ -7,10 +7,10 @@ export function useNotification() {
 }
 
 export function NotificationProvider({ children }) {
-    // Toast notifications state
+    
     const [toasts, setToasts] = useState([]);
 
-    // Confirmation modal state
+    
     const [confirmModal, setConfirmModal] = useState({
         isOpen: false,
         message: '',
@@ -19,14 +19,14 @@ export function NotificationProvider({ children }) {
         onCancel: null,
     });
 
-    // Show toast notification
+    
     const showToast = useCallback((message, type = 'info', duration = 4000) => {
         const id = Date.now() + Math.random();
         const newToast = { id, message, type, duration };
 
         setToasts(prev => [...prev, newToast]);
 
-        // Auto remove after duration
+        
         setTimeout(() => {
             setToasts(prev => prev.filter(toast => toast.id !== id));
         }, duration);
@@ -34,18 +34,21 @@ export function NotificationProvider({ children }) {
         return id;
     }, []);
 
-    // Remove toast manually
+    
     const removeToast = useCallback((id) => {
         setToasts(prev => prev.filter(toast => toast.id !== id));
     }, []);
 
-    // Show confirmation modal - returns a Promise
-    const showConfirm = useCallback((message, title = 'Confirm') => {
+    
+    const showConfirm = useCallback((message, title = 'Confirm', confirmText = 'OK', cancelText = 'Cancel', type = 'default') => {
         return new Promise((resolve) => {
             setConfirmModal({
                 isOpen: true,
                 message,
                 title,
+                confirmText,
+                cancelText,
+                type,
                 onConfirm: () => {
                     setConfirmModal(prev => ({ ...prev, isOpen: false }));
                     resolve(true);
@@ -58,7 +61,7 @@ export function NotificationProvider({ children }) {
         });
     }, []);
 
-    // Close confirmation modal
+    
     const closeConfirmModal = useCallback(() => {
         if (confirmModal.onCancel) {
             confirmModal.onCancel();

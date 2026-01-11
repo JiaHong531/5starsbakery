@@ -1,6 +1,6 @@
 package com.fivestarsbakery.model;
 
-import java.sql.Date; // Import this for Birthday
+import java.sql.Date; 
 
 public class User {
     private int id;

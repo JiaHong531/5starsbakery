@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
 
-// Helper function to safely get user from localStorage
+
 const getStoredUser = () => {
     try {
         const storedUser = localStorage.getItem("user");
@@ -11,14 +11,14 @@ const getStoredUser = () => {
         }
     } catch (e) {
         console.error("Corrupted user data in storage", e);
-        localStorage.removeItem("user"); // Auto-fix bad data
+        localStorage.removeItem("user"); 
     }
     return null;
 };
 
 export const AuthProvider = ({ children }) => {
-    // Initialize user state synchronously from localStorage
-    // This prevents the race condition where UI renders before user data is loaded
+    
+    
     const [user, setUser] = useState(() => getStoredUser());
 
     const login = (userData) => {

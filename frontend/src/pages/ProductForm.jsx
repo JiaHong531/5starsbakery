@@ -5,7 +5,7 @@ import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
 
 const ProductForm = () => {
-    const { id } = useParams(); // If ID exists, we are in EDIT mode
+    const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
     const { showToast } = useNotification();
@@ -18,11 +18,11 @@ const ProductForm = () => {
         ingredients: '',
         price: '',
         stock: '',
-        category: '', // Default empty, will be set after fetch
+        category: '',
         imageUrl: ''
     });
 
-    // New Category State
+
     const [categories, setCategories] = useState([]);
     const [isNewCategory, setIsNewCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
@@ -33,9 +33,9 @@ const ProductForm = () => {
 
     const [imageFile, setImageFile] = useState(null);
 
-    // Initial Data Fetch
+
     useEffect(() => {
-        // Redirect if not admin
+
         if (!user || user.role !== 'ADMIN') {
             navigate('/');
             return;
@@ -43,17 +43,17 @@ const ProductForm = () => {
 
         const fetchData = async () => {
             try {
-                // 1. Fetch Categories
+
                 const catResponse = await fetch('https://bakery-backend-kt9m.onrender.com/api/categories');
                 const catData = await catResponse.json();
                 setCategories(catData);
 
-                // Set default category if creating new product
+
                 if (!isEditMode && catData.length > 0) {
                     setFormData(prev => ({ ...prev, category: catData[0].name }));
                 }
 
-                // 2. Fetch Product if Edit Mode
+
                 if (isEditMode) {
                     const prodResponse = await fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`);
                     const prodData = await prodResponse.json();
@@ -115,7 +115,7 @@ const ProductForm = () => {
         try {
             let finalCategory = formData.category;
 
-            // 1. If New Category, Create it First
+
             if (isNewCategory) {
                 if (!newCategoryName || !newCategoryIcon) {
                     showToast("Please provide category name and icon.", "error");
@@ -125,7 +125,7 @@ const ProductForm = () => {
 
                 const catData = new FormData();
                 catData.append('name', newCategoryName);
-                catData.append('displayName', newCategoryName); // Use same name for display
+                catData.append('displayName', newCategoryName);
                 catData.append('icon', newCategoryIcon);
 
                 const catResponse = await fetch('https://bakery-backend-kt9m.onrender.com/api/categories/upload', {
@@ -136,21 +136,21 @@ const ProductForm = () => {
                 if (!catResponse.ok) throw new Error("Failed to create category");
 
                 const catResult = await catResponse.json();
-                finalCategory = catResult.category.name; // Use the new category name
+                finalCategory = catResult.category.name;
             }
 
             let response;
 
-            // 2. Create/Update Product
+
             if (isEditMode) {
-                // EDIT MODE: Use PUT with JSON body
+
                 const productData = {
                     name: formData.name,
                     description: formData.description,
                     ingredients: formData.ingredients,
                     price: parseFloat(formData.price),
                     stock: parseInt(formData.stock),
-                    category: finalCategory, // Use the resolved category
+                    category: finalCategory,
                     imageUrl: formData.imageUrl
                 };
 
@@ -160,19 +160,19 @@ const ProductForm = () => {
                     body: JSON.stringify(productData),
                 });
             } else {
-                // CREATE MODE: Use POST with FormData
+
                 const data = new FormData();
                 if (imageFile) {
                     data.append('image', imageFile);
                 }
 
-                // Append all fields manually to ensure 'category' is updated
+
                 data.append('name', formData.name);
                 data.append('description', formData.description);
                 data.append('ingredients', formData.ingredients);
                 data.append('price', formData.price);
                 data.append('stock', formData.stock);
-                data.append('category', finalCategory); // Use finalCategory
+                data.append('category', finalCategory);
                 data.append('imageUrl', formData.imageUrl);
 
                 response = await fetch('https://bakery-backend-kt9m.onrender.com/api/products/upload', {
@@ -200,7 +200,7 @@ const ProductForm = () => {
     return (
         <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-3xl mx-auto">
-                {/* Header - Animated */}
+                { }
                 <div className="flex items-center mb-8 gap-4 animate-slideUp">
                     <button onClick={() => navigate('/admin/dashboard')} className="hover:opacity-80 transition-all duration-300 group">
                         <img
@@ -218,7 +218,7 @@ const ProductForm = () => {
                 <div className="bg-white rounded-xl shadow-md p-8 animate-scaleIn">
                     <form onSubmit={handleSubmit} className="space-y-6">
 
-                        {/* Name */}
+                        { }
                         <div className="animate-slideUp stagger-1" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <label className="block text-gray-700 font-bold mb-2">Product Name</label>
                             <input
@@ -228,7 +228,7 @@ const ProductForm = () => {
                             />
                         </div>
 
-                        {/* Description */}
+                        { }
                         <div>
                             <label className="block text-gray-700 font-bold mb-2">Description</label>
                             <textarea
@@ -238,7 +238,7 @@ const ProductForm = () => {
                             />
                         </div>
 
-                        {/* Ingredients */}
+                        { }
                         <div>
                             <label className="block text-gray-700 font-bold mb-2">Ingredients</label>
                             <textarea
@@ -249,7 +249,7 @@ const ProductForm = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-6">
-                            {/* Price */}
+                            { }
                             <div>
                                 <label className="block text-gray-700 font-bold mb-2">Price (RM)</label>
                                 <input
@@ -259,7 +259,7 @@ const ProductForm = () => {
                                 />
                             </div>
 
-                            {/* Stock */}
+                            { }
                             <div>
                                 <label className="block text-gray-700 font-bold mb-2">Stock Quantity</label>
                                 <input
@@ -270,7 +270,7 @@ const ProductForm = () => {
                             </div>
                         </div>
 
-                        {/* Category Selection */}
+                        { }
                         <div className="p-4 border rounded-lg bg-gray-50">
                             <label className="block text-gray-700 font-bold mb-2">Category</label>
                             <select
@@ -284,7 +284,7 @@ const ProductForm = () => {
                                 <option value="NEW">➕ Add New Category</option>
                             </select>
 
-                            {/* New Category Inputs - Only show if NEW is selected */}
+                            { }
                             {isNewCategory && (
                                 <div className="space-y-4 animate-slideUp">
                                     <div>
@@ -303,8 +303,7 @@ const ProductForm = () => {
                                         <div className="flex items-center gap-4 p-2 border rounded-lg bg-white">
                                             <label
                                                 htmlFor="cat-icon-upload"
-                                                className="btn btn-primary text-text-light py-2 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-sm cursor-pointer"
-                                                style={{ backgroundColor: '#FCA588' }}
+                                                className="btn btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] cursor-pointer"
                                             >
                                                 Choose Image
                                             </label>
@@ -326,14 +325,13 @@ const ProductForm = () => {
                             )}
                         </div>
 
-                        {/* Product Image URL */}
+                        { }
                         <div>
                             <label className="block text-gray-700 font-bold mb-2">Select Product Image</label>
                             <div className="flex items-center gap-4 p-2 border rounded-lg bg-white">
                                 <label
                                     htmlFor="file-upload"
-                                    className="btn btn-primary text-text-light py-2 px-6 rounded-lg font-bold hover:bg-accent-2 transition-colors shadow-sm cursor-pointer"
-                                    style={{ backgroundColor: '#FCA588' }}
+                                    className="btn btn-primary text-text-light py-3 px-6 rounded-lg font-bold hover:bg-accent-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] cursor-pointer"
                                 >
                                     Choose Image
                                 </label>
@@ -350,7 +348,7 @@ const ProductForm = () => {
                             </div>
                         </div>
 
-                        {/* Buttons */}
+                        { }
                         <div className="flex gap-4 pt-4 border-t animate-slideUp stagger-4" style={{ opacity: 0, animationFillMode: 'forwards' }}>
                             <button
                                 type="submit"

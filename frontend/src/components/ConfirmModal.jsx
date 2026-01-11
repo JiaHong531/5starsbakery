@@ -5,7 +5,7 @@ function ConfirmModal() {
     const { confirmModal, closeConfirmModal } = useNotification();
     const { isOpen, message, title, onConfirm, onCancel } = confirmModal;
 
-    // Handle escape key
+    
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === 'Escape' && isOpen) {
@@ -16,7 +16,7 @@ function ConfirmModal() {
         return () => document.removeEventListener('keydown', handleEscape);
     }, [isOpen, closeConfirmModal]);
 
-    // Prevent body scroll when modal is open
+    
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -43,30 +43,32 @@ function ConfirmModal() {
                     animation: 'modalIn 0.3s ease-out forwards',
                 }}
             >
-                {/* Header */}
-                <div className="bg-header-bg text-text-light px-6 py-4 rounded-t-xl">
-                    <h3 className="text-lg font-semibold">{title}</h3>
-                </div>
+                <div className="p-6 text-center">
+                    <h3 className="text-xl font-bold font-serif mb-2 text-header-bg animate-slideUp">
+                        {title}
+                    </h3>
 
-                {/* Body */}
-                <div className="px-6 py-5">
-                    <p className="text-text-main text-base leading-relaxed">{message}</p>
-                </div>
+                    <p className="text-gray-600 mb-6 text-base leading-relaxed animate-slideUp stagger-1">
+                        {message}
+                    </p>
 
-                {/* Footer */}
-                <div className="px-6 py-4 bg-gray-50 rounded-b-xl flex justify-end gap-3">
-                    <button
-                        onClick={onCancel}
-                        className="px-5 py-2.5 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={onConfirm}
-                        className="px-5 py-2.5 rounded-lg font-semibold bg-accent-1 text-header-bg hover:opacity-90 transition-opacity duration-200"
-                    >
-                        OK
-                    </button>
+                    <div className="flex justify-center gap-4 animate-slideUp stagger-2">
+                        <button
+                            onClick={onCancel}
+                            className="px-5 py-2.5 rounded-lg font-semibold bg-header-bg text-text-light hover:bg-red-600 hover:text-text-light transition-all duration-300"
+                        >
+                            {confirmModal.cancelText || 'Cancel'}
+                        </button>
+                        <button
+                            onClick={onConfirm}
+                            className={`px-5 py-2.5 rounded-lg font-semibold text-text-light transition-all duration-300 ${confirmModal.type === 'danger'
+                                ? 'bg-red-600 hover:bg-red-700'
+                                : 'bg-accent-1 hover:bg-accent-2'
+                                }`}
+                        >
+                            {confirmModal.confirmText || 'OK'}
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -7,7 +7,9 @@ public class OrderItem {
     private int orderId;
     private int productId;
     private int quantity;
-    private BigDecimal price; // price_at_purchase
+    private BigDecimal price; 
+    private Integer rating;
+    private String comment;
 
     public OrderItem() {
     }
@@ -54,8 +56,8 @@ public class OrderItem {
         return price;
     }
 
-    private String productName; // DTO field
-    private String imageUrl; // DTO field
+    private String productName; 
+    private String imageUrl; 
 
     public String getProductName() {
         return productName;
@@ -75,5 +77,21 @@ public class OrderItem {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

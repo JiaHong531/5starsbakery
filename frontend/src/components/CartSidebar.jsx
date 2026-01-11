@@ -20,7 +20,7 @@ const CartSidebar = () => {
         toggleCart();
     };
 
-    // Calculate total safely
+    
     const calculateTotalSafe = () => {
         try {
             return getCartTotal ? getCartTotal() : 0;
@@ -32,23 +32,23 @@ const CartSidebar = () => {
 
     return (
         <div className={`fixed inset-0 z-[100] ${isCartOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-            {/* Overlay */}
+            {}
             <div
                 className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${isCartOpen ? 'opacity-100' : 'opacity-0'
                     }`}
                 onClick={toggleCart}
             ></div>
 
-            {/* Sidebar Panel - Using inset-y-0 + h-[100dvh] for max compatibility */}
+            {}
             <div
                 className={`fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl flex flex-col transform transition-transform duration-300 z-[101] h-screen h-[100dvh] ${isCartOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
-                {/* 1. Header - Animated */}
+                {}
                 <div className="flex-shrink-0 p-5 flex justify-between items-center border-b border-gray-100 bg-header-bg text-text-light">
                     <h2 className="text-2xl font-cursive animate-slideInLeft">Your Cart</h2>
                     <div className="flex items-center gap-2 animate-slideInRight">
-                        {/* Backup Checkout Button (Visible in Header) */}
+                        {}
                         <button
                             onClick={handleCheckout}
                             disabled={cartItems.length === 0}
@@ -67,7 +67,7 @@ const CartSidebar = () => {
                     </div>
                 </div>
 
-                {/* 2. Scrollable Cart Items */}
+                {}
                 <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-0">
                     {cartItems.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-text-muted animate-fadeIn">
@@ -87,7 +87,7 @@ const CartSidebar = () => {
                                 className="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] animate-slideUp"
                                 style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
                             >
-                                {/* Product Image */}
+                                {}
                                 <div className="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden img-zoom">
                                     <img
                                         src={item.imageUrl}
@@ -97,7 +97,7 @@ const CartSidebar = () => {
                                     />
                                 </div>
 
-                                {/* Product Details */}
+                                {}
                                 <div className="flex-1 flex flex-col justify-between">
                                     <div className="flex justify-between items-start">
                                         <h3 className="font-bold text-text-main line-clamp-1 transition-colors duration-300 hover:text-accent-1">{item.name}</h3>
@@ -111,7 +111,7 @@ const CartSidebar = () => {
                                     </div>
                                     <p className="text-accent-1 font-bold transition-all duration-300 hover:scale-105 origin-left">RM{item.price.toFixed(2)}</p>
 
-                                    {/* Quantity Controls - Enhanced */}
+                                    {}
                                     <div className="flex items-center gap-3 mt-2">
                                         <button
                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -122,10 +122,14 @@ const CartSidebar = () => {
                                         <span className="font-medium w-4 text-center transition-all duration-300">{item.quantity}</span>
                                         <button
                                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                            className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 hover:bg-accent-1 hover:text-white text-text-main transition-all duration-300 hover:scale-110 active:scale-95"
+                                            disabled={item.quantity >= item.stock}
+                                            className={`w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300 ${item.quantity >= item.stock ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-gray-100 hover:bg-accent-1 hover:text-white text-text-main hover:scale-110 active:scale-95'}`}
                                         >
                                             <FaPlus size={10} />
                                         </button>
+                                        {item.quantity >= item.stock && (
+                                            <span className="text-xs text-orange-500">Max</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +137,7 @@ const CartSidebar = () => {
                     )}
                 </div>
 
-                {/* 3. Footer with Total - Enhanced */}
+                {}
                 <div className="flex-shrink-0 p-5 border-t border-gray-100 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-text-muted">Subtotal</span>

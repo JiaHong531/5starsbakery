@@ -17,12 +17,12 @@ const Layout = () => {
             <CartSidebar />
             <Header />
             <main className="flex-grow">
-                {/* <Outlet /> is where Home, Login, etc. will appear */}
+                {}
                 <Outlet />
             </main>
             <ScrollToTop />
             <Footer />
-            {/* Global notification components */}
+            {}
             <ConfirmModal />
             <ToastContainer />
         </div>
