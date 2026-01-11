@@ -562,13 +562,13 @@ const OrderHistory = () => {
                                     setShowReviewModal(null);
                                     setReviewData({});
                                 }}
-                                className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                                className="flex-1 py-2 bg-header-bg text-text-light rounded-lg hover:bg-red-600 transition-colors font-medium"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSubmitReview}
-                                className="flex-1 py-2 bg-accent-1 text-white rounded-lg hover:bg-accent-2 transition-colors font-medium shadow-md"
+                                className="flex-1 py-2 bg-accent-1 text-text-light rounded-lg hover:bg-accent-2 transition-colors font-medium shadow-md"
                             >
                                 Submit Reviews
                             </button>

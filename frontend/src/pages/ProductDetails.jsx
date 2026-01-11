@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
 import backIcon from '../assets/back.png';
+import { FaStar, FaUser, FaCalendarAlt } from 'react-icons/fa';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -17,7 +18,13 @@ const ProductDetails = () => {
     const [error, setError] = useState(null);
     const [quantity, setQuantity] = useState(1);
 
+    // Reviews state
+    const [reviews, setReviews] = useState([]);
+    const [averageRating, setAverageRating] = useState(0);
+    const [reviewCount, setReviewCount] = useState(0);
+
     useEffect(() => {
+        // Fetch product details
         fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error("Product not found");
@@ -32,6 +39,18 @@ const ProductDetails = () => {
                 setError("Failed to load product details.");
                 setLoading(false);
             });
+
+        // Fetch reviews for this product
+        fetch(`https://bakery-backend-kt9m.onrender.com/api/feedback/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                setReviews(data.reviews || []);
+                setAverageRating(data.averageRating || 0);
+                setReviewCount(data.reviewCount || 0);
+            })
+            .catch(err => {
+                console.error("Failed to load reviews:", err);
+            });
     }, [id]);
 
     const handleAddToCart = async () => {
@@ -41,17 +60,25 @@ const ProductDetails = () => {
             return;
         }
 
-        // Add item multiple times based on quantity or pass quantity to addToCart if supported
-        // Assuming addToCart takes (product) and adds 1. 
-        // We will call it 'quantity' times or update context to support quantity.
-        // For now, simpler to specificy: the current addToCart logic in CartContext probably just adds 1.
-        // Let's loop for now or just add 1 and let user adjust in cart.
-        // Better UX: Just add 1 for now or update CartContext later. 
-        // Let's stick to adding 1 'bundle' or simply repeated calls.
         for (let i = 0; i < quantity; i++) {
             addToCart(product);
         }
         showToast(`${quantity} x ${product.name} added to cart!`, "success");
+    };
+
+    // Helper to render star rating
+    const renderStars = (rating, size = 16) => {
+        return (
+            <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(star => (
+                    <FaStar
+                        key={star}
+                        size={size}
+                        className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
+                    />
+                ))}
+            </div>
+        );
     };
 
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading details...</div>;
@@ -91,7 +118,18 @@ const ProductDetails = () => {
 
                     {/* Details Section - Animated */}
                     <div className="md:w-1/2 p-10 flex flex-col justify-center">
-                        <h1 className="text-4xl font-serif font-bold text-text-main mb-4 animate-slideUp">{product.name}</h1>
+                        <h1 className="text-4xl font-serif font-bold text-text-main mb-2 animate-slideUp">{product.name}</h1>
+
+                        {/* Rating Summary */}
+                        {reviewCount > 0 && (
+                            <div className="flex items-center gap-2 mb-4 animate-slideUp">
+                                {renderStars(Math.round(averageRating))}
+                                <span className="text-sm text-gray-600">
+                                    {averageRating.toFixed(1)} ({reviewCount} review{reviewCount !== 1 ? 's' : ''})
+                                </span>
+                            </div>
+                        )}
+
                         <p className="text-3xl font-bold text-accent-1 mb-6 animate-slideUp stagger-1 transition-all duration-300 hover:scale-105 origin-left">{`RM${product.price.toFixed(2)}`}</p>
 
                         <div className="prose prose-stone mb-8 animate-slideUp stagger-2">
@@ -169,9 +207,62 @@ const ProductDetails = () => {
                         </p>
                     </div>
                 </div>
+
+                {/* Reviews Section */}
+                <div className="mt-10 bg-white rounded-xl shadow-lg p-8 animate-slideUp">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-serif font-bold text-header-bg">
+                            Customer Reviews
+                        </h2>
+                        {reviewCount > 0 && (
+                            <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-lg">
+                                <span className="text-2xl font-bold text-amber-600">{averageRating.toFixed(1)}</span>
+                                {renderStars(Math.round(averageRating), 20)}
+                                <span className="text-sm text-gray-500">({reviewCount})</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {reviews.length === 0 ? (
+                        <div className="text-center py-10 text-gray-400">
+                            <FaStar size={40} className="mx-auto mb-3 opacity-30" />
+                            <p className="font-medium">No reviews yet</p>
+                            <p className="text-sm">Be the first to review this product!</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {reviews.map((review, index) => (
+                                <div
+                                    key={review.feedbackId || index}
+                                    className="border-b border-gray-100 pb-4 last:border-0 last:pb-0 hover:bg-gray-50 p-4 rounded-lg transition-colors"
+                                >
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-accent-1/20 rounded-full flex items-center justify-center">
+                                                <FaUser className="text-accent-1" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-text-main">{review.reviewerName}</p>
+                                                <div className="flex items-center gap-2">
+                                                    {renderStars(review.rating, 14)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center text-xs text-gray-400 gap-1">
+                                            <FaCalendarAlt size={10} />
+                                            {new Date(review.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-600 text-sm ml-13 pl-13">{review.comment}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
 
 export default ProductDetails;
+
