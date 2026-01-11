@@ -1,93 +1,78 @@
 # 5 Stars Bakery - Project Blueprint
 
 ## 1. Project Overview
-**5 Stars Bakery** is a Java-based e-commerce website dedicated to offering high-quality baked goods such as cakes, muffins, cupcakes, and cookies. The system aims to provide a smooth, interactive, and responsive user experience for customers to browse and purchase fresh bakery items.
+**5 Stars Bakery** is a Java-based e-commerce website dedicated to offering high-quality baked goods such as cakes, muffins, cupcakes, and cookies. The system provides a smooth, interactive, and responsive user experience for customers to browse, purchase, and review fresh bakery items.
 
 ### Core Philosophy
 - **"NO ADDED PRESERVATIVES"**
 - **"Freshly baked in controlled batches to ensure optimum shelf-life and flavour."**
-- **Pre-order Model**: Bake-on-demand approach (similar to a pizza shop) to ensure freshness.
+- **Pre-order Model**: Bake-on-demand approach to ensure freshness and reduce waste.
 
 ## 2. Objectives & Scope
-The primary objective is to construct a software application based on the **Java programming language** with a user-friendly graphical user interface (Web GUI).
+The primary objective was to construct a robust software application using the **Java programming language** for the backend logic and a modern **Web GUI** for the frontend interface.
 
 ### Target Audience
-- Customers looking for fresh, organic, or healthy baked goods.
-- Administrators managing orders and products.
+- **Customers**: Looking for fresh, high-quality baked goods with easy online ordering.
+- **Administrators**: Need efficient tools to manage products, categories, and track orders.
 
-## 3. Functional Requirements (MoSCoW)
+## 3. Implemented Features (MoSCoW)
 
-### MUST HAVE (Critical)
-- **Product Browsing**: View items with details.
-- **Sorting/Categorization**: Sort by Cake, Cookie, Muffin, etc.
-- **Product Details**:
-    - Ingredients list.
-    - Calorie information.
-- **Shopping Cart & Purchasing**: Add to cart, checkout flow.
-- **Payment Integration**: Secure payment processing.
-- **User Accounts**: Login/Register (implied by "Order Management").
+### ✅ MUST HAVE (Critical - Delivered)
+- **Product Browsing**: Dynamic grid view of items with images and prices.
+- **Sorting/Categorization**: Filter by Cake, Cookie, Muffin, etc.
+- **Product Details**: Full view with ingredients and calorie information.
+- **Shopping Cart**: Add/remove items, update quantities, real-time total calculation.
+- **Secure Checkout**: Order placement with payment method selection (Cash/Card).
+- **User Accounts**: Registration and Login with JWT-based authentication.
 
-### SHOULD HAVE (Important)
-- **Eco-friendly Packaging Options**: "Packaging 环保 (Design enough)".
-- **Healthy/Organic Options**: Highlight healthy ingredients.
+### ✅ SHOULD HAVE (Important - Delivered)
+- **Order Management (User)**: "Order History" page to track order status (Pending → Ready).
+- **Order Management (Admin)**: Dashboard to view, update statuses, and cancel orders.
+- **Responsive Design**: Fully mobile-friendly UI using Tailwind CSS.
 
-### MAY HAVE (Nice to have)
-- **Vouchers/Coupons**.
-- **Customer Feedback & Ratings**.
-- **Order Management**: Track order status.
+### ✅ MAY HAVE (Bonus - Delivered)
+- **Customer Feedback**: Users can rate (1-5 stars) and review products after purchase.
+- **Receipt Generation**: Printable receipts for orders.
+- **Search Functionality**: Real-time search for products on Home and Admin Dashboard.
 
 ## 4. Technology Stack
 
 ### Frontend
-- **Framework**: ReactJS + Vite
-- **Styling**: TailwindCSS (inferred from "Hex (Tailwind)" in color palette notes) or CSS Modules.
-- **Hosting**: Vercel
+- **Framework**: React 19 + Vite (High-performance build tool)
+- **Styling**: Tailwind CSS v3.4 (Utility-first framework)
+- **Hosting**: Vercel (Global CDN)
 
 ### Backend
-- **Language**: **Java** (Strict Requirement)
-- **Constraints**: **NO Web Application Frameworks** (e.g., Spring, Struts, GWT are **prohibited**).
-    - *Implication*: Must use standard Java EE (Servlets, JSP) or a raw socket/HTTP server implementation depending on strictness of "Background Java processing".
-- **Hosting**: Render
+- **Language**: **Java 21**
+- **Architecture**: Servlet-based Monolith (Jakarta Servlet 6.0)
+- **Constraints**: **NO Web Frameworks** (Clean Java EE implementation).
+- **Hosting**: Render (Cloud Application Platform)
 
 ### Database
-- **System**: MySQL
+- **System**: TiDB Cloud (Distributed SQL, MySQL 8.0 Compatible)
+- **Connection**: JDBC (MySQL Connector/J 8.3)
 
 ### DevOps & Tools
-- **Version Control**: Git & GitHub (Mandatory - 10% of grade).
-- **Containerization**: Docker (New Feature).
+- **Version Control**: Git & GitHub.
+- **Containerization**: Docker & Docker Compose.
+- **Build Tools**: Maven (Backend), npm (Frontend).
 
 ## 5. Design System
 
 ### Color Palette
 | Usage | Color | Hex Code | Tailwind Approx |
 | :--- | :--- | :--- | :--- |
-| **Navbar, Header, Border** | **Dark Brown** | `#4E342E` | `yellow-950` |
+| **Primary / Header** | **Dark Brown** | `#4E342E` | `yellow-950` |
 | **Background** | **Cream** | `#FFFDD0` | `yellow-100` |
 | **Background (Alt)** | **Periwinkle** | `#CCCCFF` | `indigo-200` |
-| **Button, Logo** | **Peach** | `#FFAB91` | `red-300` |
-| **Button, Logo (Alt)** | **Yellow** | `#FFD54F` | `amber-300` |
+| **Accents** | **Peach** | `#FFAB91` | `red-300` |
+| **Highlights** | **Yellow** | `#FFD54F` | `amber-300` |
 
 ### Aesthetics
-- **Vibe**: Warm, inviting, fresh, premium.
-- **References**:
-    - [Delectable.com.my](https://delectable.com.my/)
-    - [LavenderBakery.com.my](https://lavenderbakery.com.my/)
+- **Vibe**: Warm, inviting, fresh, and premium.
+- **Inspiration**: Minimalist e-commerce sites with a focus on food photography.
 
-## 6. Evaluation Rubric & Constraints
-
-### Mark Distribution
-- **Part 1: Web GUI (40%)**: User-friendly for user & admin. Demonstrates web technologies (JS).
-- **Part 2: Java Processing (40%)**: Demonstrates OOP Java, processing, input/output.
-    - *Critical*: "Java is not used" = 0 marks for this section.
-    - *Critical*: **NO Frameworks** (Spring, etc.).
-- **Part 3: Git (10%)**: Frequent use of Git/GitHub.
-- **Part 4: Overall (10%)**: Presentation quality.
-
-### Important Dates
-- **Team Registration**: Oct 2025
-- **Final Submission**: 11 January 2026
-- **Demo/Presentation**: 12-16 January 2026
-
-## 7. Team Structure
-- **Size**: 3-4 members.
-- **Roles**: Project Manager (must report MIA members), Developers.
+## 6. Project Stats
+- **Team Size**: 4 members.
+- **Duration**: Oct 2025 - Jan 2026.
+- **Submission Date**: 11 January 2026.
