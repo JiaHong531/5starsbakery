@@ -1,7 +1,7 @@
 # 🎂 5 Stars Bakery
 > *Freshly Baked Java Code. Served with React.*
 
-Welcome to the **5 Stars Bakery** project repository! This  is a Java-based e-commerce website offering a variety of baked goods such as cakes 🍰, muffins 🧁, cupcakes 🧁, and cookies 🍪. Key features include product browsing 🔎, shopping cart 🛍️, order management 🗂️, and customer feedback 📝. The system aims to provide smooth user experience through an interactive and responsive design.
+Welcome to the **5 Stars Bakery** project repository! This is a Java-based e-commerce website offering a variety of baked goods such as cakes 🍰, muffins 🧁, cupcakes 🧁, and cookies 🍪. Key features include product browsing 🔎, shopping cart 🛍️, order management 🗂️, and customer feedback 📝. The system aims to provide a smooth user experience through an interactive and responsive design.
 
 Built for the **CAT201** assignment.
 
@@ -12,9 +12,9 @@ Built for the **CAT201** assignment.
 ---
 
 ## 🛠️ The Kitchen (Tech Stack)
-*   **Frontend:** ⚛️ React + Vite (Tailwind/CSS)
-*   **Backend:** ☕ Java (Jakarta Servlets) + Maven
-*   **Database:** 🐬 MySQL 8.0 (Dockerized)
+*   **Frontend:** ⚛️ React 19 + Vite (Tailwind CSS)
+*   **Backend:** ☕ Java 21 (Jakarta Servlets 6.0) + Maven
+*   **Database:** 🐬 MySQL 8.0 / TiDB Cloud
 *   **DevOps:** 🐳 Docker & Git
 
 ---
@@ -31,7 +31,7 @@ Built for the **CAT201** assignment.
 ### Step 1: Get the Recipe 📜
 Clone the repository to your local kitchen.
 ```bash
-git clone <PASTE_YOUR_REPO_URL_HERE>
+git clone https://github.com/JiaHong531/5starsbakery.git
 cd 5-stars-bakery
 ```
 
@@ -50,20 +50,41 @@ docker-compose up -d
 ```bash
 cd frontend
 ```
-Next, install dependencies and start the server:
+3. Install dependencies and start the local server:
 ```bash
 npm install
 npm run dev
 ```
 
 ### Step 4: Prep the Backend (Java) ☕
-1. Open IntelliJ IDEA.
-2. File > Open > Select the backend folder.
-3. ⚠️ Crucial: Click the tiny "M" (Maven) icon in the top-right to download dependencies.
-4. Navigate to: src/main/java/com/fivestarsbakery/util/DBConnection.java
-5. Run the main method (Green Play Button ▶️).
+1. Open **IntelliJ IDEA**.
+2. **File > Open** > Select the `backend` folder.
+3. ⚠️ **Crucial:** Click the tiny "M" (Maven) icon in the top-right toolbar to load dependencies.
+4. Verify Database Connection:
+    *   Navigate to `src/main/java/com/fivestarsbakery/util/DBConnection.java`
+    *   Run the `main` method (Green Play Button ▶️).
+    *   *Success if it prints:* `✅ Database Connected Successfully!`
 
-Success Criteria:
+### Step 5: Serve the Pastries (Start Server) 🚀
+To make the API work (`http://localhost:8080/api`):
+1. In IntelliJ, add a **Run Configuration**.
+2. Select **Smart Tomcat** (or your preferred Servlet container).
+3. Set **Deployment Directory** to `src/main/webapp`.
+4. Set **Context Path** to `/`.
+5. Click **Run** (Green Play Button).
 
->If the console prints: ✅ Database Connected Successfully! ...then you are ready to code!
+---
 
+## 📚 References
+
+1.  **Start a new React project – React.** (n.d.). https://react.dev/learn/start-a-new-react-project
+2.  **Getting Started – Vite.** (n.d.). https://vitejs.dev/guide/
+3.  **Tailwind CSS Documentation – Tailwind CSS.** (n.d.). https://tailwindcss.com/docs
+4.  **React Router Documentation – React Router.** (n.d.). https://reactrouter.com/en/main
+5.  **Jakarta Servlet 6.0 Specification – Eclipse Foundation.** (n.d.). https://jakarta.ee/specifications/servlet/6.0/
+6.  **Gson User Guide – Google.** (n.d.). https://github.com/google/gson/blob/master/UserGuide.md
+7.  **Redmond, E. (2008, January 1). Maven in 5 minutes – Maven.** https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+8.  **MySQL Connector/J 8.3 Developer Guide – Oracle.** (n.d.). https://dev.mysql.com/doc/connector-j/8.3/en/
+9.  **TiDB Cloud Documentation – PingCAP.** (n.d.). https://docs.pingcap.com/tidbcloud/
+10. **Vercel Documentation – Vercel.** (n.d.). https://vercel.com/docs
+11. **Render Docs – Render.** (n.d.). https://render.com/docs
