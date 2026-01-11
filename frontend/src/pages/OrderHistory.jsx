@@ -444,8 +444,8 @@ const OrderHistory = () => {
                                     <span className="font-bold">{showReceiptModal.orderId}</span>
                                 </div>
                                 <div className="flex justify-between text-sm mt-2">
-                                    <span className="text-gray-500">Date</span>
-                                    <span>{new Date(showReceiptModal.createdAt).toLocaleString()}</span>
+                                    <span class="text-gray-500">Date</span>
+                                    <span>{new Date(showReceiptModal.createdAt.endsWith('Z') ? showReceiptModal.createdAt : showReceiptModal.createdAt + ' UTC').toLocaleString('en-MY', { timeZone: 'Asia/Kuala_Lumpur', year: 'numeric', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}</span>
                                 </div>
                                 <div className="flex justify-between text-sm mt-2">
                                     <span className="text-gray-500">Status</span>
