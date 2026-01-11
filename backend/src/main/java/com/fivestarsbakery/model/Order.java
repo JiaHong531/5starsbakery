@@ -9,12 +9,12 @@ public class Order {
     private int userId;
     private BigDecimal totalAmount;
     private String status;
-    private String pickupDate;  // Date string from frontend (e.g., "2026-01-11")
-    private String pickupTime;  // Time slot string from frontend (e.g., "01:00 PM")
+    private String pickupDate;  
+    private String pickupTime;  
     private Timestamp createdAt;
-    private String shippingAddress; // Legacy field, kept for compatibility
+    private String shippingAddress; 
 
-    private List<OrderItem> items; // For JSON deserialization
+    private List<OrderItem> items; 
 
     public Order() {
     }
@@ -91,7 +91,7 @@ public class Order {
         this.shippingAddress = shippingAddress;
     }
 
-    private String username; // Transient/Join field
+    private String username; 
 
     public String getUsername() {
         return username;
@@ -101,7 +101,7 @@ public class Order {
         this.username = username;
     }
 
-    private String paymentMethod; // "cash" or "online_banking"
+    private String paymentMethod; 
 
     public String getPaymentMethod() {
         return paymentMethod;

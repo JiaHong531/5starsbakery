@@ -5,20 +5,40 @@ import { useSearch } from '../context/SearchContext';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useNotification } from '../context/NotificationContext';
 
 const Home = () => {
-    // 1. State for Data
+
     const [products, setProducts] = useState([]);
+    const [ratings, setRatings] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
-    const [showLoginModal, setShowLoginModal] = useState(false);
 
-    // Hooks
+
+    const renderStars = (avgRating) => {
+        const stars = [];
+        const fullStars = Math.floor(avgRating);
+        const hasHalfStar = avgRating % 1 >= 0.5;
+
+        for (let i = 0; i < 5; i++) {
+            if (i < fullStars) {
+                stars.push(<span key={i} className="text-yellow-400">★</span>);
+            } else if (i === fullStars && hasHalfStar) {
+                stars.push(<span key={i} className="text-yellow-400">★</span>);
+            } else {
+                stars.push(<span key={i} className="text-gray-300">★</span>);
+            }
+        }
+        return stars;
+    };
+
+
     const { searchQuery } = useSearch();
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { showConfirm } = useNotification();
 
     useEffect(() => {
         if (user && user.role === 'ADMIN') {
@@ -34,15 +54,14 @@ const Home = () => {
     }, [selectedCategory]);
 
     useEffect(() => {
-        fetch("https://bakery-backend-kt9m.onrender.com/api/products")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to connect to Backend");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setProducts(data);
+
+        Promise.all([
+            fetch("https://bakery-backend-kt9m.onrender.com/api/products").then(res => res.ok ? res.json() : Promise.reject("Products failed")),
+            fetch("https://bakery-backend-kt9m.onrender.com/api/feedback/ratings").then(res => res.ok ? res.json() : {}).catch(() => ({}))
+        ])
+            .then(([productsData, ratingsData]) => {
+                setProducts(productsData);
+                setRatings(ratingsData);
                 setLoading(false);
             })
             .catch((err) => {
@@ -52,16 +71,23 @@ const Home = () => {
             });
     }, []);
 
-    // Security Check
-    const handleAddToCart = (product) => {
+
+    const handleAddToCart = async (product) => {
         if (!user) {
-            setShowLoginModal(true);
+            const confirmLogin = await showConfirm(
+                "Please login to add items to cart.",
+                "Login Required",
+                "Login"
+            );
+            if (confirmLogin) {
+                navigate('/login');
+            }
             return;
         }
         addToCart(product);
     };
 
-    // Loading & Error States
+
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
     if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
@@ -71,7 +97,7 @@ const Home = () => {
             const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
             return matchesCategory && matchesSearch;
         })
-        .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical Sort (A-Z)
+        .sort((a, b) => a.name.localeCompare(b.name));
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -79,13 +105,13 @@ const Home = () => {
             {!user && <Hero />}
 
             <div className="container-custom py-10 flex gap-8">
-                {/* Sidebar */}
+                { }
                 <Sidebar
                     selectedCategory={selectedCategory}
                     onSelectCategory={setSelectedCategory}
                 />
 
-                {/* Main Content Area */}
+                { }
                 <div className="flex-1">
 
                     <div id="menu-section" className="text-center mb-8 animate-fadeIn scroll-mt-24">
@@ -97,7 +123,7 @@ const Home = () => {
                         </p>
                     </div>
 
-                    {/* Product Grid */}
+                    { }
                     <div
                         key={selectedCategory}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -105,10 +131,10 @@ const Home = () => {
                         {filteredProducts.map((cake, index) => (
                             <div
                                 key={cake.id}
-                                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col card-interactive card-shine gradient-border animate-slideUp"
+                                className="bg-white rounded-lg shadow-md border border-gray-100 flex flex-col card-interactive card-shine animate-slideUp"
                                 style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
                             >
-                                {/* Image Area */}
+                                { }
                                 <div
                                     onClick={() => navigate(`/product/${cake.id}`)}
                                     className="h-64 overflow-hidden relative group cursor-pointer img-zoom"
@@ -123,20 +149,34 @@ const Home = () => {
                                     </span>
                                 </div>
 
-                                {/* Content Area */}
+                                { }
                                 <div className="p-5 flex flex-col flex-grow">
                                     <div className="flex-grow">
                                         <h3
                                             onClick={() => navigate(`/product/${cake.id}`)}
-                                            className="text-xl font-bold mb-2 text-text-main cursor-pointer hover:text-accent-1 transition-all duration-300 hover:translate-x-1"
+                                            className="text-xl font-bold mb-1 text-text-main cursor-pointer hover:text-accent-1 transition-all duration-300 hover:translate-x-1"
                                         >
                                             {cake.name}
                                         </h3>
+                                        { }
+                                        {ratings[cake.id] && (
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="flex text-sm">
+                                                    {renderStars(ratings[cake.id].avgRating)}
+                                                </div>
+                                                <span className="text-sm font-bold text-gray-700">
+                                                    {ratings[cake.id].avgRating.toFixed(1)}
+                                                </span>
+                                                <span className="text-xs text-gray-400">
+                                                    ({ratings[cake.id].count})
+                                                </span>
+                                            </div>
+                                        )}
                                         <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
                                         <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
                                     </div>
 
-                                    {/* Footer Area */}
+                                    { }
                                     <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
                                         <span className="text-2xl font-bold text-text-main transition-all duration-300 hover:scale-110 hover:text-accent-1">
                                             RM{cake.price.toFixed(2)}
@@ -161,32 +201,6 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Login Modal */}
-            {showLoginModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800/75 backdrop-blur-sm animate-fadeIn">
-                    <div className="bg-white p-6 rounded-xl w-80 text-center shadow-2xl animate-scaleIn">
-                        <h3 className="text-xl font-bold font-serif mb-2 animate-slideUp">Login Required</h3>
-                        <p className="text-gray-600 mb-6 text-sm animate-slideUp stagger-1">
-                            Please login to add items to cart.
-                        </p>
-                        <div className="flex justify-center gap-4 animate-slideUp stagger-2">
-                            <button
-                                onClick={() => setShowLoginModal(false)}
-                                className="btn bg-gray-300 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-400 hover:scale-105 active:scale-95"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={() => navigate('/login')}
-                                className="btn bg-accent-1 text-text-main font-bold font-sans px-4 py-2 rounded-lg transition-all duration-300 hover:bg-accent-2 hover:scale-105 active:scale-95 hover:shadow-lg"
-                            >
-                                Login
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

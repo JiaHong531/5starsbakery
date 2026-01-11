@@ -9,11 +9,11 @@ const UserProfile = () => {
     const navigate = useNavigate();
     const [isEditing, setIsEditing] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // New state for confirm password toggle
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'success' }); // type: 'success' or 'error'
+    const [modalContent, setModalContent] = useState({ title: '', message: '', type: 'success' });
 
-    // Initialize with default values to avoid uncontrolled input warnings
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -23,7 +23,7 @@ const UserProfile = () => {
         gender: '',
         birthdate: '',
         password: '',
-        confirm_password: '' // New field
+        confirm_password: ''
     });
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const UserProfile = () => {
                 last_name: user.lastName || '',
                 phone_number: user.phoneNumber || '',
                 gender: user.gender || '',
-                birthdate: user.birthdate ? user.birthdate.split('T')[0] : '', // Ensure date format YYYY-MM-DD
+                birthdate: user.birthdate ? user.birthdate.split('T')[0] : '',
                 password: user.password || '',
                 confirm_password: ''
             });
@@ -58,7 +58,7 @@ const UserProfile = () => {
     const handleSave = async () => {
         let finalPassword = user.password;
 
-        // Validation
+
         if (formData.password) {
             if (formData.password === user.password) {
                 showNotification("Error", "New password cannot be the same as the old password!", "error");
@@ -133,16 +133,16 @@ const UserProfile = () => {
     return (
         <div className="min-h-screen bg-bg-light p-8 animate-fadeIn">
             <div className="max-w-4xl mx-auto">
-                {/* Header Section with Back Button - Animated */}
-                <div className="flex items-center mb-8 gap-4 ml-20 animate-slideUp">
+                { }
+                <div className="flex items-center mb-8 gap-4 animate-slideUp">
                     <button
-                        onClick={() => navigate(-1)}
+                        onClick={() => user?.role === 'ADMIN' ? navigate('/admin/dashboard') : navigate('/')}
                         className="hover:opacity-80 transition-all duration-300 group"
                     >
                         <img
                             src={backIcon}
                             alt="Back"
-                            className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
+                            className="w-10 h-10 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                             style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                         />
                     </button>
@@ -152,7 +152,7 @@ const UserProfile = () => {
                 <div className="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto animate-scaleIn">
                     <div className="space-y-6">
 
-                        {/* Username Field (Read-only usually, but editable here if desired, let's keep editable for now based on prev code) */}
+                        { }
                         <div>
                             <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Username
@@ -168,7 +168,7 @@ const UserProfile = () => {
                             />
                         </div>
 
-                        {/* First Name & Last Name */}
+                        { }
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-text-main text-sm font-bold mb-2 font-serif">
@@ -196,7 +196,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        {/* Email Field */}
+                        { }
                         <div>
                             <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Email
@@ -212,7 +212,7 @@ const UserProfile = () => {
                             />
                         </div>
 
-                        {/* Phone Number */}
+                        { }
                         <div>
                             <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 Phone Number
@@ -228,7 +228,7 @@ const UserProfile = () => {
                             />
                         </div>
 
-                        {/* Gender & Birthdate */}
+                        { }
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-text-main text-sm font-bold mb-2 font-serif">
@@ -256,7 +256,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        {/* Password Field */}
+                        { }
                         <div>
                             <label className="block text-text-main text-sm font-bold mb-2 font-serif">
                                 {isEditing ? "New Password" : "Password"}
@@ -281,7 +281,7 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        {/* Confirm Password Field - Only when editing */}
+                        { }
                         {isEditing && (
                             <div>
                                 <label className="block text-text-main text-sm font-bold mb-2 font-serif">
@@ -306,7 +306,7 @@ const UserProfile = () => {
                             </div>
                         )}
 
-                        {/* Action Buttons - Enhanced animations */}
+                        { }
                         <div className="flex gap-4 mt-8 pt-4 border-t animate-fadeIn">
                             {!isEditing ? (
                                 <button
@@ -339,7 +339,7 @@ const UserProfile = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fadeIn">
                     <div className="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full animate-scaleIn text-center">
 
-                        {/* Icon based on Type */}
+                        { }
                         <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${modalContent.type === 'success' ? 'bg-green-100 text-text-main' : 'bg-red-100 text-red-600'}`}>
                             {modalContent.type === 'success' ? <FaCheckCircle size={28} /> : <FaExclamationCircle size={28} />}
                         </div>

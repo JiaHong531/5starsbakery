@@ -25,16 +25,16 @@ public class DatabaseSeeder implements ServletContextListener {
                 return;
             }
 
-            // Check if 'products' table exists and has data
+            
             boolean needsSeeding = false;
             try (Statement stmt = con.createStatement()) {
-                // Check if table exists
+                
                 try (ResultSet rs = con.getMetaData().getTables(null, null, "products", null)) {
                     if (!rs.next()) {
                         System.out.println("🌱 DatabaseSeeder: 'products' table not found. Seeding required.");
                         needsSeeding = true;
                     } else {
-                        // Check if empty
+                        
                         try (ResultSet countRs = stmt.executeQuery("SELECT count(*) FROM products")) {
                             if (countRs.next() && countRs.getInt(1) == 0) {
                                 System.out.println("🌱 DatabaseSeeder: 'products' table is empty. Seeding required.");
@@ -72,13 +72,13 @@ public class DatabaseSeeder implements ServletContextListener {
             String sqlScript = new BufferedReader(new InputStreamReader(input))
                 .lines().collect(Collectors.joining("\n"));
 
-            // Split by semicolon, but ignore semicolons inside comments or strings if possible.
-            // For simple init.sql, splitting by ";\n" or just ";" is usually okay.
-            // Using a simple split for now assuming standard formatting.
+            
+            
+            
             String[] statements = sqlScript.split(";");
 
             try (Statement stmt = con.createStatement()) {
-                con.setAutoCommit(false); // Transactional
+                con.setAutoCommit(false); 
                 
                 int count = 0;
                 for (String sql : statements) {
@@ -88,8 +88,8 @@ public class DatabaseSeeder implements ServletContextListener {
                         stmt.execute(sql);
                         count++;
                     } catch (Exception e) {
-                        // Log but continue? Or fail?
-                        // Some statements might fail (e.g., DROP TABLE if not exists)
+                        
+                        
                         System.out.println("⚠️ Warning executing statement: " + (sql.length() > 50 ? sql.substring(0, 50) + "..." : sql));
                         System.out.println("   Error: " + e.getMessage());
                     }
@@ -113,6 +113,6 @@ public class DatabaseSeeder implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        // Cleanup if needed
+        
     }
 }

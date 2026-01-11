@@ -31,7 +31,7 @@ const Sidebar = ({ selectedCategory, onSelectCategory }) => {
                     {categories.map((category, index) => (
                         <li key={category.category_id || category.name} className="animate-slideUp" style={{ animationDelay: `${(index + 2) * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}>
                             <button
-                                onClick={() => onSelectCategory(category.name)} // Pass name matching product category
+                                onClick={() => onSelectCategory(category.name)}
                                 className={`w-full flex items-center p-3 rounded-md transition-all duration-300 group ${selectedCategory === category.name
                                     ? 'bg-accent-1 text-text-light font-bold shadow-md scale-105'
                                     : 'text-gray-600 hover:bg-accent-1/10 hover:text-accent-1 hover:translate-x-1 hover:shadow-sm'

@@ -20,16 +20,16 @@ public class RegisterServlet extends HttpServlet {
         resp.setContentType("application/json");
 
         try {
-            // 1. Convert JSON to Java Object
+            
             User newUser = gson.fromJson(req.getReader(), User.class);
 
-            // 2. Try to save to DB
+            
             boolean isRegistered = userDAO.register(newUser);
 
             if (isRegistered) {
                 resp.getWriter().write("{\"message\": \"Success\"}");
             } else {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Error
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
                 resp.getWriter().write("{\"message\": \"Registration failed. Username or Email already exists.\"}");
             }
         } catch (Exception e) {

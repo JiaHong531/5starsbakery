@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import Context
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useAuth(); // <--- Get the login function from Context
+    const { login } = useAuth();
 
     const [formData, setFormData] = useState({
         usernameOrEmail: '',
@@ -44,7 +44,7 @@ const Login = () => {
                     return;
                 }
 
-                // ✅ SUCCESS (Customer Only)
+
                 login(user);
                 navigate('/');
 

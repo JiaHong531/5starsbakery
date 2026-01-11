@@ -1,6 +1,7 @@
 package com.fivestarsbakery.controller;
 
 import com.fivestarsbakery.dao.CategoryDAO;
+import com.fivestarsbakery.dao.ProductDAO;
 import com.fivestarsbakery.model.Category;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -16,13 +17,14 @@ import java.text.Normalizer;
 import java.util.List;
 
 @WebServlet("/api/categories/*")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1MB
-        maxFileSize = 1024 * 1024 * 5, // 5MB
-        maxRequestSize = 1024 * 1024 * 20 // 20MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, 
+        maxFileSize = 1024 * 1024 * 5, 
+        maxRequestSize = 1024 * 1024 * 20 
 )
 public class CategoryServlet extends HttpServlet {
 
     private CategoryDAO categoryDAO = new CategoryDAO();
+    private ProductDAO productDAO = new ProductDAO();
     private Gson gson = new Gson();
 
     @Override
@@ -50,29 +52,83 @@ public class CategoryServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        setAccessControlHeaders(resp);
+
+        try {
+            String pathInfo = req.getPathInfo(); 
+            if (pathInfo == null || pathInfo.equals("/")) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+
+            int id = Integer.parseInt(pathInfo.substring(1));
+
+            
+            Category category = categoryDAO.getCategoryById(id);
+            if (category == null) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            
+            if (productDAO.isCategoryUsed(category.getName())) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.getWriter().write("{\"success\": false, \"message\": \"Cannot delete category because it contains products.\"}");
+                return;
+            }
+
+            
+            if (category.getIconUrl() != null && category.getIconUrl().startsWith("/category-icons/")) {
+                String fileName = category.getIconUrl().substring("/category-icons/".length());
+                String uploadPath = "/usr/local/tomcat/webapps/category-icons";
+                File file = new File(uploadPath + File.separator + fileName);
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+
+            
+            if (categoryDAO.deleteCategory(id)) {
+                resp.getWriter().write("{\"success\": true, \"message\": \"Category deleted successfully\"}");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+
+        } catch (NumberFormatException e) {
+             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (Exception e) {
+             e.printStackTrace();
+             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private void handleUpload(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         try {
-            // 1. Setup upload directory - use the Docker volume path
+            
             String uploadPath = "/usr/local/tomcat/webapps/category-icons";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists())
                 uploadDir.mkdirs();
 
-            // 2. Get data
+            
             String name = request.getParameter("name");
             String displayName = request.getParameter("displayName");
             Part filePart = request.getPart("icon");
 
-            // 3. Create filename
+            
             String sanitizedName = sanitizeFileName(name);
             String extension = getFileExtension(filePart.getSubmittedFileName());
             String fileName = "category_" + sanitizedName + "_" + System.currentTimeMillis() + extension;
 
-            // 4. Save file
+            
             filePart.write(uploadPath + File.separator + fileName);
 
-            // 5. Save to DB
+            
             String iconUrl = "/category-icons/" + fileName;
             Category newCategory = new Category(0, name, displayName, iconUrl);
 
@@ -106,6 +162,6 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void setAccessControlHeaders(HttpServletResponse resp) {
-        // Handled by CorsFilter usually, but keeping for safety if filter missing
+        
     }
 }

@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
                     <img
                         src={backIcon}
                         alt="Back"
-                        className="w-8 h-8 object-contain transition-transform duration-300 group-hover:-translate-x-2"
+                        className="w-10 h-10 object-contain transition-transform duration-300 group-hover:-translate-x-2"
                         style={{ filter: "brightness(0) saturate(100%) invert(19%) sepia(12%) saturate(2250%) hue-rotate(320deg) brightness(97%) contrast(90%)", color: "#4E342E" }}
                     />
                 </button>

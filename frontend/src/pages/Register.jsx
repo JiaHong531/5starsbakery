@@ -34,16 +34,16 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 1. Validation
+
         if (formData.password !== formData.confirmPassword) {
             showToast("Passwords do not match!", "error");
             return;
         }
 
         try {
-            // 2. Map Frontend fields to Backend expected fields
-            // Frontend: "phone", "birthday"
-            // Backend: "phoneNumber", "birthdate"
+
+
+
             const payload = {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -51,11 +51,11 @@ const Register = () => {
                 email: formData.email,
                 password: formData.password,
                 gender: formData.gender,
-                phoneNumber: formData.phone,    // Mapping here
-                birthdate: formData.birthday    // Mapping here
+                phoneNumber: formData.phone,
+                birthdate: formData.birthday
             };
 
-            // 3. Send to Java
+
             const response = await fetch('https://bakery-backend-kt9m.onrender.com/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -66,7 +66,7 @@ const Register = () => {
 
             if (response.ok) {
                 showToast("Registration Successful! Please Login.", "success");
-                navigate('/login'); // Redirect to login page
+                navigate('/login');
             } else {
                 showToast(data.message || "Registration failed.", "error");
             }

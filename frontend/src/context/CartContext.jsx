@@ -10,13 +10,21 @@ export const CartProvider = ({ children }) => {
 
     const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+    /**
+     * Adds an item to the cart, respecting stock limits.
+     * If item exists, increments quantity up to stock availability.
+     */
     const addToCart = (product) => {
         setIsCartOpen(true);
         setCartItems((prevItems) => {
             const existingItem = prevItems.find((item) => item.id === product.id);
             if (existingItem) {
+                // Check stock limit
+                if (existingItem.quantity >= product.stock) {
+                    return prevItems;
+                }
                 return prevItems.map((item) =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    item.id === product.id ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) } : item
                 );
             } else {
                 return [...prevItems, { ...product, quantity: 1 }];
@@ -32,15 +40,24 @@ export const CartProvider = ({ children }) => {
         setCartItems([]);
     };
 
+    /**
+     * Updates item quantity directly.
+     * Enforces bounds: 1 <= quantity <= stock.
+     */
     const updateQuantity = (productId, newQuantity) => {
         if (newQuantity < 1) {
             removeFromCart(productId);
             return;
         }
         setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === productId ? { ...item, quantity: newQuantity } : item
-            )
+            prevItems.map((item) => {
+                if (item.id === productId) {
+                    // Ensure we don't exceed available stock
+                    const limitedQuantity = Math.min(newQuantity, item.stock);
+                    return { ...item, quantity: limitedQuantity };
+                }
+                return item;
+            })
         );
     };
 

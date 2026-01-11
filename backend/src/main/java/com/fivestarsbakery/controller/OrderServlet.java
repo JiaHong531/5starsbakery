@@ -10,6 +10,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Handles Order-related API endpoints.
+ * Supports:
+ * - GET /api/orders?userId=X (Get order history)
+ * - GET /api/orders?all=true (Get all orders for admin)
+ * - POST /api/orders (Create new order)
+ * - PUT /api/orders/:id (Update order status)
+ */
 @WebServlet("/api/orders/*")
 public class OrderServlet extends HttpServlet {
 
@@ -22,7 +30,9 @@ public class OrderServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
-        // Check for "all" parameter (Admin view)
+        // Check if admin is requesting all orders
+
+        
         String allParam = req.getParameter("all");
         if ("true".equalsIgnoreCase(allParam)) {
             java.util.List<Order> orders = orderDAO.getAllOrders();
@@ -68,7 +78,7 @@ public class OrderServlet extends HttpServlet {
 
         try {
             int orderId = Integer.parseInt(pathInfo.substring(1));
-            // Read status from body: {"status": "READY_FOR_PICKUP"}
+            
             Order statusUpdate = gson.fromJson(req.getReader(), Order.class);
             if (statusUpdate == null || statusUpdate.getStatus() == null) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -98,17 +108,17 @@ public class OrderServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         try {
-            // 1. Deserialize JSON
+            
             Order newOrder = gson.fromJson(req.getReader(), Order.class);
 
-            // 2. Validate
+            
             if (newOrder.getItems() == null || newOrder.getItems().isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 out.write("{\"message\": \"Order items are required\"}");
                 return;
             }
 
-            // 3. Save to DB
+            
             boolean success = orderDAO.createOrder(newOrder);
 
             if (success) {

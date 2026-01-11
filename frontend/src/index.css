@@ -2,11 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ================================
-   KEYFRAME ANIMATIONS
-================================ */
 
-/* Fade In Animation */
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -17,7 +15,7 @@
   }
 }
 
-/* Slide Up Animation */
+
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -30,7 +28,7 @@
   }
 }
 
-/* Slide In from Left */
+
 @keyframes slideInLeft {
   from {
     opacity: 0;
@@ -43,7 +41,7 @@
   }
 }
 
-/* Slide In from Right */
+
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -56,7 +54,7 @@
   }
 }
 
-/* Scale In Animation */
+
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -69,7 +67,7 @@
   }
 }
 
-/* Gentle Float Effect */
+
 @keyframes float {
 
   0%,
@@ -82,7 +80,7 @@
   }
 }
 
-/* Pulse Animation */
+
 @keyframes pulse {
 
   0%,
@@ -95,7 +93,7 @@
   }
 }
 
-/* Shimmer Effect */
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -106,7 +104,7 @@
   }
 }
 
-/* Bounce Animation */
+
 @keyframes bounce {
 
   0%,
@@ -119,7 +117,7 @@
   }
 }
 
-/* Wiggle Animation */
+
 @keyframes wiggle {
 
   0%,
@@ -136,7 +134,7 @@
   }
 }
 
-/* Glow Pulse */
+
 @keyframes glowPulse {
 
   0%,
@@ -149,7 +147,7 @@
   }
 }
 
-/* Cart Badge Pop */
+
 @keyframes cartPop {
   0% {
     transform: scale(1);
@@ -164,7 +162,7 @@
   }
 }
 
-/* Ripple Effect */
+
 @keyframes ripple {
   0% {
     transform: scale(0);
@@ -177,7 +175,7 @@
   }
 }
 
-/* Spin Animation */
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -188,7 +186,7 @@
   }
 }
 
-/* Heart Beat */
+
 @keyframes heartbeat {
 
   0%,
@@ -214,9 +212,7 @@
 
 @layer components {
 
-  /* ================================
-     BUTTON STYLES WITH ANIMATIONS
-  ================================ */
+
   .btn {
     @apply px-5 py-2.5 rounded font-bold transition-all duration-300 relative overflow-hidden;
     transform: translateY(0);
@@ -262,9 +258,7 @@
     transform: translateY(-1px);
   }
 
-  /* ================================
-     ANIMATION UTILITY CLASSES
-  ================================ */
+
   .animate-fadeIn {
     animation: fadeIn 0.6s ease-out forwards;
   }
@@ -313,12 +307,11 @@
     animation: heartbeat 1.5s ease-in-out infinite;
   }
 
-  /* ================================
-     CARD INTERACTIVE EFFECTS
-  ================================ */
+
   .card-interactive {
-    @apply transition-all duration-300;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
     transform: translateY(0);
+    backface-visibility: hidden;
   }
 
   .card-interactive:hover {
@@ -326,13 +319,14 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
   }
 
-  /* Shine effect on hover */
+
   .card-shine {
     position: relative;
     overflow: hidden;
   }
 
-  .card-shine::before {
+  /* Uses ::after to avoid conflict with gradient-border which uses ::before */
+  .card-shine::after {
     content: '';
     position: absolute;
     top: 0;
@@ -343,18 +337,16 @@
         transparent,
         rgba(255, 255, 255, 0.3),
         transparent);
-    transition: left 0.5s ease;
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
   }
 
-  .card-shine:hover::before {
+  .card-shine:hover::after {
     left: 100%;
+    transition: left 0.6s ease-in-out;
   }
 
-  /* ================================
-     IMAGE EFFECTS
-  ================================ */
+
   .img-zoom {
     @apply overflow-hidden;
   }
@@ -367,9 +359,7 @@
     transform: scale(1.1);
   }
 
-  /* ================================
-     ICON ANIMATIONS
-  ================================ */
+
   .icon-bounce:hover {
     animation: bounce 0.5s ease-in-out;
   }
@@ -386,9 +376,7 @@
     animation: pulse 0.3s ease-in-out 2;
   }
 
-  /* ================================
-     LOADING SHIMMER
-  ================================ */
+
   .shimmer {
     background: linear-gradient(90deg,
         #f0f0f0 25%,
@@ -398,9 +386,7 @@
     animation: shimmer 1.5s infinite;
   }
 
-  /* ================================
-     LINK HOVER EFFECTS
-  ================================ */
+
   .link-underline {
     position: relative;
   }
@@ -420,9 +406,7 @@
     width: 100%;
   }
 
-  /* ================================
-     STAGGER ANIMATION DELAYS
-  ================================ */
+
   .stagger-1 {
     animation-delay: 0.1s;
   }
@@ -447,9 +431,7 @@
     animation-delay: 0.6s;
   }
 
-  /* ================================
-     GLASSMORPHISM EFFECT
-  ================================ */
+
   .glass {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
@@ -457,9 +439,7 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  /* ================================
-     GRADIENT BORDERS
-  ================================ */
+
   .gradient-border {
     position: relative;
     background: white;
@@ -474,7 +454,8 @@
     background: linear-gradient(135deg, #FFAB91, #FFD54F);
     z-index: -1;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
   }
 
   .gradient-border:hover::before {
@@ -482,23 +463,21 @@
   }
 }
 
-/* ================================
-   PRINT STYLES - For Receipt Printing
-================================ */
+
 @media print {
 
-  /* Hide everything by default */
+
   body * {
     visibility: hidden;
   }
 
-  /* Show the receipt modal and all its contents */
+
   .receipt-modal,
   .receipt-modal * {
     visibility: visible !important;
   }
 
-  /* Position modal at center for printing */
+
   .receipt-modal {
     position: absolute !important;
     left: 50% !important;
@@ -511,26 +490,26 @@
     box-shadow: none !important;
   }
 
-  /* Hide the modal backdrop */
+
   .receipt-modal-backdrop {
     background: transparent !important;
   }
 
-  /* Hide buttons in print */
+
   .no-print,
   .receipt-modal button {
     display: none !important;
     visibility: hidden !important;
   }
 
-  /* Hide header, footer, etc */
+
   header,
   footer,
   nav {
     display: none !important;
   }
 
-  /* Keep colors for receipt header */
+
   .receipt-header {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

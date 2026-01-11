@@ -15,13 +15,13 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM products";
 
-        // Try-with-resources (Automatically closes connection)
+        
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                // Map the DB Row to a Java Object
+                
                 Product p = new Product(
                         rs.getInt("product_id"),
                         rs.getString("name"),
@@ -67,7 +67,7 @@ public class ProductDAO {
         return product;
     }
 
-    // CREATE
+    
     public boolean addProduct(Product product) {
         String sql = "INSERT INTO products (name, description, ingredients, price, stock_quantity, category, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -86,7 +86,7 @@ public class ProductDAO {
         }
     }
 
-    // UPDATE
+    
     public boolean updateProduct(Product product) {
         String sql = "UPDATE products SET name=?, description=?, ingredients=?, price=?, stock_quantity=?, category=?, image_url=? WHERE product_id=?";
         try (Connection conn = DBConnection.getConnection();
@@ -106,7 +106,7 @@ public class ProductDAO {
         }
     }
 
-    // DELETE
+    
     public boolean deleteProduct(int id) {
         String sql = "DELETE FROM products WHERE product_id=?";
         try (Connection conn = DBConnection.getConnection();
@@ -116,6 +116,45 @@ public class ProductDAO {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    
+    public boolean deductStock(Connection conn, int productId, int quantity) throws Exception {
+        String sql = "UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ? AND stock_quantity >= ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            ps.setInt(3, quantity); 
+            int rows = ps.executeUpdate();
+            if (rows == 0) {
+                throw new Exception("Insufficient stock for product ID: " + productId);
+            }
+            return true;
+        }
+    }
+
+    
+    public boolean restoreStock(Connection conn, int productId, int quantity) throws Exception {
+        String sql = "UPDATE products SET stock_quantity = stock_quantity + ? WHERE product_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+    
+    public boolean isCategoryUsed(String category) {
+        String sql = "SELECT 1 FROM products WHERE category = ? LIMIT 1";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, category);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true; 
         }
     }
 }

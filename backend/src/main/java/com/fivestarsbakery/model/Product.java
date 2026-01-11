@@ -10,7 +10,7 @@ public class Product {
     private String category;
     private String imageUrl;
 
-    // Constructor
+    
     public Product(int id, String name, String description, String ingredients, double price, int stock,
             String category, String imageUrl) {
         this.id = id;
@@ -23,7 +23,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // Getters
+    
     public int getId() {
         return id;
     }

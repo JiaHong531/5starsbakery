@@ -9,19 +9,19 @@ import deleteIcon from '../assets/bin.png';
 import addIcon from '../assets/add.png';
 
 const AdminDashboard = () => {
-    // 1. State for Data
+
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("All");
 
-    // Hooks
+
     const { searchQuery } = useSearch();
     const navigate = useNavigate();
     const { user } = useAuth();
     const { showConfirm, showToast } = useNotification();
 
-    // 6. Floating Button Logic
+
     const buttonRef = React.useRef(null);
 
     useEffect(() => {
@@ -32,14 +32,14 @@ const AdminDashboard = () => {
             const footerRect = footer.getBoundingClientRect();
             const windowHeight = window.innerHeight;
 
-            // Check if footer is inside the viewport
+
             if (footerRect.top < windowHeight) {
-                // Determine overlapping height
+
                 const visibleFooterHeight = windowHeight - footerRect.top;
-                // Move button up by visible footer height + standard spacing (40px)
+
                 buttonRef.current.style.bottom = `${40 + visibleFooterHeight}px`;
             } else {
-                // Reset to default position
+
                 buttonRef.current.style.bottom = '40px';
             }
         };
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
         window.addEventListener('scroll', handleScroll);
         window.addEventListener('resize', handleScroll);
 
-        // Initial check
+
         handleScroll();
 
         return () => {
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
         };
     }, []);
 
-    // 2. Fetch from Java Backend
+
     useEffect(() => {
         fetch("https://bakery-backend-kt9m.onrender.com/api/products")
             .then((response) => {
@@ -76,20 +76,20 @@ const AdminDashboard = () => {
             });
     }, []);
 
-    // 3. Loading & Error States
+
     if (loading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Loading fresh cakes... 🧁</div>;
     if (error) return <div className="text-center py-20 text-red-500 font-bold">{error}</div>;
 
-    // 4. Filter Products
+
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
-    // Handle Delete
+
     const handleDelete = async (id, e) => {
-        e.stopPropagation(); // Prevent card navigation
+        e.stopPropagation();
         const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
         if (confirmed) {
             try {
@@ -111,15 +111,15 @@ const AdminDashboard = () => {
 
     return (
         <div className="container-custom py-10 flex gap-8 relative min-h-screen animate-fadeIn">
-            {/* Sidebar */}
+            { }
             <Sidebar
                 selectedCategory={selectedCategory}
                 onSelectCategory={setSelectedCategory}
             />
 
-            {/* Main Content Area */}
+            { }
             <div className="flex-1 pb-16">
-                {/* Header Section - Animated */}
+                { }
                 <div className="text-center mb-8 animate-slideUp">
                     <h2 className="text-5xl font-serif font-bold mb-3 text-text-main">Admin Dashboard</h2>
                     <p className="text-text-secondary mb-6 animate-fadeIn stagger-1">Manage your bakery inventory.</p>
@@ -131,11 +131,11 @@ const AdminDashboard = () => {
                     </button>
                 </div>
 
-                {/* Product Grid - Responsive: 1 col mobile, 3 cols desktop */}
+                { }
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredProducts.map((cake, index) => (
 
-                        /* Card Container - Animated with stagger */
+
                         <div
                             key={cake.id}
                             onClick={() => navigate(`/product/${cake.id}`)}
@@ -143,20 +143,20 @@ const AdminDashboard = () => {
                             style={{ animationDelay: `${index * 0.1}s`, opacity: 0, animationFillMode: 'forwards' }}
                         >
 
-                            {/* Image Area */}
+                            { }
                             <div className="h-64 overflow-hidden relative group img-zoom">
                                 <img
                                     src={cake.imageUrl}
                                     alt={cake.name}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
-                                {/* Category Badge - Animated */}
+                                { }
                                 <span className="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-700 transition-all duration-300 hover:bg-accent-1 hover:text-white">
                                     {cake.category}
                                 </span>
                             </div>
 
-                            {/* Content Area */}
+                            { }
                             <div className="p-5 flex flex-col flex-grow relative">
 
                                 <div className="flex-grow">
@@ -164,19 +164,19 @@ const AdminDashboard = () => {
                                     <p className="text-text-secondary text-sm line-clamp-2">{cake.description}</p>
                                     <p className="text-xs text-text-main/75 italic mt-2">Contains: {cake.ingredients}</p>
 
-                                    {/* Stock below Ingredients */}
+                                    { }
                                     <div className="mt-2 text-text-main/50 text-xs">
                                         Stock: {cake.stock}
                                     </div>
                                 </div>
 
-                                {/* Footer Area: Price & Action Icons */}
+                                { }
                                 <div className="flex justify-between items-end mt-6 pt-4 border-t border-gray-100">
                                     <span className="text-2xl font-bold text-text-main transition-all duration-300 hover:scale-110 origin-left hover:text-accent-1">
                                         RM{cake.price.toFixed(2)}
                                     </span>
 
-                                    {/* Action Icons: Edit & Delete - Enhanced animations */}
+                                    { }
                                     <div className="flex gap-2">
                                         <button
                                             onClick={(e) => {
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
 
             </div>
 
-            {/* Floating Add Button - With pulse animation */}
+            { }
             <div ref={buttonRef} className="fixed right-10 z-40 transition-all duration-75" style={{ bottom: '40px' }}>
                 <button
                     onClick={() => navigate('/admin/add-product')}
