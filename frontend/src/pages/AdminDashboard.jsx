@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 
     // 2. Fetch from Java Backend
     useEffect(() => {
-        fetch("http://localhost:8080/api/products")
+        fetch("https://bakery-backend-kt9m.onrender.com/api/products")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to connect to Backend");
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
         const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
         if (confirmed) {
             try {
-                const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
+                const response = await fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`, { method: 'DELETE' });
                 if (response.ok) {
                     setProducts(prev => prev.filter(p => p.id !== id));
                     showToast("Product deleted successfully!", "success");

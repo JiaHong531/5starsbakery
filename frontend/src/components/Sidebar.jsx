@@ -5,7 +5,7 @@ const Sidebar = ({ selectedCategory, onSelectCategory }) => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/categories')
+        fetch('https://bakery-backend-kt9m.onrender.com/api/categories')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error("Failed to load categories", err));

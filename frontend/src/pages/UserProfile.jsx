@@ -84,7 +84,7 @@ const UserProfile = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/update-profile', {
+            const response = await fetch('https://bakery-backend-kt9m.onrender.com/api/update-profile', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedUser),

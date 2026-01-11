@@ -18,7 +18,7 @@ const ProductDetails = () => {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/products/${id}`)
+        fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error("Product not found");
                 return res.json();
@@ -116,7 +116,7 @@ const ProductDetails = () => {
                                         const confirmed = await showConfirm("Are you sure you want to delete this product?", "Delete Product");
                                         if (confirmed) {
                                             try {
-                                                const response = await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
+                                                const response = await fetch(`https://bakery-backend-kt9m.onrender.com/api/products/${id}`, { method: 'DELETE' });
                                                 if (response.ok) {
                                                     showToast("Product deleted.", "success");
                                                     navigate('/admin/dashboard');
